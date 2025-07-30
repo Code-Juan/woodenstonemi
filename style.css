@@ -44,6 +44,7 @@ ul {
 footer {
   text-align: center;
   padding: 1rem;
-  background: #eee;
+  background: #222; /* darker */
+  color: #ccc;       /* lighter text */
   font-size: 0.9rem;
 }
