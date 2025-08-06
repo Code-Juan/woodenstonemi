@@ -39,7 +39,9 @@ header {
 }
 
 header img {
-    height: 40px;
+    height: 60px;
+    max-height: 100%;
+    width: auto;
 }
 
 nav a {
