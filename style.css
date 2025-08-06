@@ -39,9 +39,12 @@ header {
 }
 
 header img {
-    height: 100px;
-    width: auto;
-    display: block;
+    height: 100%;       /* Fill header height */
+    max-height: 60px;   /* Keep under header height */
+    width: auto;        /* Maintain aspect ratio */
+    object-fit: contain;
+    padding: 0;         /* Remove extra spacing */
+    margin: 0;
 }
 
 nav a {
