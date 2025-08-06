@@ -1,50 +1,103 @@
+/* Brand Colors */
+:root {
+    --black: #000000;
+    --white: #ffffff;
+    --beige: #C2B280;
+    --marble: #E5E3DF;
+    --copper: #B87333;
+    --slate: #5A5A5A;
+
+    --bg-color: var(--white);
+    --text-color: var(--black);
+    --accent-color: var(--copper);
+}
+
+/* Dark Theme */
+[data-theme="dark"] {
+    --bg-color: var(--black);
+    --text-color: var(--white);
+    --accent-color: var(--beige);
+}
+
+/* Global Styles */
 body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  line-height: 1.6;
-  background: #f9f9f9;
-  color: #333;
+    margin: 0;
+    font-family: 'Open Sans', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
 }
 
+/* Header */
 header {
-  background: #444;
-  color: white;
-  padding: 2rem 1rem;
-  text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: var(--bg-color);
+    border-bottom: 1px solid var(--slate);
 }
 
-nav {
-  display: flex;
-  justify-content: center;
-  background: #333;
+header img {
+    height: 40px;
 }
 
 nav a {
-  color: white;
-  padding: 1rem;
-  text-decoration: none;
+    margin: 0 1rem;
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: bold;
 }
 
 nav a:hover {
-  background: #555;
+    color: var(--accent-color);
 }
 
-section {
-  padding: 2rem;
-  max-width: 800px;
-  margin: auto;
+#theme-toggle {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
 }
 
-ul {
-  list-style: disc;
-  padding-left: 1.5rem;
+/* Hero */
+.hero {
+    background-color: var(--marble);
+    padding: 5rem 2rem;
+    text-align: center;
 }
 
+.hero h1 {
+    font-family: 'Merriweather', serif;
+    font-size: 2.5rem;
+}
+
+.btn {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--accent-color);
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: var(--beige);
+}
+
+/* Placeholder Section */
+.placeholder {
+    padding: 3rem 2rem;
+    text-align: center;
+}
+
+/* Footer */
 footer {
-  text-align: center;
-  padding: 1rem;
-  background: #222; /* darker */
-  color: #ccc;       /* lighter text */
-  font-size: 0.9rem;
+    text-align: center;
+    padding: 1rem;
+    background-color: var(--bg-color);
+    border-top: 1px solid var(--slate);
 }
