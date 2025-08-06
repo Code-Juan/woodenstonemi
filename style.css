@@ -40,7 +40,7 @@ header {
 
 header img {
     height: 100%;       /* Fill header height */
-    max-height: 40px;   /* Keep under header height */
+    max-height: 60px;   /* Keep under header height */
     width: auto;        /* Maintain aspect ratio */
     object-fit: contain;
     padding: 0;         /* Remove extra spacing */
