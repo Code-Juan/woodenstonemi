@@ -1,30 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Wooden Stone LLC</title>
     <link rel="stylesheet" href="style.css">
     <script defer src="script.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Open+Sans&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Open+Sans&display=swap"
+        rel="stylesheet">
 </head>
+
 <body>
     <!-- Header -->
     <header>
         <div class="logo">
-            <img src="The Wooden Stone Logo (Resized).svg" alt="The Wooden Stone LLC Logo">
+            <a href="index.html">
+                <img src="The Wooden Stone Logo (Resized).svg" alt="The Wooden Stone LLC Logo">
+            </a>
         </div>
         <nav>
-            <a href="#">Home</a>
-            <a href="#">Projects</a>
-            <a href="#">About</a>
-            <a href="#">Contact</a>
+            <a href="what-we-do.html">What We Do</a>
+            <a href="scopes-materials.html">Scopes & Materials</a>
+            <a href="project-portfolio.html">Project Portfolio</a>
+            <a href="contact-us.html">Contact Us</a>
         </nav>
         <button id="theme-toggle" aria-label="Toggle Theme">🌓</button>
     </header>
 
     <!-- Hero Section -->
     <section class="hero">
+        <div class="hero-slideshow">
+            <div class="slideshow-placeholder">
+                <p>Image coming soon</p>
+                <small>Add rotating slideshow (use pics from 'Project Portfolio' page)</small>
+            </div>
+        </div>
         <div class="hero-content">
             <h1>Your Vision. Our Stonework.</h1>
             <p>Stone shaped by skill, guided with care.</p>
@@ -32,10 +43,49 @@
         </div>
     </section>
 
-    <!-- Placeholder Content -->
-    <section class="placeholder">
-        <h2>Our Work</h2>
-        <p>Gallery coming soon. Here we will showcase our stonework in stunning, high-resolution images.</p>
+    <!-- Our Work Section -->
+    <section class="our-work">
+        <div class="work-content">
+            <h2>Our Work</h2>
+            <p>Gallery coming soon. Here we will showcase our stonework in stunning, high-resolution images.</p>
+        </div>
+        <div class="mission-statement">
+            <h3>Our Mission</h3>
+            <p>Add our mission statement</p>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="cta-section">
+        <a href="#" class="cta-button">Request a Bid Today</a>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services">
+        <div class="service-card">
+            <h3>ESTIMATING</h3>
+            <div class="service-image">
+                <p>Image coming soon</p>
+            </div>
+        </div>
+        <div class="service-card">
+            <h3>PRE CONSTRUCTION</h3>
+            <div class="service-image">
+                <p>Image coming soon</p>
+            </div>
+        </div>
+        <div class="service-card">
+            <h3>ON TIME INSTALLATIONS</h3>
+            <div class="service-image">
+                <p>Image coming soon</p>
+            </div>
+        </div>
+        <div class="service-card">
+            <h3>QUALITY & INTEGRITY</h3>
+            <div class="service-image">
+                <p>Image coming soon</p>
+            </div>
+        </div>
     </section>
 
     <!-- Footer -->
@@ -43,4 +93,5 @@
         <p>&copy; <span id="year"></span> The Wooden Stone LLC. All rights reserved.</p>
     </footer>
 </body>
+
 </html>

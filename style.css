@@ -28,6 +28,12 @@ body {
     transition: background-color 0.3s, color 0.3s;
 }
 
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
 /* Header */
 header {
     display: flex;
@@ -39,12 +45,21 @@ header {
 }
 
 header img {
-    height: 100%;       /* Fill header height */
-    max-height: 60px;   /* Keep under header height */
-    width: auto;        /* Maintain aspect ratio */
+    height: 100%;
+    /* Fill header height */
+    max-height: 60px;
+    /* Keep under header height */
+    width: auto;
+    /* Maintain aspect ratio */
     object-fit: contain;
-    padding: 0;         /* Remove extra spacing */
+    padding: 0;
+    /* Remove extra spacing */
     margin: 0;
+}
+
+.logo a {
+    text-decoration: none;
+    display: block;
 }
 
 nav a {
@@ -65,24 +80,67 @@ nav a:hover {
     cursor: pointer;
 }
 
-/* Hero */
+/* Hero Section */
 .hero {
     background-color: var(--marble);
-    padding: 5rem 2rem;
+    padding: 3rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    min-height: 400px;
+}
+
+.hero-slideshow {
+    flex: 1;
+    max-width: 50%;
+}
+
+.slideshow-placeholder {
+    background-color: var(--white);
+    border: 2px dashed var(--slate);
+    padding: 2rem;
+    text-align: center;
+    border-radius: 8px;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.slideshow-placeholder p {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 0 0 0.5rem 0;
+    color: var(--slate);
+}
+
+.slideshow-placeholder small {
+    color: var(--slate);
+    font-style: italic;
+}
+
+.hero-content {
+    flex: 1;
     text-align: center;
 }
 
 .hero h1 {
     font-family: 'Merriweather', serif;
     font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
 }
 
 .btn {
     display: inline-block;
-    margin-top: 1rem;
     padding: 0.75rem 1.5rem;
     background-color: var(--accent-color);
-    color: var(--text-color);
+    color: var(--white);
     text-decoration: none;
     font-weight: bold;
     border-radius: 5px;
@@ -93,10 +151,636 @@ nav a:hover {
     background-color: var(--beige);
 }
 
-/* Placeholder Section */
-.placeholder {
-    padding: 3rem 2rem;
+/* Page Hero Sections */
+.page-hero {
+    background-color: var(--marble);
+    padding: 4rem 2rem;
     text-align: center;
+}
+
+.page-hero h1 {
+    font-family: 'Merriweather', serif;
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: var(--accent-color);
+}
+
+.page-hero p {
+    font-size: 1.3rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Our Work Section */
+.our-work {
+    padding: 3rem 2rem;
+    background-color: var(--white);
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+.work-content {
+    flex: 2;
+    text-align: center;
+}
+
+.work-content h2 {
+    font-family: 'Merriweather', serif;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.mission-statement {
+    flex: 1;
+    padding: 1rem;
+    background-color: var(--marble);
+    border-radius: 8px;
+}
+
+.mission-statement h3 {
+    font-family: 'Merriweather', serif;
+    margin-bottom: 1rem;
+}
+
+/* Call to Action Section */
+.cta-section {
+    background-color: var(--white);
+    padding: 1rem 2rem;
+    text-align: center;
+    border-top: 1px solid var(--slate);
+    border-bottom: 1px solid var(--slate);
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--accent-color);
+    color: var(--white);
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.cta-button:hover {
+    background-color: var(--beige);
+}
+
+/* Services Section */
+.services {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    padding: 2rem;
+    background-color: var(--white);
+}
+
+.service-card {
+    background-color: var(--white);
+    border: 2px solid var(--slate);
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.service-card h3 {
+    font-family: 'Merriweather', serif;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    color: var(--accent-color);
+}
+
+.service-image {
+    flex: 1;
+    background-color: var(--marble);
+    border: 1px dashed var(--slate);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.service-image p {
+    color: var(--slate);
+    font-weight: bold;
+    margin: 0;
+}
+
+/* Content Sections */
+.content-section {
+    padding: 4rem 0;
+    background-color: var(--white);
+}
+
+.service-overview h2 {
+    font-family: 'Merriweather', serif;
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--accent-color);
+}
+
+.service-overview>p {
+    font-size: 1.2rem;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 3rem;
+    line-height: 1.6;
+}
+
+.service-highlights {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.highlight-item {
+    background-color: var(--marble);
+    padding: 2rem;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.highlight-item h3 {
+    font-family: 'Merriweather', serif;
+    color: var(--accent-color);
+    margin-bottom: 1rem;
+}
+
+/* Process Section */
+.process-section {
+    padding: 4rem 0;
+    background-color: var(--marble);
+}
+
+.process-section h2 {
+    font-family: 'Merriweather', serif;
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 3rem;
+    color: var(--accent-color);
+}
+
+.process-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.step {
+    background-color: var(--white);
+    padding: 2rem;
+    border-radius: 8px;
+    text-align: center;
+    position: relative;
+}
+
+.step-number {
+    width: 50px;
+    height: 50px;
+    background-color: var(--accent-color);
+    color: var(--white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0 auto 1rem;
+}
+
+.step h3 {
+    font-family: 'Merriweather', serif;
+    color: var(--accent-color);
+    margin-bottom: 1rem;
+}
+
+/* Materials Section */
+.materials-section {
+    padding: 4rem 0;
+    background-color: var(--white);
+}
+
+.materials-section h2 {
+    font-family: 'Merriweather', serif;
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 3rem;
+    color: var(--accent-color);
+}
+
+.materials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.material-card {
+    background-color: var(--white);
+    border: 2px solid var(--slate);
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.material-image {
+    background-color: var(--marble);
+    border: 1px dashed var(--slate);
+    border-radius: 5px;
+    padding: 2rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 150px;
+}
+
+.material-image p {
+    color: var(--slate);
+    font-weight: bold;
+    margin: 0;
+}
+
+.material-card h3 {
+    font-family: 'Merriweather', serif;
+    color: var(--accent-color);
+    margin-bottom: 1rem;
+}
+
+/* Scopes Section */
+.scopes-section {
+    padding: 4rem 0;
+    background-color: var(--marble);
+}
+
+.scopes-section h2 {
+    font-family: 'Merriweather', serif;
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 3rem;
+    color: var(--accent-color);
+}
+
+.scope-categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.scope-category {
+    background-color: var(--white);
+    padding: 2rem;
+    border-radius: 8px;
+}
+
+.scope-category h3 {
+    font-family: 'Merriweather', serif;
+    color: var(--accent-color);
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.scope-category ul {
+    list-style: none;
+    padding: 0;
+}
+
+.scope-category li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--marble);
+}
+
+.scope-category li:last-child {
+    border-bottom: none;
+}
+
+/* Services Grid */
+.services-grid {
+    padding: 4rem 0;
+    background-color: var(--white);
+}
+
+.services-grid h2 {
+    font-family: 'Merriweather', serif;
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 3rem;
+    color: var(--accent-color);
+}
+
+.services-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.services-cards .service-card {
+    background-color: var(--white);
+    border: 2px solid var(--slate);
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    min-height: 250px;
+}
+
+.services-cards .service-card p {
+    margin-top: 1rem;
+    line-height: 1.5;
+}
+
+/* Portfolio Section */
+.portfolio-section {
+    padding: 4rem 0;
+    background-color: var(--white);
+}
+
+.portfolio-section h2 {
+    font-family: 'Merriweather', serif;
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 3rem;
+    color: var(--accent-color);
+}
+
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+}
+
+.portfolio-item {
+    background-color: var(--white);
+    border: 2px solid var(--slate);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.portfolio-image {
+    background-color: var(--marble);
+    border: 1px dashed var(--slate);
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+}
+
+.portfolio-image p {
+    color: var(--slate);
+    font-weight: bold;
+    margin: 0;
+}
+
+.portfolio-info {
+    padding: 1.5rem;
+}
+
+.portfolio-info h3 {
+    font-family: 'Merriweather', serif;
+    color: var(--accent-color);
+    margin-bottom: 0.5rem;
+}
+
+.portfolio-info p {
+    margin-bottom: 1rem;
+    line-height: 1.5;
+}
+
+.project-type {
+    background-color: var(--accent-color);
+    color: var(--white);
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+/* Categories Section */
+.categories-section {
+    padding: 2rem 0;
+    background-color: var(--marble);
+}
+
+.categories-section h2 {
+    font-family: 'Merriweather', serif;
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--accent-color);
+}
+
+.category-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.tab-button {
+    background-color: var(--white);
+    border: 2px solid var(--accent-color);
+    color: var(--accent-color);
+    padding: 0.75rem 1.5rem;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.tab-button:hover,
+.tab-button.active {
+    background-color: var(--accent-color);
+    color: var(--white);
+}
+
+/* Testimonials Section */
+.testimonials-section {
+    padding: 4rem 0;
+    background-color: var(--white);
+}
+
+.testimonials-section h2 {
+    font-family: 'Merriweather', serif;
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 3rem;
+    color: var(--accent-color);
+}
+
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.testimonial-card {
+    background-color: var(--marble);
+    padding: 2rem;
+    border-radius: 8px;
+    border-left: 4px solid var(--accent-color);
+}
+
+.testimonial-content p {
+    font-style: italic;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.client-info h4 {
+    font-family: 'Merriweather', serif;
+    color: var(--accent-color);
+    margin-bottom: 0.25rem;
+}
+
+.client-info span {
+    color: var(--slate);
+    font-size: 0.9rem;
+}
+
+/* Contact Info Section */
+.contact-info-section {
+    padding: 4rem 0;
+    background-color: var(--marble);
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.contact-card {
+    background-color: var(--white);
+    padding: 2rem;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.contact-card h3 {
+    font-family: 'Merriweather', serif;
+    color: var(--accent-color);
+    margin-bottom: 1rem;
+}
+
+.contact-card p {
+    margin-bottom: 0.5rem;
+}
+
+.contact-card p:last-child {
+    color: var(--slate);
+    font-size: 0.9rem;
+}
+
+/* Contact Form Section */
+.contact-form-section {
+    padding: 4rem 0;
+    background-color: var(--white);
+}
+
+.form-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.form-container h2 {
+    font-family: 'Merriweather', serif;
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 1rem;
+    color: var(--accent-color);
+}
+
+.form-container>p {
+    text-align: center;
+    margin-bottom: 3rem;
+    font-size: 1.1rem;
+}
+
+.contact-form {
+    background-color: var(--marble);
+    padding: 2rem;
+    border-radius: 8px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: var(--accent-color);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--slate);
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-group button {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.1rem;
+}
+
+/* Info Section */
+.info-section {
+    padding: 4rem 0;
+    background-color: var(--marble);
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 2rem;
+}
+
+.info-card {
+    background-color: var(--white);
+    padding: 2rem;
+    border-radius: 8px;
+}
+
+.info-card h3 {
+    font-family: 'Merriweather', serif;
+    color: var(--accent-color);
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.info-card ul,
+.info-card ol {
+    padding-left: 1.5rem;
+}
+
+.info-card li {
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
 }
 
 /* Footer */
@@ -105,4 +789,62 @@ footer {
     padding: 1rem;
     background-color: var(--bg-color);
     border-top: 1px solid var(--slate);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .hero-slideshow {
+        max-width: 100%;
+        margin-bottom: 2rem;
+    }
+
+    .our-work {
+        flex-direction: column;
+    }
+
+    .services {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .category-tabs {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .services {
+        grid-template-columns: 1fr;
+    }
+
+    header {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    nav {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .page-hero h1 {
+        font-size: 2rem;
+    }
+
+    .portfolio-grid {
+        grid-template-columns: 1fr;
+    }
 }
