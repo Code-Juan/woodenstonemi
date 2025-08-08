@@ -14,3 +14,21 @@ themeToggle.addEventListener('click', () => {
 
 // Set current year in footer
 document.getElementById('year').textContent = new Date().getFullYear();
+
+// Hero slideshow functionality
+function initSlideshow() {
+    const slides = document.querySelectorAll('.slide');
+    let currentSlide = 0;
+
+    function nextSlide() {
+        slides[currentSlide].classList.remove('active');
+        currentSlide = (currentSlide + 1) % slides.length;
+        slides[currentSlide].classList.add('active');
+    }
+
+    // Change slide every 4 seconds
+    setInterval(nextSlide, 4000);
+}
+
+// Initialize slideshow when DOM is loaded
+document.addEventListener('DOMContentLoaded', initSlideshow);
