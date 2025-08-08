@@ -6,6 +6,8 @@
     --marble: #E5E3DF;
     --copper: #B87333;
     --slate: #5A5A5A;
+    --light-brown: #D4A574;
+    --light-gray: #8A8A8A;
 
     --bg-color: var(--white);
     --text-color: var(--black);
@@ -939,5 +941,190 @@ footer {
 
     .portfolio-grid {
         grid-template-columns: 1fr;
+    }
+}
+
+/* Materials Page Specific Styles */
+.materials-hero {
+    position: relative;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+}
+
+.hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)),
+        url('images/estimating-blueprint.jpg') center/cover;
+    filter: blur(2px);
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    padding: 0 2rem;
+}
+
+.hero-content h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--copper);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    color: var(--slate);
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.materials-grid-section {
+    padding: 4rem 0;
+    background-color: var(--white);
+}
+
+.materials-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.material-item {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 2rem 0;
+    border-bottom: 1px solid #E5E5E5;
+}
+
+.material-item:last-child {
+    border-bottom: none;
+}
+
+.material-image {
+    flex-shrink: 0;
+}
+
+.circular-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background-color: var(--marble);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--beige);
+    overflow: hidden;
+}
+
+.circular-image p {
+    color: var(--slate);
+    font-size: 0.9rem;
+    text-align: center;
+    margin: 0;
+    padding: 0 1rem;
+}
+
+.material-content {
+    flex: 1;
+}
+
+.material-content h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--light-brown);
+    margin: 0 0 0.5rem 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.material-content h4 {
+    font-size: 0.9rem;
+    font-weight: normal;
+    color: var(--light-gray);
+    margin: 0 0 1rem 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.material-content p {
+    font-size: 1rem;
+    color: var(--slate);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.materials-cta {
+    padding: 3rem 0;
+    background-color: var(--white);
+    text-align: center;
+}
+
+.materials-cta h2 {
+    font-size: 1.2rem;
+    font-weight: normal;
+    color: var(--light-brown);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0;
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* Responsive Design for Materials Page */
+@media (max-width: 768px) {
+    .materials-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .material-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 1.5rem;
+    }
+
+    .hero-content h1 {
+        font-size: 2rem;
+    }
+
+    .hero-content p {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .materials-hero {
+        height: 300px;
+    }
+
+    .hero-content h1 {
+        font-size: 1.5rem;
+    }
+
+    .circular-image {
+        width: 100px;
+        height: 100px;
+    }
+
+    .material-content h3 {
+        font-size: 1.2rem;
     }
 }
