@@ -32,3 +32,30 @@ function initSlideshow() {
 
 // Initialize slideshow when DOM is loaded
 document.addEventListener('DOMContentLoaded', initSlideshow);
+
+// Back to top button functionality
+function initBackToTop() {
+    const backToTopBtn = document.getElementById('back-to-top');
+    
+    if (!backToTopBtn) return;
+    
+    // Show/hide button based on scroll position
+    window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+            backToTopBtn.classList.add('visible');
+        } else {
+            backToTopBtn.classList.remove('visible');
+        }
+    });
+    
+    // Smooth scroll to top when button is clicked
+    backToTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+}
+
+// Initialize back to top button when DOM is loaded
+document.addEventListener('DOMContentLoaded', initBackToTop);

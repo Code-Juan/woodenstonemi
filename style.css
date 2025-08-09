@@ -86,6 +86,7 @@ nav a:hover {
 .hero-container {
     display: flex;
     height: 500px;
+    max-height: 500px;
     background-color: var(--marble);
     position: relative;
 }
@@ -100,6 +101,9 @@ nav a:hover {
     padding: 2rem;
     position: relative;
     z-index: 30;
+    margin-left: calc(-50vw + 50%);
+    padding-left: calc(50vw - 50% + 2rem);
+    max-height: 500px;
 }
 
 .logo-container {
@@ -111,7 +115,7 @@ nav a:hover {
 }
 
 .hero-logo img {
-    max-width: 100%;
+    max-width: 800px;
     max-height: 100%;
     height: auto;
     object-fit: contain;
@@ -123,6 +127,8 @@ nav a:hover {
     background-color: transparent;
     position: relative;
     z-index: 1;
+    max-height: 500px;
+    object-fit: contain;
 }
 
 /* Hero Fade Overlay */
@@ -944,6 +950,178 @@ footer {
     }
 }
 
+/* Portfolio Page Specific Styles */
+.portfolio-hero {
+    position: relative;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    max-height: 500px;
+}
+
+.portfolio-hero .hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)),
+        url('images/project-portfolio.jpg') center/100% auto;
+    filter: blur(2px);
+    z-index: 1;
+}
+
+.portfolio-hero .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    padding: 0 2rem;
+}
+
+.portfolio-hero .hero-content h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--copper);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.portfolio-hero .hero-content h2 {
+    font-size: 1.5rem;
+    font-weight: normal;
+    color: var(--slate);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.portfolio-hero .hero-content p {
+    font-size: 1.2rem;
+    color: var(--slate);
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Project Spotlight Styles */
+.project-spotlight {
+    padding: 4rem 0;
+    background-color: var(--white);
+}
+
+.spotlight-box {
+    background-color: var(--marble);
+    border: 2px solid var(--beige);
+    border-radius: 10px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.spotlight-box h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--light-brown);
+    text-align: center;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.project-details h3 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--copper);
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.project-details p {
+    font-size: 1rem;
+    color: var(--slate);
+    line-height: 1.6;
+    margin-bottom: 0.5rem;
+}
+
+.project-details strong {
+    color: var(--light-brown);
+    font-weight: bold;
+}
+
+.project-gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.gallery-image {
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.gallery-image img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.gallery-image img:hover {
+    transform: scale(1.05);
+}
+
+.gallery-image p {
+    width: 100%;
+    height: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--marble);
+    color: var(--slate);
+    font-size: 1rem;
+    margin: 0;
+    border-radius: 8px;
+    border: 2px dashed var(--beige);
+}
+
+/* Back to Top Button */
+.back-to-top-btn {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 50px;
+    height: 50px;
+    background-color: var(--copper);
+    color: var(--white);
+    border: none;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.back-to-top-btn:hover {
+    background-color: var(--beige);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.back-to-top-btn.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
 /* Materials Page Specific Styles */
 .materials-hero {
     position: relative;
@@ -962,7 +1140,7 @@ footer {
     right: 0;
     bottom: 0;
     background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)),
-        url('images/estimating-blueprint.jpg') center/cover;
+        url('images/Scopes & Materials/main-background.jpg') center/100% auto;
     filter: blur(2px);
     z-index: 1;
 }
@@ -1008,29 +1186,36 @@ footer {
 .material-item {
     display: flex;
     align-items: center;
-    gap: 2rem;
-    padding: 2rem 0;
-    border-bottom: 1px solid #E5E5E5;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border: 2px solid var(--beige);
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    background-color: var(--marble);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .material-item:last-child {
-    border-bottom: none;
+    margin-bottom: 0;
 }
 
 .material-image {
     flex-shrink: 0;
+    outline: none;
+    border: none;
+    background: transparent;
 }
 
 .circular-image {
-    width: 120px;
-    height: 120px;
+    width: 180px;
+    height: 180px;
     border-radius: 50%;
-    background-color: var(--marble);
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid var(--beige);
     overflow: hidden;
+    outline: none;
+    border: none;
 }
 
 .circular-image p {
@@ -1039,6 +1224,20 @@ footer {
     text-align: center;
     margin: 0;
     padding: 0 1rem;
+}
+
+.circular-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    outline: none;
+    border: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .material-content {
