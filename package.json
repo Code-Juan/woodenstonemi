@@ -1,0 +1,37 @@
+{
+    "name": "wooden-stone-website",
+    "version": "1.0.0",
+    "description": "The Wooden Stone LLC Official Company Website",
+    "main": "index.html",
+    "scripts": {
+        "start": "node upload-handler.js",
+        "watch": "node upload-handler.js",
+        "optimize-images": "node optimize-images.js",
+        "optimize-all": "node optimize-images.js ./images ./images/optimized",
+        "process-new": "node upload-handler.js --process-existing",
+        "dev": "concurrently \"python -m http.server 8000\" \"npm run watch\"",
+        "build": "npm run optimize-all && echo 'Build process complete'",
+        "install-deps": "npm install chokidar sharp"
+    },
+    "keywords": [
+        "construction",
+        "countertops",
+        "cabinets",
+        "commercial",
+        "multifamily"
+    ],
+    "author": "The Wooden Stone LLC",
+    "license": "MIT",
+    "devDependencies": {
+        "sharp": "^0.32.0",
+        "chokidar": "^3.5.3",
+        "concurrently": "^8.2.0",
+        "imagemin": "^8.0.1",
+        "imagemin-mozjpeg": "^10.0.0",
+        "imagemin-pngquant": "^9.0.2",
+        "imagemin-webp": "^8.0.0"
+    },
+    "engines": {
+        "node": ">=14.0.0"
+    }
+}
