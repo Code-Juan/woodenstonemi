@@ -16,7 +16,13 @@ const projectsData = [
             "images/Previous Jobs/1. Woodview Commons/(Kitchen 3) woodview-commons-ann-arbor-mi-building-photo.jpg",
             "images/Previous Jobs/1. Woodview Commons/(Kitchen 4) woodview-commons-ann-arbor-mi-building-photo.jpg",
             "images/Previous Jobs/1. Woodview Commons/(Bath 1) woodview-commons-ann-arbor-mi-building-photo.jpg",
-            "images/Previous Jobs/1. Woodview Commons/(Bath 2) woodview-commons-ann-arbor-mi-building-photo.jpg"
+            "images/Previous Jobs/1. Woodview Commons/(Bath 2) woodview-commons-ann-arbor-mi-building-photo.jpg",
+            "images/Previous Jobs/1. Woodview Commons/f7a180_58b201d1f2524e57921183cc3bbd7fe2~mv2.avif",
+            "images/Previous Jobs/1. Woodview Commons/f7a180_c95f71bc1b22468dbebcea6aea1be972~mv2.avif",
+            "images/Previous Jobs/1. Woodview Commons/f7a180_da4f4164b25d435eadbfc9b81a97ca1d~mv2.avif",
+            "images/Previous Jobs/1. Woodview Commons/f7a180_0c74b0b201be419b8e7a823bf3dea9c8~mv2.avif",
+            "images/Previous Jobs/1. Woodview Commons/(Site Overview) woodview-commons-ann-arbor.jpg",
+            "images/Previous Jobs/1. Woodview Commons/(BLDG. Overview) woodview-commons-ann-arbor.jpg"
         ]
     },
     {
@@ -54,9 +60,9 @@ const projectsData = [
         client: "Greatwater/Monahan",
         dates: "Jan 2025 - Feb 2025",
         images: [
-            "images/Previous Jobs/3. 3740 2nd Ave Apartments/Kitchen1 VIEW_3740 Apartments.jpg",
-            "images/Previous Jobs/3. 3740 2nd Ave Apartments/bath1 VIEW_3740 Apartments.jpg",
-            "images/Previous Jobs/3. 3740 2nd Ave Apartments/SITE VIEW_3740 Apartments.jpg"
+            "images/Previous Jobs/4. 3740 2nd Ave Apartments/Kitchen1 VIEW_3740 Apartments.jpg",
+            "images/Previous Jobs/4. 3740 2nd Ave Apartments/bath1 VIEW_3740 Apartments.jpg",
+            "images/Previous Jobs/4. 3740 2nd Ave Apartments/SITE VIEW_3740 Apartments.jpg"
         ]
     },
     {
@@ -130,9 +136,7 @@ const projectsData = [
         client: "Williams Distributing",
         dates: "May 2025",
         images: [
-            "images/Previous Jobs/9. Freeweheel Apartments/freewheel-apartments-marquette-mi-primary-photo.png",
-            "images/Previous Jobs/9. Freeweheel Apartments/freewheel-apartments-marquette-mi-primary-photo1.jpg",
-            "placeholder"
+            "images/Previous Jobs/10. Freewheel Apartments/freewheel-apartments-marquette-mi-primary-photo.png"
         ]
     },
     {
@@ -146,9 +150,7 @@ const projectsData = [
         client: "Greatwater/Monahan",
         dates: "Jan 2025 - Feb 2025",
         images: [
-            "images/Previous Jobs/10. Lee Crest Apartments/Site View_LeeCrest.jpg",
-            "placeholder",
-            "placeholder"
+            "images/Previous Jobs/11. Lee Crest Apartments/Site View_LeeCrest.jpg"
         ]
     },
     {
@@ -185,7 +187,11 @@ const projectsData = [
         materials: "Quartz Countertops, Sinks Fixtures",
         client: "Greatwater/Artisian Contractors",
         dates: "Aug 2024 - Oct 2024",
-        images: ["placeholder", "placeholder", "placeholder"]
+        images: [
+            "images/Previous Jobs/14. 2135 Hubbard/mavor-apartments-detroit-mi-building-photo.jpg",
+            "images/Previous Jobs/14. 2135 Hubbard/mavor-apartments-detroit-mi-building-photo (1).jpg",
+            "images/Previous Jobs/14. 2135 Hubbard/mavor-apartments-detroit-mi-building-photo (2).jpg"
+        ]
     },
     {
         id: 15,
@@ -209,7 +215,12 @@ const projectsData = [
         materials: "Quartz Countertops, Sinks Fixtures",
         client: "Greatwater Capital",
         dates: "Sep 2024 - Oct 2024",
-        images: ["placeholder", "placeholder", "placeholder"]
+        images: [
+            "images/Previous Jobs/16. 25 E. Palmer (Barlum Apartments)/the-barlum-detroit-mi-primary-photo.jpg",
+            "images/Previous Jobs/16. 25 E. Palmer (Barlum Apartments)/the-barlum-detroit-mi-building-photo.jpg",
+            "images/Previous Jobs/16. 25 E. Palmer (Barlum Apartments)/the-barlum-detroit-mi-building-photo (1).jpg",
+            "images/Previous Jobs/16. 25 E. Palmer (Barlum Apartments)/the-barlum-detroit-mi-building-photo (2).jpg"
+        ]
     },
     {
         id: 17,
@@ -245,7 +256,11 @@ const projectsData = [
         materials: "Quartz Countertops",
         client: "Ronnisch Construction",
         dates: "Jan 2026 - May 2026",
-        images: ["placeholder", "placeholder", "placeholder"]
+        images: [
+            "images/Previous Jobs/19. Higgenbotham Garden Apartments/view-of-kitchen.png",
+            "images/Previous Jobs/19. Higgenbotham Garden Apartments/view-from-north-parking-lot.png",
+            "images/Previous Jobs/19. Higgenbotham Garden Apartments/view-from-indiana.png"
+        ]
     },
     {
         id: 20,
@@ -257,7 +272,12 @@ const projectsData = [
         materials: "Quartz Countertops",
         client: "Ronnisch Construction",
         dates: "Feb 2026 - June 2026",
-        images: ["placeholder", "placeholder", "placeholder"]
+        images: [
+            "images/Previous Jobs/20. Higgenbotham School Apartments/commons-render.png",
+            "images/Previous Jobs/20. Higgenbotham School Apartments/commons-render2.png",
+            "images/Previous Jobs/20. Higgenbotham School Apartments/1732052558818.webp",
+            "images/Previous Jobs/20. Higgenbotham School Apartments/Higginbotham rendering.jpg"
+        ]
     },
     {
         id: 21,
