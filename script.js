@@ -134,6 +134,255 @@ function initBackToTop() {
     });
 }
 
+// Project Portfolio Carousel functionality
+function initProjectCarousels() {
+    const carousels = document.querySelectorAll('.carousel-container');
+
+    carousels.forEach(carousel => {
+        const track = carousel.querySelector('.carousel-track');
+        const slides = carousel.querySelectorAll('.carousel-slide');
+        const prevBtn = carousel.querySelector('.carousel-prev');
+        const nextBtn = carousel.querySelector('.carousel-next');
+
+        let currentSlide = 0;
+        const totalSlides = slides.length;
+
+        // Determine how many slides to show based on screen size
+        function getSlidesToShow() {
+            if (window.innerWidth <= 768) return 1;
+            if (window.innerWidth <= 1024) return 2;
+            return 3;
+        }
+
+        // Function to update carousel position
+        function updateCarousel() {
+            const slidesToShow = getSlidesToShow();
+            const slideWidth = 100 / slidesToShow;
+            track.style.transform = `translateX(-${currentSlide * slideWidth}%)`;
+
+            // Update active slide class
+            slides.forEach((slide, index) => {
+                slide.classList.toggle('active', index >= currentSlide && index < currentSlide + slidesToShow);
+            });
+
+            // Show/hide navigation arrows based on position
+            if (prevBtn) {
+                prevBtn.style.display = currentSlide === 0 ? 'none' : 'flex';
+            }
+
+            if (nextBtn) {
+                const maxSlide = Math.max(0, totalSlides - slidesToShow);
+                nextBtn.style.display = currentSlide >= maxSlide ? 'none' : 'flex';
+            }
+        }
+
+        // Function to go to next slide
+        function nextSlide() {
+            const slidesToShow = getSlidesToShow();
+            const maxSlide = Math.max(0, totalSlides - slidesToShow);
+
+            if (currentSlide < maxSlide) {
+                currentSlide++;
+                updateCarousel();
+            }
+        }
+
+        // Function to go to previous slide
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateCarousel();
+            }
+        }
+
+        // Event listeners for navigation buttons
+        if (prevBtn) {
+            prevBtn.addEventListener('click', prevSlide);
+        }
+
+        if (nextBtn) {
+            nextBtn.addEventListener('click', nextSlide);
+        }
+
+        // Keyboard navigation
+        carousel.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                prevSlide();
+            } else if (e.key === 'ArrowRight') {
+                nextSlide();
+            }
+        });
+
+        // Touch/swipe support for mobile
+        let startX = 0;
+        let endX = 0;
+
+        carousel.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+        });
+
+        carousel.addEventListener('touchend', (e) => {
+            endX = e.changedTouches[0].clientX;
+            const diff = startX - endX;
+
+            if (Math.abs(diff) > 50) { // Minimum swipe distance
+                if (diff > 0) {
+                    nextSlide(); // Swipe left
+                } else {
+                    prevSlide(); // Swipe right
+                }
+            }
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            updateCarousel();
+        });
+
+        // Initialize carousel
+        updateCarousel();
+    });
+}
+
+// Image Modal/Lightbox functionality
+function initImageModal() {
+    const modal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+    const modalClose = document.getElementById('modalClose');
+    const zoomLens = document.getElementById('zoomLens');
+    const zoomResult = document.getElementById('zoomResult');
+    const imageContainer = document.querySelector('.modal-image-container');
+
+    // Function to open modal
+    function openModal(imageSrc, imageAlt) {
+        modalImage.src = imageSrc;
+        modalImage.alt = imageAlt;
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+
+        // Initialize zoom after image loads
+        modalImage.onload = function () {
+            initZoom();
+        };
+    }
+
+    // Function to close modal
+    function closeModal() {
+        modal.classList.remove('active');
+        document.body.style.overflow = ''; // Restore scrolling
+        // Hide zoom lens
+        zoomLens.style.display = 'none';
+    }
+
+    // Zoom functionality
+    function initZoom() {
+        const img = modalImage;
+        const lens = zoomLens;
+        const result = zoomResult;
+
+        console.log('Initializing zoom for image:', img.src);
+
+        // Wait for image to load completely
+        if (img.complete && img.naturalWidth > 0) {
+            console.log('Image already loaded, setting up zoom');
+            setupZoom();
+        } else {
+            console.log('Waiting for image to load...');
+            img.onload = function () {
+                console.log('Image loaded, setting up zoom');
+                setupZoom();
+            };
+            img.onerror = function () {
+                console.error('Failed to load image:', img.src);
+            };
+        }
+
+        function setupZoom() {
+            const zoomRatio = 8;
+            console.log('Setting up zoom with ratio:', zoomRatio);
+            console.log('Image dimensions:', img.naturalWidth, 'x', img.naturalHeight);
+
+            // Mouse move event for zoom
+            imageContainer.addEventListener('mousemove', function (e) {
+                e.preventDefault();
+
+                // Get cursor position relative to image
+                const rect = img.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                // Check if cursor is within image bounds
+                if (x < 0 || y < 0 || x > rect.width || y > rect.height) {
+                    lens.style.display = 'none';
+                    return;
+                }
+
+                // Calculate lens position
+                const lensX = x - lens.offsetWidth / 2;
+                const lensY = y - lens.offsetHeight / 2;
+
+                // Prevent lens from going outside image bounds
+                const maxLensX = rect.width - lens.offsetWidth;
+                const maxLensY = rect.height - lens.offsetHeight;
+
+                lens.style.left = Math.max(0, Math.min(lensX, maxLensX)) + 'px';
+                lens.style.top = Math.max(0, Math.min(lensY, maxLensY)) + 'px';
+
+                // Calculate zoom position using percentage of image dimensions
+                const zoomX = (x / rect.width) * 100;
+                const zoomY = (y / rect.height) * 100;
+
+                // Use background positioning for the lens (more reliable)
+                const backgroundSize = `${zoomRatio * 100}%`;
+                const backgroundPosition = `${zoomX}% ${zoomY}%`;
+
+                // Set the lens background
+                lens.style.backgroundImage = `url("${img.src}")`;
+                lens.style.backgroundPosition = backgroundPosition;
+                lens.style.backgroundSize = backgroundSize;
+
+                // Show the lens
+                lens.style.display = 'block';
+            });
+
+            // Hide zoom elements when mouse leaves
+            imageContainer.addEventListener('mouseleave', function () {
+                lens.style.display = 'none';
+            });
+
+            // Show zoom elements when mouse enters
+            imageContainer.addEventListener('mouseenter', function () {
+                lens.style.display = 'block';
+            });
+        }
+    }
+
+    // Event listeners for modal
+    modalClose.addEventListener('click', closeModal);
+
+    // Close modal when clicking outside the image
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeModal();
+        }
+    });
+
+    // Add click listeners to all carousel images
+    const carouselImages = document.querySelectorAll('.carousel-slide img');
+    carouselImages.forEach(img => {
+        img.addEventListener('click', () => {
+            openModal(img.src, img.alt);
+        });
+    });
+}
+
 // Initialize all functionality when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     initSlideshow();
@@ -141,4 +390,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initNavigationOptimization();
     initProgressiveImageLoading();
     initImageOptimization();
+    initProjectCarousels();
+    initImageModal();
 });

@@ -1077,31 +1077,52 @@ footer {
     font-weight: bold;
 }
 
+/* Project Gallery Carousel Styles */
 .project-gallery {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
     margin-top: 2rem;
 }
 
-.gallery-image {
+.carousel-container {
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
     overflow: hidden;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.gallery-image img {
+.carousel-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    width: 100%;
+}
+
+.carousel-slide {
+    min-width: 33.333%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--marble);
+    position: relative;
+    padding: 0.5rem;
+    box-sizing: border-box;
+}
+
+.carousel-slide img {
     width: 100%;
     height: 250px;
     object-fit: cover;
+    display: block;
+    border-radius: 4px;
     transition: transform 0.3s ease;
 }
 
-.gallery-image img:hover {
+.carousel-slide img:hover {
     transform: scale(1.05);
 }
 
-.gallery-image p {
+.carousel-slide p {
     width: 100%;
     height: 250px;
     display: flex;
@@ -1111,8 +1132,72 @@ footer {
     color: var(--slate);
     font-size: 1rem;
     margin: 0;
-    border-radius: 8px;
     border: 2px dashed var(--beige);
+    border-radius: 4px;
+}
+
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    visibility: visible;
+}
+
+.carousel-btn:hover {
+    background-color: rgba(0, 0, 0, 0.9);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.carousel-btn[style*="display: none"] {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.carousel-prev {
+    left: 10px;
+}
+
+.carousel-next {
+    right: 10px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .carousel-slide {
+        min-width: 100%;
+    }
+
+    .carousel-slide img,
+    .carousel-slide p {
+        height: 300px;
+    }
+
+    .carousel-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 1024px) and (min-width: 769px) {
+    .carousel-slide {
+        min-width: 50%;
+    }
 }
 
 /* Back to Top Button */
@@ -1410,4 +1495,122 @@ footer {
     object-fit: cover;
     width: 100%;
     height: 100%;
+}
+
+/* Image Modal/Lightbox Styles */
+.image-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.image-modal.active {
+    display: flex;
+    opacity: 1;
+}
+
+.modal-content {
+    position: relative;
+    max-width: 90vw;
+    max-height: 90vh;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    overflow: visible;
+    transform: scale(0.8);
+    transition: transform 0.3s ease;
+}
+
+.image-modal.active .modal-content {
+    transform: scale(1);
+}
+
+.modal-image {
+    width: 100%;
+    height: auto;
+    max-height: 90vh;
+    object-fit: contain;
+    display: block;
+    cursor: zoom-in;
+}
+
+/* Zoom functionality */
+.modal-image-container {
+    position: relative;
+    overflow: visible;
+    display: inline-block;
+}
+
+.zoom-lens {
+    position: absolute;
+    border: 2px solid #d4d4d4;
+    width: 250px;
+    height: 250px;
+    background-repeat: no-repeat;
+    display: none;
+    pointer-events: none;
+    z-index: 1002;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    background-color: white;
+    background-size: 1200px 1200px;
+    background-position: center;
+}
+
+.zoom-result {
+    position: fixed;
+    width: 250px;
+    height: 250px;
+    border: 2px solid #d4d4d4;
+    display: none;
+    z-index: 1003;
+    border-radius: 50%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    background-color: white;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.modal-image-container:hover .zoom-lens,
+.modal-image-container:hover .zoom-result {
+    display: block;
+}
+
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 1001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.modal-close:hover {
+    background-color: rgba(0, 0, 0, 0.9);
+    transform: scale(1.1);
+}
+
+/* Make carousel images clickable */
+.carousel-slide img {
+    cursor: pointer;
 }
