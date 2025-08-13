@@ -374,13 +374,26 @@ function initImageModal() {
         }
     });
 
-    // Add click listeners to all carousel images
-    const carouselImages = document.querySelectorAll('.carousel-slide img');
-    carouselImages.forEach(img => {
-        img.addEventListener('click', () => {
-            openModal(img.src, img.alt);
+    // Function to add click listeners to carousel images (for dynamic content)
+    function addImageClickListeners() {
+        const carouselImages = document.querySelectorAll('.carousel-slide img');
+        carouselImages.forEach(img => {
+            // Remove any existing listeners to prevent duplicates
+            img.removeEventListener('click', handleImageClick);
+            img.addEventListener('click', handleImageClick);
         });
-    });
+    }
+
+    // Handle image click for modal
+    function handleImageClick() {
+        openModal(this.src, this.alt);
+    }
+
+    // Add click listeners to existing images (if any)
+    addImageClickListeners();
+
+    // Make the function available globally for projects-data.js to call
+    window.addImageClickListeners = addImageClickListeners;
 }
 
 // Initialize all functionality when DOM is loaded
@@ -390,6 +403,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initNavigationOptimization();
     initProgressiveImageLoading();
     initImageOptimization();
-    initProjectCarousels();
+    // initProjectCarousels(); // Disabled - using projects-data.js carousel instead
     initImageModal();
 });
