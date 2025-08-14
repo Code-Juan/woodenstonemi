@@ -254,6 +254,9 @@ nav a:hover {
     background-color: transparent;
     position: relative;
     z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Hero Fade Overlay */
@@ -302,6 +305,29 @@ nav a:hover {
     display: block;
     opacity: 1;
     filter: brightness(1.2) contrast(1.1);
+    min-height: 100%;
+}
+
+/* Ensure slideshow is always visible */
+.slideshow-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    display: block;
+    background-color: var(--marble);
+    background-image: linear-gradient(45deg, var(--marble) 25%, transparent 25%),
+        linear-gradient(-45deg, var(--marble) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, var(--marble) 75%),
+        linear-gradient(-45deg, transparent 75%, var(--marble) 75%);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+}
+
+.slides {
+    width: 100%;
+    height: 100%;
+    position: relative;
 }
 
 .hero h1 {
@@ -1145,16 +1171,20 @@ body.loading {
     .hero-container {
         flex-direction: column;
         height: auto;
+        min-height: 500px;
     }
 
     .hero-logo {
         min-width: auto;
         padding: var(--spacing-md);
+        flex: 0 0 auto;
     }
 
     .hero-slideshow {
         min-width: auto;
         height: 400px;
+        flex: 1;
+        display: block;
     }
 
     .hero-fade-overlay {
@@ -1226,14 +1256,20 @@ body.loading {
     /* Mobile Hero */
     .hero-container {
         height: auto;
+        min-height: 400px;
+        flex-direction: column;
     }
 
     .hero-logo {
         padding: var(--spacing-md);
+        flex: 0 0 auto;
     }
 
     .hero-slideshow {
-        height: 300px;
+        height: 250px;
+        flex: 1;
+        display: block;
+        min-height: 200px;
     }
 
     /* Mobile Services */
@@ -1301,7 +1337,8 @@ body.loading {
     }
 
     .hero-slideshow {
-        height: 250px;
+        height: 200px;
+        min-height: 150px;
     }
 
     .service-card h3 {

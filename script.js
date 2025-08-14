@@ -111,25 +111,28 @@ function setupContainerQueries() {
 document.addEventListener('DOMContentLoaded', function () {
     setupResponsiveImages();
     setupContainerQueries();
+
+    // Initialize slideshow with images
+    updateSlideshowWithRandomImages();
+
+    // Initialize slideshow after a short delay to ensure images are loaded
+    setTimeout(() => {
+        initSlideshow();
+    }, 500);
 });
 
 // Set current year in footer
 document.getElementById('year').textContent = new Date().getFullYear();
 
-// Function to get random interior images from project portfolio
+// Function to get random images from Previous Jobs folders
 function getRandomInteriorImages(count = 6) {
-    // Define interior image patterns to look for
-    const interiorPatterns = [
-        'kitchen', 'bath', 'bathroom', 'view-of-kitchen', 'commons-render'
-    ];
-
     // Define patterns to exclude (building/site overview images)
     const excludePatterns = [
         'site', 'building', 'overview', 'BLDG', 'parking', 'indiana', 'rendering'
     ];
 
-    // Collect all interior images from projects
-    const allInteriorImages = [];
+    // Collect all images from Previous Jobs
+    const allImages = [];
 
     // Check if projectsData is available (from projects-data.js)
     if (typeof projectsData !== 'undefined') {
@@ -141,20 +144,15 @@ function getRandomInteriorImages(count = 6) {
 
                     const lowerPath = imagePath.toLowerCase();
 
-                    // Check if it's an interior image
-                    const isInterior = interiorPatterns.some(pattern =>
-                        lowerPath.includes(pattern)
-                    );
-
-                    // Check if it should be excluded
+                    // Check if it should be excluded (site/building overviews)
                     const shouldExclude = excludePatterns.some(pattern =>
                         lowerPath.includes(pattern)
                     );
 
-                    if (isInterior && !shouldExclude) {
-                        allInteriorImages.push({
+                    if (!shouldExclude) {
+                        allImages.push({
                             src: imagePath,
-                            alt: `${project.name} - Interior View`,
+                            alt: `${project.name} - Project View`,
                             projectName: project.name
                         });
                     }
@@ -163,8 +161,8 @@ function getRandomInteriorImages(count = 6) {
         });
     }
 
-    // If we don't have enough interior images, add some fallback images
-    if (allInteriorImages.length < count) {
+    // If we don't have enough images, add some fallback images from Previous Jobs
+    if (allImages.length < count) {
         const fallbackImages = [
             {
                 src: "images/Previous Jobs/1. Woodview Commons/(Kitchen 1) woodview-commons-ann-arbor-mi-building-photo.jpg",
@@ -185,24 +183,34 @@ function getRandomInteriorImages(count = 6) {
                 src: "images/Previous Jobs/4. 3740 2nd Ave Apartments/bath1 VIEW_3740 Apartments.jpg",
                 alt: "3740 2nd Ave Bathroom",
                 projectName: "3740 2ND AVE APARTMENTS"
+            },
+            {
+                src: "images/Previous Jobs/19. Higgenbotham Garden Apartments/view-of-kitchen.jpg",
+                alt: "Higgenbotham Garden Apartments Kitchen",
+                projectName: "HIGGENBOTHAM GARDEN APARTMENTS"
+            },
+            {
+                src: "images/Previous Jobs/20. Higgenbotham School Apartments/commons-render.jpg",
+                alt: "Higgenbotham School Apartments Commons",
+                projectName: "HIGGENBOTHAM SCHOOL APARTMENTS"
             }
         ];
 
         // Add fallback images that aren't already in the list
         fallbackImages.forEach(fallback => {
-            const exists = allInteriorImages.some(img => img.src === fallback.src);
+            const exists = allImages.some(img => img.src === fallback.src);
             if (!exists) {
-                allInteriorImages.push(fallback);
+                allImages.push(fallback);
             }
         });
     }
 
     // Shuffle the array and return the requested number of images
-    const shuffled = allInteriorImages.sort(() => 0.5 - Math.random());
+    const shuffled = allImages.sort(() => 0.5 - Math.random());
     return shuffled.slice(0, count);
 }
 
-// Function to update slideshow with random interior images
+// Function to update slideshow with random images from Previous Jobs
 function updateSlideshowWithRandomImages() {
     const slideshowContainer = document.querySelector('.hero-slideshow .slideshow-container');
     if (!slideshowContainer) return;
@@ -210,7 +218,7 @@ function updateSlideshowWithRandomImages() {
     const slidesContainer = slideshowContainer.querySelector('.slides');
     if (!slidesContainer) return;
 
-    // Get random interior images
+    // Get random images from Previous Jobs
     const randomImages = getRandomInteriorImages(6);
 
     // Clear existing slides
@@ -223,15 +231,14 @@ function updateSlideshowWithRandomImages() {
 
         // Create image element with responsive srcset
         const img = document.createElement('img');
-        img.src = image.src;
         img.alt = image.alt;
         img.loading = 'lazy';
 
-        // Add responsive srcset if the image has different sizes available
+        // Get the base path and extension
         const basePath = image.src.replace(/\.(jpg|png|webp)$/, '');
         const extension = image.src.match(/\.(jpg|png|webp)$/)?.[1] || 'jpg';
 
-        // Check if different size versions exist and create srcset
+        // Create responsive srcset with all 4 versions
         const srcset = [
             `${basePath}-thumb.${extension} 400w`,
             `${basePath}-gallery.${extension} 800w`,
@@ -239,8 +246,33 @@ function updateSlideshowWithRandomImages() {
             `${basePath}.${extension} 1600w`
         ].join(', ');
 
+        // Set the default src to the appropriate size based on current viewport
+        const viewportWidth = window.innerWidth;
+        let defaultSrc = image.src; // fallback to original
+
+        if (viewportWidth <= 768) {
+            // Mobile: use thumb version
+            defaultSrc = `${basePath}-thumb.${extension}`;
+        } else if (viewportWidth <= 1024) {
+            // Tablet: use gallery version
+            defaultSrc = `${basePath}-gallery.${extension}`;
+        } else if (viewportWidth <= 1440) {
+            // Desktop: use hero version
+            defaultSrc = `${basePath}-hero.${extension}`;
+        } else {
+            // Large desktop: use full version
+            defaultSrc = `${basePath}.${extension}`;
+        }
+
+        img.src = defaultSrc;
         img.srcset = srcset;
         img.sizes = "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw";
+
+        // Handle image load errors by falling back to original
+        img.onerror = function () {
+            console.warn(`Failed to load optimized image: ${defaultSrc}, falling back to original`);
+            this.src = image.src;
+        };
 
         slide.appendChild(img);
         slidesContainer.appendChild(slide);
@@ -250,6 +282,39 @@ function updateSlideshowWithRandomImages() {
     if (typeof initSlideshow === 'function') {
         initSlideshow();
     }
+}
+
+// Function to update slideshow image sizes based on current viewport
+function updateSlideshowImageSizes() {
+    const slides = document.querySelectorAll('.slide img');
+    const viewportWidth = window.innerWidth;
+
+    slides.forEach(img => {
+        const currentSrc = img.src;
+        const basePath = currentSrc.replace(/-(thumb|gallery|hero)\.(jpg|png|webp)$/, '');
+        const extension = currentSrc.match(/\.(jpg|png|webp)$/)?.[1] || 'jpg';
+
+        let newSrc = currentSrc;
+
+        if (viewportWidth <= 768) {
+            // Mobile: use thumb version
+            newSrc = `${basePath}-thumb.${extension}`;
+        } else if (viewportWidth <= 1024) {
+            // Tablet: use gallery version
+            newSrc = `${basePath}-gallery.${extension}`;
+        } else if (viewportWidth <= 1440) {
+            // Desktop: use hero version
+            newSrc = `${basePath}-hero.${extension}`;
+        } else {
+            // Large desktop: use full version
+            newSrc = `${basePath}.${extension}`;
+        }
+
+        // Only update if the src is different
+        if (newSrc !== currentSrc) {
+            img.src = newSrc;
+        }
+    });
 }
 
 // Progressive image loading for better UX
@@ -334,14 +399,59 @@ function initSlideshow() {
     const slides = document.querySelectorAll('.slide');
     let currentSlide = 0;
 
+    // Ensure we have slides to work with
+    if (slides.length === 0) {
+        console.log('No slides found, initializing slideshow with images...');
+        updateSlideshowWithRandomImages();
+        // Wait a bit for slides to be created, then reinitialize
+        setTimeout(() => {
+            const newSlides = document.querySelectorAll('.slide');
+            if (newSlides.length > 0) {
+                initSlideshow();
+            }
+        }, 100);
+        return;
+    }
+
+    // Make sure first slide is active
+    slides.forEach((slide, index) => {
+        if (index === 0) {
+            slide.classList.add('active');
+        } else {
+            slide.classList.remove('active');
+        }
+    });
+
     function nextSlide() {
+        if (slides.length === 0) return;
+
         slides[currentSlide].classList.remove('active');
         currentSlide = (currentSlide + 1) % slides.length;
         slides[currentSlide].classList.add('active');
     }
 
     // Change slide every 4 seconds
-    setInterval(nextSlide, 4000);
+    const slideshowInterval = setInterval(nextSlide, 4000);
+
+    // Pause slideshow on mobile to save battery
+    if (window.innerWidth <= 768) {
+        clearInterval(slideshowInterval);
+        // Restart on window resize
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                setInterval(nextSlide, 4000);
+            }
+        });
+    }
+
+    // Update image sizes when window is resized
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            updateSlideshowImageSizes();
+        }, 250);
+    });
 }
 
 // Initialize slideshow when DOM is loaded
