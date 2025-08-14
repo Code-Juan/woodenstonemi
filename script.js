@@ -108,20 +108,7 @@ function setupContainerQueries() {
 }
 
 // Initialize responsive features
-document.addEventListener('DOMContentLoaded', function () {
-    console.log('DOM loaded, initializing responsive features...');
-    setupResponsiveImages();
-    setupContainerQueries();
-
-    // Initialize slideshow with images
-    updateSlideshowWithRandomImages();
-
-    // Initialize slideshow after a short delay to ensure images are loaded
-    setTimeout(() => {
-        console.log('Initializing slideshow...');
-        initSlideshow();
-    }, 500);
-});
+// Moved to main DOMContentLoaded listener
 
 // Set current year in footer
 document.getElementById('year').textContent = new Date().getFullYear();
@@ -226,18 +213,14 @@ function updateSlideshowWithRandomImages() {
         return;
     }
 
-    console.log('Initializing slideshow with images...');
-
     // Get random images from Previous Jobs
     const randomImages = getRandomInteriorImages(6);
-    console.log('Found', randomImages.length, 'images for slideshow');
 
     // Clear existing slides
     slidesContainer.innerHTML = '';
 
     // Create new slides with random images
     randomImages.forEach((image, index) => {
-        console.log(`Creating slide ${index + 1} with image:`, image.src);
         const slide = document.createElement('div');
         slide.className = 'slide';
 
@@ -256,48 +239,47 @@ function updateSlideshowWithRandomImages() {
             `${basePath}-gallery.${extension} 800w`,
             `${basePath}-hero.${extension} 1200w`,
             `${basePath}.${extension} 1600w`
-        ].join(', ');
+        ].filter(src => src.includes('400w') || src.includes('800w') || src.includes('1200w') || src.includes('1600w')).join(', ');
 
-        // Set the default src to the appropriate size based on current viewport
-        const viewportWidth = window.innerWidth;
-        let defaultSrc = image.src; // fallback to original
+        // For now, use the original image to ensure it loads
+        img.src = image.src;
 
-        if (viewportWidth <= 768) {
-            // Mobile: use thumb version
-            defaultSrc = `${basePath}-thumb.${extension}`;
-        } else if (viewportWidth <= 1024) {
-            // Tablet: use gallery version
-            defaultSrc = `${basePath}-gallery.${extension}`;
-        } else if (viewportWidth <= 1440) {
-            // Desktop: use hero version
-            defaultSrc = `${basePath}-hero.${extension}`;
-        } else {
-            // Large desktop: use full version
-            defaultSrc = `${basePath}.${extension}`;
-        }
 
-        img.src = defaultSrc;
-        img.srcset = srcset;
-        img.sizes = "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw";
 
-        // Handle image load errors by falling back to original
+        // Remove srcset and sizes for now to avoid parsing errors
+        // img.srcset = srcset;
+        // img.sizes = "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw";
+
+        // Don't lazy-load hero images
+        img.loading = 'eager';
+
+        // Handle image load errors
         img.onerror = function () {
-            console.warn(`Failed to load optimized image: ${defaultSrc}, falling back to original`);
-            this.src = image.src;
+            console.warn(`Failed to load image: ${image.src}`);
+            // Add a fallback background or placeholder
+            this.style.backgroundColor = 'var(--marble)';
+            this.style.display = 'flex';
+            this.style.alignItems = 'center';
+            this.style.justifyContent = 'center';
+            this.style.color = 'var(--slate)';
+            this.style.fontSize = '1rem';
+            this.alt = 'Image not available';
         };
 
         slide.appendChild(img);
         slidesContainer.appendChild(slide);
     });
 
-    // Reinitialize slideshow after updating images
-    if (typeof initSlideshow === 'function') {
-        initSlideshow();
+    // Make sure the first slide is active
+    const firstSlide = slidesContainer.querySelector('.slide');
+    if (firstSlide) {
+        firstSlide.classList.add('active');
     }
+
+    // Don't reinitialize here - it's called later
 
     // Add fallback content if no images were loaded
     if (slidesContainer.children.length === 0) {
-        console.log('No slides created, adding fallback content');
         const fallbackSlide = document.createElement('div');
         fallbackSlide.className = 'slide active';
         fallbackSlide.innerHTML = '<div style="width: 100%; height: 100%; background-color: var(--marble); display: flex; align-items: center; justify-content: center; color: var(--slate); font-size: 1.2rem;">Loading slideshow...</div>';
@@ -372,15 +354,7 @@ function initImageOptimization() {
     // Check if images are properly optimized
     const images = document.querySelectorAll('img');
 
-    images.forEach(img => {
-        img.addEventListener('load', () => {
-            // Log large images for optimization review
-            if (img.naturalWidth > 2000 || img.naturalHeight > 2000) {
-                console.warn('Large image detected:', img.src,
-                    `${img.naturalWidth}x${img.naturalHeight}`);
-            }
-        });
-    });
+
 }
 
 // Navigation preloading and loading states
@@ -422,7 +396,6 @@ function initSlideshow() {
 
     // Ensure we have slides to work with
     if (slides.length === 0) {
-        console.log('No slides found, initializing slideshow with images...');
         updateSlideshowWithRandomImages();
         // Wait a bit for slides to be created, then reinitialize
         setTimeout(() => {
@@ -454,16 +427,16 @@ function initSlideshow() {
     // Change slide every 4 seconds
     const slideshowInterval = setInterval(nextSlide, 4000);
 
-    // Pause slideshow on mobile to save battery
-    if (window.innerWidth <= 768) {
-        clearInterval(slideshowInterval);
-        // Restart on window resize
-        window.addEventListener('resize', () => {
-            if (window.innerWidth > 768) {
-                setInterval(nextSlide, 4000);
-            }
-        });
-    }
+    // Handle mobile vs desktop timing
+    const baseInterval = window.innerWidth <= 768 ? 6000 : 4000;
+    let slideshowTimer = setInterval(nextSlide, baseInterval);
+
+    // Handle window resize for timing changes
+    window.addEventListener('resize', () => {
+        clearInterval(slideshowTimer);
+        const newInterval = window.innerWidth <= 768 ? 6000 : 4000;
+        slideshowTimer = setInterval(nextSlide, newInterval);
+    });
 
     // Update image sizes when window is resized
     let resizeTimer;
@@ -476,7 +449,7 @@ function initSlideshow() {
 }
 
 // Initialize slideshow when DOM is loaded
-document.addEventListener('DOMContentLoaded', initSlideshow);
+// Moved to main DOMContentLoaded listener
 
 // Back to top button functionality
 function initBackToTop() {
@@ -621,6 +594,11 @@ function initImageModal() {
     const zoomResult = document.getElementById('zoomResult');
     const imageContainer = document.querySelector('.modal-image-container');
 
+    // Check if modal elements exist before proceeding
+    if (!modal || !modalImage || !modalClose) {
+        return;
+    }
+
     // Function to open modal
     function openModal(imageSrc, imageAlt) {
         modalImage.src = imageSrc;
@@ -648,16 +626,11 @@ function initImageModal() {
         const lens = zoomLens;
         const result = zoomResult;
 
-        console.log('Initializing zoom for image:', img.src);
-
         // Wait for image to load completely
         if (img.complete && img.naturalWidth > 0) {
-            console.log('Image already loaded, setting up zoom');
             setupZoom();
         } else {
-            console.log('Waiting for image to load...');
             img.onload = function () {
-                console.log('Image loaded, setting up zoom');
                 setupZoom();
             };
             img.onerror = function () {
@@ -667,8 +640,6 @@ function initImageModal() {
 
         function setupZoom() {
             const zoomRatio = 8;
-            console.log('Setting up zoom with ratio:', zoomRatio);
-            console.log('Image dimensions:', img.naturalWidth, 'x', img.naturalHeight);
 
             // Mouse move event for zoom
             imageContainer.addEventListener('mousemove', function (e) {
@@ -766,10 +737,16 @@ function initImageModal() {
 
 // Initialize all functionality when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    // Update slideshow with random interior images from portfolio
-    updateSlideshowWithRandomImages();
+    // Initialize responsive features
+    setupResponsiveImages();
+    setupContainerQueries();
 
+    // Initialize slideshow with images
+    updateSlideshowWithRandomImages();
+    // Initialize slideshow immediately
     initSlideshow();
+
+    // Initialize other features
     initBackToTop();
     initNavigationOptimization();
     initProgressiveImageLoading();
