@@ -1189,6 +1189,14 @@ body.loading {
         --container-padding: 1rem;
     }
 
+    /* Mobile Header Layout */
+    header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: var(--spacing-sm) var(--container-padding);
+    }
+
     /* Mobile Navigation */
     .mobile-menu-toggle {
         display: flex;
@@ -1307,7 +1315,9 @@ body.loading {
     }
 
     header {
-        flex-direction: column;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
         gap: var(--spacing-sm);
         padding: var(--spacing-sm);
     }

@@ -203,13 +203,11 @@ function getRandomInteriorImages(count = 6) {
 function updateSlideshowWithRandomImages() {
     const slideshowContainer = document.querySelector('.hero-slideshow .slideshow-container');
     if (!slideshowContainer) {
-        console.warn('Slideshow container not found');
         return;
     }
 
     const slidesContainer = slideshowContainer.querySelector('.slides');
     if (!slidesContainer) {
-        console.warn('Slides container not found');
         return;
     }
 
@@ -423,9 +421,6 @@ function initSlideshow() {
         currentSlide = (currentSlide + 1) % slides.length;
         slides[currentSlide].classList.add('active');
     }
-
-    // Change slide every 4 seconds
-    const slideshowInterval = setInterval(nextSlide, 4000);
 
     // Handle mobile vs desktop timing
     const baseInterval = window.innerWidth <= 768 ? 6000 : 4000;
@@ -741,10 +736,12 @@ document.addEventListener('DOMContentLoaded', () => {
     setupResponsiveImages();
     setupContainerQueries();
 
-    // Initialize slideshow with images
-    updateSlideshowWithRandomImages();
-    // Initialize slideshow immediately
-    initSlideshow();
+    // Initialize slideshow only if slideshow container exists (homepage only)
+    const slideshowContainer = document.querySelector('.hero-slideshow .slideshow-container');
+    if (slideshowContainer) {
+        updateSlideshowWithRandomImages();
+        initSlideshow();
+    }
 
     // Initialize other features
     initBackToTop();
