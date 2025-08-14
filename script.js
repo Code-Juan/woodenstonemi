@@ -1,19 +1,256 @@
-// Theme toggle with localStorage
-const themeToggle = document.getElementById('theme-toggle');
-const savedTheme = localStorage.getItem('theme');
+// Responsive Navigation System
+document.addEventListener('DOMContentLoaded', function () {
+    // Mobile menu toggle functionality
+    const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+    const nav = document.querySelector('nav');
 
-if (savedTheme) {
-    document.documentElement.setAttribute('data-theme', savedTheme);
+    if (mobileMenuToggle && nav) {
+        mobileMenuToggle.addEventListener('click', function () {
+            nav.classList.toggle('active');
+            mobileMenuToggle.classList.toggle('active');
+
+            // Update ARIA attributes for accessibility
+            const isExpanded = nav.classList.contains('active');
+            mobileMenuToggle.setAttribute('aria-expanded', isExpanded);
+
+            // Prevent body scroll when menu is open
+            document.body.style.overflow = isExpanded ? 'hidden' : '';
+        });
+
+        // Close menu when clicking on a link
+        const navLinks = nav.querySelectorAll('a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function () {
+                nav.classList.remove('active');
+                mobileMenuToggle.classList.remove('active');
+                mobileMenuToggle.setAttribute('aria-expanded', 'false');
+                document.body.style.overflow = '';
+            });
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function (event) {
+            if (!nav.contains(event.target) && !mobileMenuToggle.contains(event.target)) {
+                nav.classList.remove('active');
+                mobileMenuToggle.classList.remove('active');
+                mobileMenuToggle.setAttribute('aria-expanded', 'false');
+                document.body.style.overflow = '';
+            }
+        });
+    }
+
+    // Handle window resize for responsive behavior
+    let resizeTimer;
+    window.addEventListener('resize', function () {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function () {
+            // Close mobile menu on larger screens
+            if (window.innerWidth > 768) {
+                if (nav) nav.classList.remove('active');
+                if (mobileMenuToggle) {
+                    mobileMenuToggle.classList.remove('active');
+                    mobileMenuToggle.setAttribute('aria-expanded', 'false');
+                }
+                document.body.style.overflow = '';
+            }
+        }, 250);
+    });
+
+    // Add skip link for accessibility
+    const skipLink = document.createElement('a');
+    skipLink.href = '#main-content';
+    skipLink.textContent = 'Skip to main content';
+    skipLink.className = 'skip-link';
+    document.body.insertBefore(skipLink, document.body.firstChild);
+
+    // Add main content ID if not present
+    const mainContent = document.querySelector('main') || document.querySelector('.hero-container');
+    if (mainContent && !mainContent.id) {
+        mainContent.id = 'main-content';
+    }
+});
+
+// Responsive image loading with intersection observer
+function setupResponsiveImages() {
+    const images = document.querySelectorAll('img[data-src]');
+
+    if ('IntersectionObserver' in window) {
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.dataset.src;
+                    img.classList.add('loaded');
+                    imageObserver.unobserve(img);
+                }
+            });
+        });
+
+        images.forEach(img => imageObserver.observe(img));
+    } else {
+        // Fallback for older browsers
+        images.forEach(img => {
+            img.src = img.dataset.src;
+            img.classList.add('loaded');
+        });
+    }
 }
 
-themeToggle.addEventListener('click', () => {
-    const currentTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', currentTheme);
-    localStorage.setItem('theme', currentTheme);
+// Responsive container queries support
+function setupContainerQueries() {
+    if ('container-type' in document.documentElement.style) {
+        // Add container-type to elements that need it
+        const containers = document.querySelectorAll('.service-card, .portfolio-item, .testimonial-card');
+        containers.forEach(container => {
+            container.style.containerType = 'inline-size';
+        });
+    }
+}
+
+// Initialize responsive features
+document.addEventListener('DOMContentLoaded', function () {
+    setupResponsiveImages();
+    setupContainerQueries();
 });
 
 // Set current year in footer
 document.getElementById('year').textContent = new Date().getFullYear();
+
+// Function to get random interior images from project portfolio
+function getRandomInteriorImages(count = 6) {
+    // Define interior image patterns to look for
+    const interiorPatterns = [
+        'kitchen', 'bath', 'bathroom', 'view-of-kitchen', 'commons-render'
+    ];
+
+    // Define patterns to exclude (building/site overview images)
+    const excludePatterns = [
+        'site', 'building', 'overview', 'BLDG', 'parking', 'indiana', 'rendering'
+    ];
+
+    // Collect all interior images from projects
+    const allInteriorImages = [];
+
+    // Check if projectsData is available (from projects-data.js)
+    if (typeof projectsData !== 'undefined') {
+        projectsData.forEach(project => {
+            if (project.images && Array.isArray(project.images)) {
+                project.images.forEach(imagePath => {
+                    // Skip placeholder images
+                    if (imagePath === 'placeholder') return;
+
+                    const lowerPath = imagePath.toLowerCase();
+
+                    // Check if it's an interior image
+                    const isInterior = interiorPatterns.some(pattern =>
+                        lowerPath.includes(pattern)
+                    );
+
+                    // Check if it should be excluded
+                    const shouldExclude = excludePatterns.some(pattern =>
+                        lowerPath.includes(pattern)
+                    );
+
+                    if (isInterior && !shouldExclude) {
+                        allInteriorImages.push({
+                            src: imagePath,
+                            alt: `${project.name} - Interior View`,
+                            projectName: project.name
+                        });
+                    }
+                });
+            }
+        });
+    }
+
+    // If we don't have enough interior images, add some fallback images
+    if (allInteriorImages.length < count) {
+        const fallbackImages = [
+            {
+                src: "images/Previous Jobs/1. Woodview Commons/(Kitchen 1) woodview-commons-ann-arbor-mi-building-photo.jpg",
+                alt: "Woodview Commons Kitchen",
+                projectName: "WOODVIEW COMMONS FLATS"
+            },
+            {
+                src: "images/Previous Jobs/1. Woodview Commons/(Bath 1) woodview-commons-ann-arbor-mi-building-photo.jpg",
+                alt: "Woodview Commons Bathroom",
+                projectName: "WOODVIEW COMMONS FLATS"
+            },
+            {
+                src: "images/Previous Jobs/4. 3740 2nd Ave Apartments/Kitchen1 VIEW_3740 Apartments.jpg",
+                alt: "3740 2nd Ave Kitchen",
+                projectName: "3740 2ND AVE APARTMENTS"
+            },
+            {
+                src: "images/Previous Jobs/4. 3740 2nd Ave Apartments/bath1 VIEW_3740 Apartments.jpg",
+                alt: "3740 2nd Ave Bathroom",
+                projectName: "3740 2ND AVE APARTMENTS"
+            }
+        ];
+
+        // Add fallback images that aren't already in the list
+        fallbackImages.forEach(fallback => {
+            const exists = allInteriorImages.some(img => img.src === fallback.src);
+            if (!exists) {
+                allInteriorImages.push(fallback);
+            }
+        });
+    }
+
+    // Shuffle the array and return the requested number of images
+    const shuffled = allInteriorImages.sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, count);
+}
+
+// Function to update slideshow with random interior images
+function updateSlideshowWithRandomImages() {
+    const slideshowContainer = document.querySelector('.hero-slideshow .slideshow-container');
+    if (!slideshowContainer) return;
+
+    const slidesContainer = slideshowContainer.querySelector('.slides');
+    if (!slidesContainer) return;
+
+    // Get random interior images
+    const randomImages = getRandomInteriorImages(6);
+
+    // Clear existing slides
+    slidesContainer.innerHTML = '';
+
+    // Create new slides with random images
+    randomImages.forEach(image => {
+        const slide = document.createElement('div');
+        slide.className = 'slide';
+
+        // Create image element with responsive srcset
+        const img = document.createElement('img');
+        img.src = image.src;
+        img.alt = image.alt;
+        img.loading = 'lazy';
+
+        // Add responsive srcset if the image has different sizes available
+        const basePath = image.src.replace(/\.(jpg|png|webp)$/, '');
+        const extension = image.src.match(/\.(jpg|png|webp)$/)?.[1] || 'jpg';
+
+        // Check if different size versions exist and create srcset
+        const srcset = [
+            `${basePath}-thumb.${extension} 400w`,
+            `${basePath}-gallery.${extension} 800w`,
+            `${basePath}-hero.${extension} 1200w`,
+            `${basePath}.${extension} 1600w`
+        ].join(', ');
+
+        img.srcset = srcset;
+        img.sizes = "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw";
+
+        slide.appendChild(img);
+        slidesContainer.appendChild(slide);
+    });
+
+    // Reinitialize slideshow after updating images
+    if (typeof initSlideshow === 'function') {
+        initSlideshow();
+    }
+}
 
 // Progressive image loading for better UX
 function initProgressiveImageLoading() {
@@ -398,6 +635,9 @@ function initImageModal() {
 
 // Initialize all functionality when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
+    // Update slideshow with random interior images from portfolio
+    updateSlideshowWithRandomImages();
+
     initSlideshow();
     initBackToTop();
     initNavigationOptimization();

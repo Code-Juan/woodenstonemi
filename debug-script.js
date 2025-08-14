@@ -42,7 +42,7 @@ const debugLogger = {
 const performanceMonitor = {
     marks: new Map(),
     measures: new Map(),
-    
+
     start: (name) => {
         if (DEBUG_CONFIG.performanceMonitoring) {
             const startTime = performance.now();
@@ -50,24 +50,24 @@ const performanceMonitor = {
             debugLogger.debug(`Performance mark started: ${name}`);
         }
     },
-    
+
     end: (name) => {
         if (DEBUG_CONFIG.performanceMonitoring && performanceMonitor.marks.has(name)) {
             const startTime = performanceMonitor.marks.get(name);
             const endTime = performance.now();
             const duration = endTime - startTime;
-            
+
             performanceMonitor.measures.set(name, duration);
             debugLogger.debug(`Performance mark ended: ${name} (${duration.toFixed(2)}ms)`);
-            
+
             if (duration > 100) { // Log slow operations
                 debugLogger.warn(`Slow operation detected: ${name} took ${duration.toFixed(2)}ms`);
             }
-            
+
             performanceMonitor.marks.delete(name);
         }
     },
-    
+
     measure: (name, callback) => {
         return async (...args) => {
             performanceMonitor.start(name);
@@ -87,7 +87,7 @@ const performanceMonitor = {
 const errorTracker = {
     errors: [],
     warnings: [],
-    
+
     trackError: (error, context = {}) => {
         if (DEBUG_CONFIG.errorTracking) {
             const errorInfo = {
@@ -98,16 +98,16 @@ const errorTracker = {
                 userAgent: navigator.userAgent,
                 context
             };
-            
+
             errorTracker.errors.push(errorInfo);
             debugLogger.error('Error tracked:', errorInfo);
-            
+
             // Log to console for immediate visibility
             console.error('🚨 Error occurred:', error);
             console.error('Context:', context);
         }
     },
-    
+
     trackWarning: (message, context = {}) => {
         if (DEBUG_CONFIG.errorTracking) {
             const warningInfo = {
@@ -116,12 +116,12 @@ const errorTracker = {
                 url: window.location.href,
                 context
             };
-            
+
             errorTracker.warnings.push(warningInfo);
             debugLogger.warn('Warning tracked:', warningInfo);
         }
     },
-    
+
     getStats: () => {
         return {
             totalErrors: errorTracker.errors.length,
@@ -153,26 +153,6 @@ debugLogger.info('Debug system initialized');
 debugLogger.info('Performance monitoring:', DEBUG_CONFIG.performanceMonitoring ? 'enabled' : 'disabled');
 debugLogger.info('Error tracking:', DEBUG_CONFIG.errorTracking ? 'enabled' : 'disabled');
 
-// Theme toggle with localStorage and debug logging
-const themeToggle = document.getElementById('theme-toggle');
-const savedTheme = localStorage.getItem('theme');
-
-performanceMonitor.measure('theme-initialization', () => {
-    if (savedTheme) {
-        document.documentElement.setAttribute('data-theme', savedTheme);
-        debugLogger.debug('Theme restored from localStorage:', savedTheme);
-    } else {
-        debugLogger.debug('No saved theme found, using default');
-    }
-})();
-
-themeToggle.addEventListener('click', performanceMonitor.measure('theme-toggle', () => {
-    const currentTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', currentTheme);
-    localStorage.setItem('theme', currentTheme);
-    debugLogger.debug('Theme toggled to:', currentTheme);
-}));
-
 // Set current year in footer with debug logging
 performanceMonitor.measure('footer-year-update', () => {
     const yearElement = document.getElementById('year');
@@ -187,7 +167,7 @@ performanceMonitor.measure('footer-year-update', () => {
 // Progressive image loading for better UX with performance monitoring
 function initProgressiveImageLoading() {
     debugLogger.info('Initializing progressive image loading');
-    
+
     const images = document.querySelectorAll('img[data-src]');
     debugLogger.debug(`Found ${images.length} images with data-src attributes`);
 
@@ -201,18 +181,18 @@ function initProgressiveImageLoading() {
                     performanceMonitor.measure(`image-load-${path.basename(highResSrc)}`, async () => {
                         // Load high-res image
                         const highResImg = new Image();
-                        
+
                         highResImg.onload = () => {
                             img.src = highResSrc;
                             img.classList.add('loaded');
                             img.removeAttribute('data-src');
                             debugLogger.debug(`High-res image loaded: ${path.basename(highResSrc)}`);
                         };
-                        
+
                         highResImg.onerror = () => {
                             errorTracker.trackWarning(`Failed to load high-res image: ${highResSrc}`);
                         };
-                        
+
                         highResImg.src = highResSrc;
                     })();
                 }
@@ -229,7 +209,7 @@ function initProgressiveImageLoading() {
 // Image optimization and compression detection with enhanced logging
 function initImageOptimization() {
     debugLogger.info('Initializing image optimization monitoring');
-    
+
     // Check if images are properly optimized
     const images = document.querySelectorAll('img');
     debugLogger.debug(`Found ${images.length} total images on page`);
@@ -250,13 +230,13 @@ function initImageOptimization() {
             } else {
                 optimizedImages++;
             }
-            
+
             // Check for missing alt attributes
             if (!img.alt) {
                 errorTracker.trackWarning(`Image missing alt attribute: ${img.src}`);
             }
         });
-        
+
         img.addEventListener('error', () => {
             errorTracker.trackError(new Error(`Image failed to load: ${img.src}`), {
                 type: 'image-load-error',
@@ -264,7 +244,7 @@ function initImageOptimization() {
             });
         });
     });
-    
+
     debugLogger.info('Image optimization monitoring initialized', {
         totalImages: images.length,
         largeImages,
@@ -275,7 +255,7 @@ function initImageOptimization() {
 // Navigation preloading and loading states with performance tracking
 function initNavigationOptimization() {
     debugLogger.info('Initializing navigation optimization');
-    
+
     const navLinks = document.querySelectorAll('nav a');
     debugLogger.debug(`Found ${navLinks.length} navigation links`);
 
@@ -311,7 +291,7 @@ function initNavigationOptimization() {
             }
         });
     });
-    
+
     debugLogger.info('Navigation optimization initialized', {
         totalLinks: navLinks.length,
         preloadedPages
@@ -321,10 +301,10 @@ function initNavigationOptimization() {
 // Hero slideshow functionality with debug logging
 function initSlideshow() {
     debugLogger.info('Initializing hero slideshow');
-    
+
     const slides = document.querySelectorAll('.slide');
     debugLogger.debug(`Found ${slides.length} slides`);
-    
+
     if (slides.length === 0) {
         debugLogger.warn('No slides found for slideshow');
         return;
@@ -416,7 +396,7 @@ function initSlideshow() {
 // Form validation with debug logging
 function initFormValidation() {
     debugLogger.info('Initializing form validation');
-    
+
     const forms = document.querySelectorAll('form');
     debugLogger.debug(`Found ${forms.length} forms on page`);
 
@@ -425,7 +405,7 @@ function initFormValidation() {
 
         form.addEventListener('submit', performanceMonitor.measure('form-submission', (e) => {
             debugLogger.debug('Form submission started');
-            
+
             // Basic validation
             const requiredFields = form.querySelectorAll('[required]');
             let isValid = true;
@@ -451,30 +431,30 @@ function initFormValidation() {
             debugLogger.info('Form validation passed, submitting...');
         }));
     });
-    
+
     debugLogger.info('Form validation initialized');
 }
 
 // Performance monitoring for page load
 function initPageLoadMonitoring() {
     debugLogger.info('Initializing page load monitoring');
-    
+
     // Monitor page load performance
     window.addEventListener('load', () => {
         performanceMonitor.measure('page-load-complete', () => {
             const loadTime = performance.now();
             const navigationTiming = performance.getEntriesByType('navigation')[0];
-            
+
             debugLogger.info('Page load completed', {
                 totalLoadTime: `${loadTime.toFixed(2)}ms`,
                 domContentLoaded: `${navigationTiming.domContentLoadedEventEnd - navigationTiming.domContentLoadedEventStart}ms`,
                 loadEvent: `${navigationTiming.loadEventEnd - navigationTiming.loadEventStart}ms`
             });
-            
+
             // Log resource loading performance
             const resources = performance.getEntriesByType('resource');
             const slowResources = resources.filter(r => r.duration > 1000);
-            
+
             if (slowResources.length > 0) {
                 debugLogger.warn('Slow resources detected:', slowResources.map(r => ({
                     name: r.name,
@@ -488,7 +468,7 @@ function initPageLoadMonitoring() {
 // Initialize all debug features
 performanceMonitor.measure('debug-system-initialization', () => {
     debugLogger.info('Starting debug system initialization');
-    
+
     // Initialize all components
     initProgressiveImageLoading();
     initImageOptimization();
@@ -496,7 +476,7 @@ performanceMonitor.measure('debug-system-initialization', () => {
     initSlideshow();
     initFormValidation();
     initPageLoadMonitoring();
-    
+
     debugLogger.info('Debug system initialization completed');
 })();
 
