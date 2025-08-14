@@ -1024,6 +1024,13 @@ nav a.current-page:hover {
     font-size: 0.9rem;
 }
 
+/* Location and Service Area cards specific styling - both lines same style */
+.contact-card:nth-child(2) p,
+.contact-card:nth-child(3) p {
+    color: var(--text-color);
+    font-size: var(--font-size-body);
+}
+
 /* Contact Form Section */
 .contact-form-section {
     padding: var(--spacing-xl) 0;
