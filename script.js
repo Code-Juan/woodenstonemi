@@ -109,6 +109,7 @@ function setupContainerQueries() {
 
 // Initialize responsive features
 document.addEventListener('DOMContentLoaded', function () {
+    console.log('DOM loaded, initializing responsive features...');
     setupResponsiveImages();
     setupContainerQueries();
 
@@ -117,6 +118,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Initialize slideshow after a short delay to ensure images are loaded
     setTimeout(() => {
+        console.log('Initializing slideshow...');
         initSlideshow();
     }, 500);
 });
@@ -213,19 +215,29 @@ function getRandomInteriorImages(count = 6) {
 // Function to update slideshow with random images from Previous Jobs
 function updateSlideshowWithRandomImages() {
     const slideshowContainer = document.querySelector('.hero-slideshow .slideshow-container');
-    if (!slideshowContainer) return;
+    if (!slideshowContainer) {
+        console.warn('Slideshow container not found');
+        return;
+    }
 
     const slidesContainer = slideshowContainer.querySelector('.slides');
-    if (!slidesContainer) return;
+    if (!slidesContainer) {
+        console.warn('Slides container not found');
+        return;
+    }
+
+    console.log('Initializing slideshow with images...');
 
     // Get random images from Previous Jobs
     const randomImages = getRandomInteriorImages(6);
+    console.log('Found', randomImages.length, 'images for slideshow');
 
     // Clear existing slides
     slidesContainer.innerHTML = '';
 
     // Create new slides with random images
-    randomImages.forEach(image => {
+    randomImages.forEach((image, index) => {
+        console.log(`Creating slide ${index + 1} with image:`, image.src);
         const slide = document.createElement('div');
         slide.className = 'slide';
 
@@ -281,6 +293,15 @@ function updateSlideshowWithRandomImages() {
     // Reinitialize slideshow after updating images
     if (typeof initSlideshow === 'function') {
         initSlideshow();
+    }
+
+    // Add fallback content if no images were loaded
+    if (slidesContainer.children.length === 0) {
+        console.log('No slides created, adding fallback content');
+        const fallbackSlide = document.createElement('div');
+        fallbackSlide.className = 'slide active';
+        fallbackSlide.innerHTML = '<div style="width: 100%; height: 100%; background-color: var(--marble); display: flex; align-items: center; justify-content: center; color: var(--slate); font-size: 1.2rem;">Loading slideshow...</div>';
+        slidesContainer.appendChild(fallbackSlide);
     }
 }
 
