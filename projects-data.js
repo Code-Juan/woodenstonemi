@@ -368,64 +368,151 @@ function renderProjects() {
 function initializeCarousels() {
     const carousels = document.querySelectorAll('.carousel-container');
 
-    carousels.forEach((carousel) => {
+    carousels.forEach(carousel => {
         const track = carousel.querySelector('.carousel-track');
-        const slides = Array.from(track.children);
+        const slides = [...carousel.querySelectorAll('.carousel-slide')];
         const prevBtn = carousel.querySelector('.carousel-prev');
         const nextBtn = carousel.querySelector('.carousel-next');
 
-        if (slides.length <= 3) {
-            if (prevBtn) prevBtn.style.display = 'none';
-            if (nextBtn) nextBtn.style.display = 'none';
-            return;
-        }
+        if (!track || slides.length === 0) return;
 
-        let currentPosition = 0;
-        const slidesPerView = 3;
-        // The maximum position the carousel can scroll to
-        const maxPosition = slides.length - slidesPerView;
+        const slidesToShow = () =>
+            window.innerWidth <= 768 ? 1 : window.innerWidth <= 1024 ? 2 : 3;
 
-        function updateButtons() {
-            // Hide prev button if at the beginning
+        const stepPx = () => {
+            // Get the exact width of one slide including padding and margins
+            const first = slides[0];
+            if (!first) return 0;
+
+            const rect = first.getBoundingClientRect();
+            const computedStyle = window.getComputedStyle(first);
+
+            // Include padding and margins for precise calculation
+            const paddingLeft = parseFloat(computedStyle.paddingLeft);
+            const paddingRight = parseFloat(computedStyle.paddingRight);
+            const marginLeft = parseFloat(computedStyle.marginLeft);
+            const marginRight = parseFloat(computedStyle.marginRight);
+
+            const step = Math.round(rect.width + paddingLeft + paddingRight + marginLeft + marginRight);
+            
+            // Debug logging
+            console.log('Carousel debug:', {
+                slideWidth: rect.width,
+                padding: paddingLeft + paddingRight,
+                margin: marginLeft + marginRight,
+                totalStep: step,
+                slidesLength: slides.length,
+                slidesToShow: slidesToShow(),
+                maxIndex: maxIndex()
+            });
+            
+            return step;
+        };
+
+        const maxIndex = () => Math.max(0, slides.length - slidesToShow());
+        const curIndex = () => {
+            const step = stepPx();
+            return step > 0 ? Math.round(track.scrollLeft / step) : 0;
+        };
+
+        const updateArrows = () => {
+            const i = curIndex();
+            const max = maxIndex();
+
+            // Update arrow visibility
             if (prevBtn) {
-                prevBtn.style.display = currentPosition === 0 ? 'none' : 'flex';
+                prevBtn.style.display = i <= 0 ? 'none' : 'flex';
+                prevBtn.style.opacity = i <= 0 ? '0' : '1';
             }
-            // Hide next button if at the end
             if (nextBtn) {
-                nextBtn.style.display = currentPosition >= maxPosition ? 'none' : 'flex';
+                nextBtn.style.display = i >= max ? 'none' : 'flex';
+                nextBtn.style.opacity = i >= max ? '0' : '1';
             }
-        }
+        };
 
-        function moveSlides() {
-            const translateX = -currentPosition * (100 / slidesPerView);
-            track.style.transform = `translateX(${translateX}%)`;
-            updateButtons();
-        }
+        // Navigation functions
+        const next = () => {
+            const current = curIndex();
+            const max = maxIndex();
+            const step = stepPx();
+            
+            console.log('Next clicked:', { current, max, step, canMove: current < max });
+            
+            if (current < max) {
+                track.scrollBy({ left: step, behavior: 'smooth' });
+            }
+        };
 
-        if (prevBtn) {
-            const newPrevBtn = prevBtn.cloneNode(true);
-            prevBtn.parentNode.replaceChild(newPrevBtn, prevBtn);
-            newPrevBtn.addEventListener('click', () => {
-                if (currentPosition > 0) {
-                    currentPosition--;
-                    moveSlides();
+        const prev = () => {
+            const current = curIndex();
+            const step = stepPx();
+            
+            console.log('Prev clicked:', { current, step, canMove: current > 0 });
+            
+            if (current > 0) {
+                track.scrollBy({ left: -step, behavior: 'smooth' });
+            }
+        };
+
+        // Event listeners
+        nextBtn?.addEventListener('click', next);
+        prevBtn?.addEventListener('click', prev);
+
+        // Keyboard navigation
+        carousel.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') prev();
+            if (e.key === 'ArrowRight') next();
+        });
+
+        // Touch/swipe support
+        let startX = 0;
+        let startScrollLeft = 0;
+
+        carousel.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            startScrollLeft = track.scrollLeft;
+        }, { passive: true });
+
+        carousel.addEventListener('touchend', (e) => {
+            const endX = e.changedTouches[0].clientX;
+            const diff = startX - endX;
+            const threshold = stepPx() * 0.3; // 30% of slide width to trigger
+
+            if (Math.abs(diff) > threshold) {
+                if (diff > 0) {
+                    next(); // Swipe left
+                } else {
+                    prev(); // Swipe right
                 }
-            });
-        }
+            }
+        }, { passive: true });
 
-        if (nextBtn) {
-            const newNextBtn = nextBtn.cloneNode(true);
-            nextBtn.parentNode.replaceChild(newNextBtn, nextBtn);
-            newNextBtn.addEventListener('click', () => {
-                if (currentPosition < maxPosition) {
-                    currentPosition++;
-                    moveSlides();
-                }
-            });
-        }
+        // Keep arrows in sync while user drags/swipes
+        track.addEventListener('scroll', () => {
+            requestAnimationFrame(updateArrows);
+        }, { passive: true });
+
+        // Handle resize with proper snapping
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                const current = curIndex();
+                const step = stepPx();
+                const targetScroll = current * step;
+
+                // Snap to the correct position
+                track.scrollTo({
+                    left: targetScroll,
+                    behavior: 'auto'
+                });
+
+                updateArrows();
+            }, 150);
+        });
 
         // Initial setup
-        moveSlides();
+        updateArrows();
     });
 }
 

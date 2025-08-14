@@ -586,117 +586,132 @@ function initBackToTop() {
 
 // Project Portfolio Carousel functionality
 function initProjectCarousels() {
-    const carousels = document.querySelectorAll('.carousel-container');
-
-    carousels.forEach(carousel => {
+    document.querySelectorAll('.carousel-container').forEach(carousel => {
         const track = carousel.querySelector('.carousel-track');
-        const slides = carousel.querySelectorAll('.carousel-slide');
+        const slides = [...carousel.querySelectorAll('.carousel-slide')];
         const prevBtn = carousel.querySelector('.carousel-prev');
         const nextBtn = carousel.querySelector('.carousel-next');
 
-        let currentSlide = 0;
-        const totalSlides = slides.length;
+        if (!track || slides.length === 0) return;
 
-        // Determine how many slides to show based on screen size
-        function getSlidesToShow() {
-            if (window.innerWidth <= 768) return 1;
-            if (window.innerWidth <= 1024) return 2;
-            return 3;
-        }
+        const slidesToShow = () =>
+            window.innerWidth <= 768 ? 1 : window.innerWidth <= 1024 ? 2 : 3;
 
-        // Function to update carousel position
-        function updateCarousel() {
-            const slidesToShow = getSlidesToShow();
-            
-            // Calculate the actual slide width in pixels
-            const carouselWidth = carousel.offsetWidth;
-            const slideWidthPx = carouselWidth / slidesToShow;
-            
-            // Move by the full width of one slide
-            const translateX = currentSlide * slideWidthPx;
-            track.style.transform = `translateX(-${translateX}px)`;
+        const stepPx = () => {
+            // Get the exact width of one slide including padding and margins
+            const first = slides[0];
+            if (!first) return 0;
 
-            // Update active slide class
-            slides.forEach((slide, index) => {
-                slide.classList.toggle('active', index >= currentSlide && index < currentSlide + slidesToShow);
-            });
+            const rect = first.getBoundingClientRect();
+            const computedStyle = window.getComputedStyle(first);
 
-            // Show/hide navigation arrows based on position
+            // Include padding and margins for precise calculation
+            const paddingLeft = parseFloat(computedStyle.paddingLeft);
+            const paddingRight = parseFloat(computedStyle.paddingRight);
+            const marginLeft = parseFloat(computedStyle.marginLeft);
+            const marginRight = parseFloat(computedStyle.marginRight);
+
+            return Math.round(rect.width + paddingLeft + paddingRight + marginLeft + marginRight);
+        };
+
+        const maxIndex = () => Math.max(0, slides.length - slidesToShow());
+        const curIndex = () => {
+            const step = stepPx();
+            return step > 0 ? Math.round(track.scrollLeft / step) : 0;
+        };
+
+        const updateArrows = () => {
+            const i = curIndex();
+            const max = maxIndex();
+
+            // Update arrow visibility
             if (prevBtn) {
-                prevBtn.style.display = currentSlide === 0 ? 'none' : 'flex';
+                prevBtn.style.display = i <= 0 ? 'none' : 'flex';
+                prevBtn.style.opacity = i <= 0 ? '0' : '1';
             }
-
             if (nextBtn) {
-                const maxSlide = Math.max(0, totalSlides - slidesToShow);
-                nextBtn.style.display = currentSlide >= maxSlide ? 'none' : 'flex';
+                nextBtn.style.display = i >= max ? 'none' : 'flex';
+                nextBtn.style.opacity = i >= max ? '0' : '1';
             }
-        }
+        };
 
-        // Function to go to next slide
-        function nextSlide() {
-            const slidesToShow = getSlidesToShow();
-            const maxSlide = Math.max(0, totalSlides - slidesToShow);
-
-            if (currentSlide < maxSlide) {
-                currentSlide++;
-                updateCarousel();
+        // Navigation functions
+        const next = () => {
+            const current = curIndex();
+            const max = maxIndex();
+            if (current < max) {
+                const step = stepPx();
+                track.scrollBy({ left: step, behavior: 'smooth' });
             }
-        }
+        };
 
-        // Function to go to previous slide
-        function prevSlide() {
-            if (currentSlide > 0) {
-                currentSlide--;
-                updateCarousel();
+        const prev = () => {
+            const current = curIndex();
+            if (current > 0) {
+                const step = stepPx();
+                track.scrollBy({ left: -step, behavior: 'smooth' });
             }
-        }
+        };
 
-        // Event listeners for navigation buttons
-        if (prevBtn) {
-            prevBtn.addEventListener('click', prevSlide);
-        }
-
-        if (nextBtn) {
-            nextBtn.addEventListener('click', nextSlide);
-        }
+        // Event listeners
+        nextBtn?.addEventListener('click', next);
+        prevBtn?.addEventListener('click', prev);
 
         // Keyboard navigation
         carousel.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowLeft') {
-                prevSlide();
-            } else if (e.key === 'ArrowRight') {
-                nextSlide();
-            }
+            if (e.key === 'ArrowLeft') prev();
+            if (e.key === 'ArrowRight') next();
         });
 
-        // Touch/swipe support for mobile
+        // Touch/swipe support
         let startX = 0;
-        let endX = 0;
+        let startScrollLeft = 0;
 
         carousel.addEventListener('touchstart', (e) => {
             startX = e.touches[0].clientX;
-        });
+            startScrollLeft = track.scrollLeft;
+        }, { passive: true });
 
         carousel.addEventListener('touchend', (e) => {
-            endX = e.changedTouches[0].clientX;
+            const endX = e.changedTouches[0].clientX;
             const diff = startX - endX;
+            const threshold = stepPx() * 0.3; // 30% of slide width to trigger
 
-            if (Math.abs(diff) > 50) { // Minimum swipe distance
+            if (Math.abs(diff) > threshold) {
                 if (diff > 0) {
-                    nextSlide(); // Swipe left
+                    next(); // Swipe left
                 } else {
-                    prevSlide(); // Swipe right
+                    prev(); // Swipe right
                 }
             }
-        });
+        }, { passive: true });
 
-        // Handle window resize
+        // Keep arrows in sync while user drags/swipes
+        track.addEventListener('scroll', () => {
+            requestAnimationFrame(updateArrows);
+        }, { passive: true });
+
+        // Handle resize with proper snapping
+        let resizeTimer;
         window.addEventListener('resize', () => {
-            updateCarousel();
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                const current = curIndex();
+                const step = stepPx();
+                const targetScroll = current * step;
+
+                // Snap to the correct position
+                track.scrollTo({
+                    left: targetScroll,
+                    behavior: 'auto'
+                });
+
+                updateArrows();
+            }, 150);
         });
 
-        // Initialize carousel
-        updateCarousel();
+        // Initial setup
+        updateArrows();
     });
 }
 
@@ -868,6 +883,20 @@ document.addEventListener('DOMContentLoaded', () => {
     initNavigationOptimization();
     initProgressiveImageLoading();
     initImageOptimization();
-    // initProjectCarousels(); // Disabled - using projects-data.js carousel instead
+
+    // Wait until a carousel shows up, then initialize once
+    const ready = () => document.querySelector('.carousel-container .carousel-track');
+    if (ready()) {
+        initProjectCarousels();
+    } else {
+        const mo = new MutationObserver(() => {
+            if (ready()) {
+                mo.disconnect();
+                initProjectCarousels();
+            }
+        });
+        mo.observe(document.getElementById('projects-container') || document.body, { childList: true, subtree: true });
+    }
+
     initImageModal();
 });
