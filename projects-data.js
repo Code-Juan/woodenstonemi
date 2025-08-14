@@ -394,18 +394,9 @@ function initializeCarousels() {
             const marginRight = parseFloat(computedStyle.marginRight);
 
             const step = Math.round(rect.width + paddingLeft + paddingRight + marginLeft + marginRight);
-            
-            // Debug logging
-            console.log('Carousel debug:', {
-                slideWidth: rect.width,
-                padding: paddingLeft + paddingRight,
-                margin: marginLeft + marginRight,
-                totalStep: step,
-                slidesLength: slides.length,
-                slidesToShow: slidesToShow(),
-                maxIndex: maxIndex()
-            });
-            
+
+            // Calculate step size for carousel navigation
+
             return step;
         };
 
@@ -435,9 +426,7 @@ function initializeCarousels() {
             const current = curIndex();
             const max = maxIndex();
             const step = stepPx();
-            
-            console.log('Next clicked:', { current, max, step, canMove: current < max });
-            
+
             if (current < max) {
                 track.scrollBy({ left: step, behavior: 'smooth' });
             }
@@ -446,9 +435,7 @@ function initializeCarousels() {
         const prev = () => {
             const current = curIndex();
             const step = stepPx();
-            
-            console.log('Prev clicked:', { current, step, canMove: current > 0 });
-            
+
             if (current > 0) {
                 track.scrollBy({ left: -step, behavior: 'smooth' });
             }

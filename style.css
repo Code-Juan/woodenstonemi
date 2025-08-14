@@ -177,6 +177,20 @@ nav a:hover {
     color: var(--accent-color);
 }
 
+/* Current page indicator */
+nav a.current-page {
+    color: var(--accent-color);
+    font-weight: bold;
+    cursor: default;
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+nav a.current-page:hover {
+    color: var(--accent-color);
+    text-decoration: none;
+}
+
 /* Mobile Menu Toggle */
 .mobile-menu-toggle {
     display: none;
@@ -333,9 +347,8 @@ nav a:hover {
 
 /* Page Hero Sections */
 .page-hero {
-    background-image: url('images/what-we-do-hero.jpg');
     background-size: cover;
-    background-position: right 65%;
+    background-position: center;
     background-repeat: no-repeat;
     padding: var(--spacing-xl) var(--container-padding);
     text-align: center;
@@ -344,6 +357,21 @@ nav a:hover {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+/* Contact Us Hero Section */
+.contact-hero {
+    background-image: url('images/contact-us-hero.jpg');
+}
+
+.contact-hero p {
+    color: var(--white) !important;
+}
+
+/* What We Do Hero Section */
+.what-we-do-hero {
+    background-image: url('images/what-we-do-hero.jpg');
+    background-position: right 65%;
 }
 
 .page-hero::before {
@@ -1067,6 +1095,126 @@ nav a:hover {
     width: 100%;
     padding: var(--spacing-sm);
     font-size: var(--font-size-body);
+}
+
+/* Checkbox Group Styles */
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    margin-top: var(--spacing-xs);
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.checkbox-item input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+    cursor: pointer;
+}
+
+.checkbox-item label {
+    margin: 0;
+    font-weight: normal;
+    cursor: pointer;
+    font-size: var(--font-size-body);
+    color: var(--text-color);
+}
+
+.checkbox-item:hover label {
+    color: var(--accent-color);
+}
+
+/* File Upload Styles */
+.file-upload-container {
+    border: 2px dashed var(--slate);
+    border-radius: 8px;
+    padding: var(--spacing-md);
+    background-color: var(--marble);
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.file-upload-container:hover {
+    border-color: var(--accent-color);
+    background-color: rgba(184, 115, 51, 0.05);
+}
+
+.file-input {
+    width: 100%;
+    padding: var(--spacing-sm);
+    border: 1px solid var(--slate);
+    border-radius: 5px;
+    background-color: var(--white);
+    cursor: pointer;
+}
+
+.file-input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px rgba(184, 115, 51, 0.2);
+}
+
+.file-upload-info {
+    margin-top: var(--spacing-sm);
+}
+
+.file-upload-info p {
+    font-size: 0.9em;
+    color: var(--slate);
+    margin: var(--spacing-xs) 0;
+    line-height: 1.4;
+}
+
+.file-list {
+    margin-top: var(--spacing-sm);
+}
+
+.file-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--white);
+    padding: var(--spacing-sm);
+    border-radius: 5px;
+    margin-bottom: var(--spacing-xs);
+    border: 1px solid var(--light-gray);
+}
+
+.file-item .file-name {
+    font-size: 0.9em;
+    color: var(--text-color);
+    flex: 1;
+    margin-right: var(--spacing-sm);
+}
+
+.file-item .file-size {
+    font-size: 0.8em;
+    color: var(--slate);
+    margin-right: var(--spacing-sm);
+}
+
+.file-item .remove-file {
+    background: none;
+    border: none;
+    color: #dc3545;
+    cursor: pointer;
+    font-size: 1.2em;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+}
+
+.file-item .remove-file:hover {
+    background-color: rgba(220, 53, 69, 0.1);
 }
 
 /* Info Section */

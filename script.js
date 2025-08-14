@@ -1,5 +1,8 @@
 // Responsive Navigation System
 document.addEventListener('DOMContentLoaded', function () {
+    // Set current page indicator
+    setCurrentPageIndicator();
+
     // Mobile menu toggle functionality
     const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
     const nav = document.querySelector('nav');
@@ -17,10 +20,16 @@ document.addEventListener('DOMContentLoaded', function () {
             document.body.style.overflow = isExpanded ? 'hidden' : '';
         });
 
-        // Close menu when clicking on a link
+        // Close menu when clicking on a link (but not current page)
         const navLinks = nav.querySelectorAll('a');
         navLinks.forEach(link => {
-            link.addEventListener('click', function () {
+            link.addEventListener('click', function (e) {
+                // Don't close menu if clicking on current page link
+                if (link.classList.contains('current-page')) {
+                    e.preventDefault();
+                    return;
+                }
+
                 nav.classList.remove('active');
                 mobileMenuToggle.classList.remove('active');
                 mobileMenuToggle.setAttribute('aria-expanded', 'false');
@@ -69,6 +78,58 @@ document.addEventListener('DOMContentLoaded', function () {
         mainContent.id = 'main-content';
     }
 });
+
+// Set current page indicator in navigation
+function setCurrentPageIndicator() {
+    const navLinks = document.querySelectorAll('nav a');
+    const currentPage = getCurrentPage();
+
+    navLinks.forEach(link => {
+        const linkPage = getPageFromHref(link.getAttribute('href'));
+        if (linkPage === currentPage) {
+            link.classList.add('current-page');
+            link.setAttribute('aria-current', 'page');
+            link.setAttribute('tabindex', '-1'); // Make it non-focusable
+        }
+    });
+}
+
+// Get current page name
+function getCurrentPage() {
+    const path = window.location.pathname;
+    const filename = path.split('/').pop();
+
+    // Map filenames to page names
+    const pageMap = {
+        'index.html': 'home',
+        'main.html': 'home',
+        'what-we-do.html': 'what-we-do',
+        'scopes-materials.html': 'scopes-materials',
+        'project-portfolio.html': 'project-portfolio',
+        'contact-us.html': 'contact-us'
+    };
+
+    return pageMap[filename] || 'home';
+}
+
+// Get page name from href
+function getPageFromHref(href) {
+    if (!href) return '';
+
+    const filename = href.split('/').pop();
+
+    // Map filenames to page names
+    const pageMap = {
+        'index.html': 'home',
+        'main.html': 'home',
+        'what-we-do.html': 'what-we-do',
+        'scopes-materials.html': 'scopes-materials',
+        'project-portfolio.html': 'project-portfolio',
+        'contact-us.html': 'contact-us'
+    };
+
+    return pageMap[filename] || '';
+}
 
 // Responsive image loading with intersection observer
 function setupResponsiveImages() {
@@ -272,7 +333,6 @@ function updateSlideshowWithRandomImages() {
 
         // Handle image load errors
         img.onerror = function () {
-            console.warn(`Failed to load image: ${image.src}`);
             // Add a fallback background or placeholder
             this.style.backgroundColor = 'var(--marble)';
             this.style.display = 'flex';
@@ -289,7 +349,6 @@ function updateSlideshowWithRandomImages() {
                 const baseImage = `${basePath}.${extension}`;
 
                 if (baseImage !== image.src) {
-                    console.log(`Trying base image: ${baseImage}`);
                     this.src = baseImage;
                 }
             }
@@ -401,7 +460,6 @@ async function updateSlideshowImageSizes() {
         if (newSrc !== currentSrc) {
             // For .avif files, don't try responsive versions as they don't exist
             if (extension === 'avif') {
-                console.log(`Skipping responsive version for .avif file: ${currentSrc}`);
                 return;
             }
 
@@ -416,13 +474,11 @@ async function updateSlideshowImageSizes() {
                     const baseExists = await imageExists(baseImage);
                     if (baseExists) {
                         img.src = baseImage;
-                        console.log(`Using base image instead of responsive: ${baseImage}`);
                     } else {
                         // If neither exists, keep the current src
-                        console.warn(`Neither responsive nor base image found: ${newSrc}, keeping current: ${currentSrc}`);
                     }
                 } else {
-                    console.warn(`Responsive image not found: ${newSrc}, keeping current: ${currentSrc}`);
+                    // Keep current src if responsive version not found
                 }
             }
         }
@@ -764,7 +820,7 @@ function initImageModal() {
                 setupZoom();
             };
             img.onerror = function () {
-                console.error('Failed to load image:', img.src);
+                // Handle image load error silently
             };
         }
 
@@ -899,4 +955,97 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     initImageModal();
+
+    // Initialize file upload functionality
+    initFileUpload();
 });
+
+// File Upload Functionality
+function initFileUpload() {
+    const fileInput = document.getElementById('attachments');
+    const fileList = document.getElementById('file-list');
+
+    if (!fileInput || !fileList) return;
+
+    const maxFileSize = 10 * 1024 * 1024; // 10MB
+    const acceptedTypes = [
+        'application/pdf',
+        'application/msword',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'image/jpeg',
+        'image/jpg',
+        'image/png',
+        'image/gif',
+        'image/bmp',
+        'image/tiff',
+        'application/acad',
+        'image/vnd.dwg',
+        'application/zip',
+        'application/x-rar-compressed'
+    ];
+
+    fileInput.addEventListener('change', function (e) {
+        const files = Array.from(e.target.files);
+        fileList.innerHTML = '';
+
+        files.forEach((file, index) => {
+            // Validate file size
+            if (file.size > maxFileSize) {
+                alert(`File "${file.name}" is too large. Maximum size is 10MB.`);
+                return;
+            }
+
+            // Validate file type
+            if (!acceptedTypes.includes(file.type) && !file.name.match(/\.(pdf|doc|docx|jpg|jpeg|png|gif|bmp|tiff|dwg|dxf|zip|rar)$/i)) {
+                alert(`File "${file.name}" is not an accepted file type.`);
+                return;
+            }
+
+            // Create file item element
+            const fileItem = document.createElement('div');
+            fileItem.className = 'file-item';
+            fileItem.innerHTML = `
+                <span class="file-name">${file.name}</span>
+                <span class="file-size">${formatFileSize(file.size)}</span>
+                <button type="button" class="remove-file" onclick="removeFile(${index})" title="Remove file">×</button>
+            `;
+
+            fileList.appendChild(fileItem);
+        });
+    });
+}
+
+// Remove file from the list
+function removeFile(index) {
+    const fileInput = document.getElementById('attachments');
+    const fileList = document.getElementById('file-list');
+
+    if (!fileInput || !fileList) return;
+
+    // Create a new FileList without the removed file
+    const dt = new DataTransfer();
+    const files = Array.from(fileInput.files);
+
+    files.forEach((file, i) => {
+        if (i !== index) {
+            dt.items.add(file);
+        }
+    });
+
+    fileInput.files = dt.files;
+
+    // Re-trigger the change event to update the display
+    const event = new Event('change', { bubbles: true });
+    fileInput.dispatchEvent(event);
+}
+
+// Format file size for display
+function formatFileSize(bytes) {
+    if (bytes === 0) return '0 Bytes';
+
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
