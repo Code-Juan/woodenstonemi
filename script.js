@@ -247,13 +247,16 @@ function updateSlideshowWithRandomImages() {
             }
         }
 
-        // Create responsive srcset with all 4 versions
-        const srcset = [
-            `${basePath}-thumb.${extension} 400w`,
-            `${basePath}-gallery.${extension} 800w`,
-            `${basePath}-hero.${extension} 1200w`,
-            `${basePath}.${extension} 1600w`
-        ].filter(src => src.includes('400w') || src.includes('800w') || src.includes('1200w') || src.includes('1600w')).join(', ');
+        // Create responsive srcset with all 4 versions (skip for .avif files)
+        let srcset = '';
+        if (extension !== 'avif') {
+            srcset = [
+                `${basePath}-thumb.${extension} 400w`,
+                `${basePath}-gallery.${extension} 800w`,
+                `${basePath}-hero.${extension} 1200w`,
+                `${basePath}.${extension} 1600w`
+            ].filter(src => src.includes('400w') || src.includes('800w') || src.includes('1200w') || src.includes('1600w')).join(', ');
+        }
 
         // Use the original image to ensure it loads
         img.src = image.src;
@@ -396,6 +399,12 @@ async function updateSlideshowImageSizes() {
 
         // Only update if the src is different
         if (newSrc !== currentSrc) {
+            // For .avif files, don't try responsive versions as they don't exist
+            if (extension === 'avif') {
+                console.log(`Skipping responsive version for .avif file: ${currentSrc}`);
+                return;
+            }
+            
             // Check if the responsive version exists before using it
             const exists = await imageExists(newSrc);
             if (exists) {
