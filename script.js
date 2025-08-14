@@ -404,7 +404,7 @@ async function updateSlideshowImageSizes() {
                 console.log(`Skipping responsive version for .avif file: ${currentSrc}`);
                 return;
             }
-            
+
             // Check if the responsive version exists before using it
             const exists = await imageExists(newSrc);
             if (exists) {
@@ -607,8 +607,14 @@ function initProjectCarousels() {
         // Function to update carousel position
         function updateCarousel() {
             const slidesToShow = getSlidesToShow();
-            const slideWidth = 100 / slidesToShow;
-            track.style.transform = `translateX(-${currentSlide * slideWidth}%)`;
+            
+            // Calculate the actual slide width in pixels
+            const carouselWidth = carousel.offsetWidth;
+            const slideWidthPx = carouselWidth / slidesToShow;
+            
+            // Move by the full width of one slide
+            const translateX = currentSlide * slideWidthPx;
+            track.style.transform = `translateX(-${translateX}px)`;
 
             // Update active slide class
             slides.forEach((slide, index) => {
