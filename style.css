@@ -2013,6 +2013,11 @@ textarea:focus {
     -webkit-tap-highlight-color: transparent;
 }
 
+/* Specific positioning for bath accessories image */
+.circular-image img[alt="Bath Accessories"] {
+    object-position: center 90%;
+}
+
 .material-content {
     flex: 1;
 }
