@@ -125,8 +125,6 @@ body.loading {
     padding: 2rem;
     position: relative;
     z-index: 30;
-    margin-left: calc(-50vw + 50%);
-    padding-left: calc(50vw - 50% + 2rem);
     max-height: 500px;
 }
 
@@ -232,9 +230,24 @@ body.loading {
 
 /* Page Hero Sections */
 .page-hero {
-    background-color: var(--marble);
+    background-image: url('images/what-we-do-hero.jpg');
+    background-size: cover;
+    background-position: right 65%;
+    background-repeat: no-repeat;
     padding: 4rem 2rem;
     text-align: center;
+    position: relative;
+}
+
+.page-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 1;
 }
 
 .page-hero h1 {
@@ -280,6 +293,53 @@ body.loading {
     font-size: 1.1rem;
     line-height: 1.6;
     color: var(--text-color);
+}
+
+/* Full Package Service Section */
+.full-package-section {
+    padding: 4rem 0;
+    margin-bottom: 2rem;
+    background-color: var(--white);
+}
+
+/* Additional Services Section */
+.additional-services-section {
+    padding: 4rem 0;
+    background-color: var(--marble);
+}
+
+.additional-services-section h2 {
+    font-family: 'Merriweather', serif;
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 3rem;
+    color: var(--accent-color);
+}
+
+.additional-services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.service-item {
+    background-color: var(--white);
+    padding: 2rem;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.service-item h3 {
+    font-family: 'Merriweather', serif;
+    color: var(--accent-color);
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.service-item p {
+    line-height: 1.6;
+    color: var(--text-color);
+    margin: 0;
 }
 
 /* Call to Action Section */
@@ -1259,6 +1319,13 @@ footer {
     z-index: 2;
     max-width: 800px;
     padding: 0 2rem;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.page-hero .hero-content h1 {
+    color: var(--white);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
 }
 
 .hero-content h1 {

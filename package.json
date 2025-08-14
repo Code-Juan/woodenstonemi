@@ -11,7 +11,15 @@
         "process-new": "node upload-handler.js --process-existing",
         "dev": "concurrently \"python -m http.server 8000\" \"npm run watch\"",
         "build": "npm run optimize-all && echo 'Build process complete'",
-        "install-deps": "npm install chokidar sharp"
+        "install-deps": "npm install chokidar sharp",
+        "debug": "cross-env DEBUG=* node upload-handler.js",
+        "debug-dev": "cross-env DEBUG=* concurrently \"python -m http.server 8000\" \"npm run debug\"",
+        "debug-images": "cross-env DEBUG=sharp,image-processor node optimize-images.js",
+        "dev-server": "python -m http.server 8000 --bind 127.0.0.1",
+        "dev-debug": "cross-env DEBUG=* npm run dev-server",
+        "debug-server": "cross-env DEBUG=* node debug-server.js",
+        "debug-upload": "cross-env DEBUG=* node debug-upload-handler.js",
+        "cleanup": "node -e \"const fs=require('fs');const path=require('path');const files=fs.readdirSync('./images');let deleted=0;files.forEach(f=>{if(fs.statSync(path.join('./images',f)).isFile()&&f.match(/-thumb.*-gallery|-gallery.*-thumb|-hero.*-gallery|-gallery.*-hero|-thumb.*-hero|-hero.*-thumb/)){fs.unlinkSync(path.join('./images',f));deleted++;}});console.log('Deleted',deleted,'duplicate files');\""
     },
     "keywords": [
         "construction",
@@ -23,13 +31,15 @@
     "author": "The Wooden Stone LLC",
     "license": "MIT",
     "devDependencies": {
-        "sharp": "^0.32.0",
         "chokidar": "^3.5.3",
         "concurrently": "^8.2.0",
+        "cross-env": "^10.0.0",
+        "debug": "^4.4.1",
         "imagemin": "^8.0.1",
         "imagemin-mozjpeg": "^10.0.0",
         "imagemin-pngquant": "^9.0.2",
-        "imagemin-webp": "^8.0.0"
+        "imagemin-webp": "^8.0.0",
+        "sharp": "^0.32.0"
     },
     "engines": {
         "node": ">=14.0.0"

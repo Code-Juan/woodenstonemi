@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Test - The Wooden Stone</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .test-button {
+            background: #0066cc;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        .test-button:hover {
+            background: #0052a3;
+        }
+
+        .error-button {
+            background: #d32f2f;
+        }
+
+        .warning-button {
+            background: #f57c00;
+        }
+
+        .success-button {
+            background: #388e3c;
+        }
+
+        .debug-info {
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+            margin: 10px 0;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #333;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        [data-theme="dark"] {
+            background: #1a1a1a;
+            color: #fff;
+        }
+
+        [data-theme="dark"] .test-section {
+            border-color: #444;
+            background: #2a2a2a;
+        }
+
+        [data-theme="dark"] .debug-info {
+            background: #333;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <button id="theme-toggle" class="theme-toggle">🌙</button>
+
+    <h1>🔍 Debug Test Page</h1>
+    <p>This page tests the debug functionality for The Wooden Stone website.</p>
+
+    <div class="test-section">
+        <h2>Debug Utilities Test</h2>
+        <p>Click the buttons below to test different debug features:</p>
+
+        <button class="test-button" onclick="testInfo()">Test Info Log</button>
+        <button class="test-button" onclick="testWarning()">Test Warning</button>
+        <button class="test-button error-button" onclick="testError()">Test Error</button>
+        <button class="test-button success-button" onclick="testPerformance()">Test Performance</button>
+        <button class="test-button" onclick="showDebugStats()">Show Debug Stats</button>
+        <button class="test-button" onclick="testImageLoading()">Test Image Loading</button>
+    </div>
+
+    <div class="test-section">
+        <h2>Image Optimization Test</h2>
+        <p>Testing image loading and optimization detection:</p>
+
+        <!-- Small optimized image -->
+        <img src="images/project-portfolio.jpg" alt="Project Portfolio"
+            style="width: 200px; height: 150px; object-fit: cover;">
+
+        <!-- Large image for optimization warning -->
+        <img src="images/quality-inspection.jpg" alt="Quality Inspection"
+            style="width: 400px; height: 300px; object-fit: cover;">
+
+        <!-- Missing alt attribute for warning -->
+        <img src="images/estimating-blueprint.jpg" style="width: 200px; height: 150px; object-fit: cover;">
+    </div>
+
+    <div class="test-section">
+        <h2>Form Validation Test</h2>
+        <form onsubmit="testFormSubmission(event)">
+            <div>
+                <label for="name">Name (required):</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div>
+                <label for="email">Email (required):</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div>
+                <label for="message">Message:</label>
+                <textarea id="message" name="message"></textarea>
+            </div>
+            <button type="submit" class="test-button success-button">Submit Form</button>
+        </form>
+    </div>
+
+    <div class="test-section">
+        <h2>Navigation Test</h2>
+        <nav>
+            <a href="#section1">Section 1</a>
+            <a href="#section2">Section 2</a>
+            <a href="index.html">Home Page</a>
+            <a href="contact-us.html">Contact Us</a>
+        </nav>
+    </div>
+
+    <div class="test-section">
+        <h2>Debug Information</h2>
+        <div id="debug-output" class="debug-info">
+            Debug information will appear here...
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; <span id="year"></span> The Wooden Stone LLC. All rights reserved.</p>
+    </footer>
+
+    <!-- Load the debug script -->
+    <script src="debug-script.js"></script>
+
+    <script>
+        // Test functions
+        function testInfo() {
+            if (window.debugUtils) {
+                window.debugUtils.logger.info('This is a test info message');
+                updateDebugOutput('Info message logged - check console');
+            } else {
+                updateDebugOutput('Debug utilities not available');
+            }
+        }
+
+        function testWarning() {
+            if (window.debugUtils) {
+                window.debugUtils.logger.warn('This is a test warning message');
+                updateDebugOutput('Warning message logged - check console');
+            } else {
+                updateDebugOutput('Debug utilities not available');
+            }
+        }
+
+        function testError() {
+            if (window.debugUtils) {
+                window.debugUtils.logger.error('This is a test error message');
+                updateDebugOutput('Error message logged - check console');
+            } else {
+                updateDebugOutput('Debug utilities not available');
+            }
+        }
+
+        function testPerformance() {
+            if (window.debugUtils) {
+                window.debugUtils.performance.measure('test-operation', async () => {
+                    // Simulate some work
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                    console.log('Performance test completed');
+                })();
+                updateDebugOutput('Performance test executed - check console');
+            } else {
+                updateDebugOutput('Debug utilities not available');
+            }
+        }
+
+        function showDebugStats() {
+            if (window.debugUtils) {
+                const stats = window.debugUtils.getStats();
+                updateDebugOutput(JSON.stringify(stats, null, 2));
+            } else {
+                updateDebugOutput('Debug utilities not available');
+            }
+        }
+
+        function testImageLoading() {
+            // Create a test image to trigger loading events
+            const img = new Image();
+            img.src = 'images/project-portfolio.jpg';
+            img.onload = () => {
+                updateDebugOutput('Test image loaded successfully');
+            };
+            img.onerror = () => {
+                updateDebugOutput('Test image failed to load');
+            };
+        }
+
+        function testFormSubmission(event) {
+            event.preventDefault();
+            updateDebugOutput('Form submission test - check console for validation logs');
+        }
+
+        function updateDebugOutput(message) {
+            const output = document.getElementById('debug-output');
+            output.textContent = message;
+        }
+
+        // Initialize debug output
+        setTimeout(() => {
+            if (window.debugUtils) {
+                updateDebugOutput('Debug system loaded successfully! Check browser console for detailed logs.');
+            } else {
+                updateDebugOutput('Debug system not loaded. Check if debug-script.js is accessible.');
+            }
+        }, 1000);
+    </script>
+</body>
+
+</html>
