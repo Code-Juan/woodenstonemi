@@ -227,9 +227,25 @@ function updateSlideshowWithRandomImages() {
         img.alt = image.alt;
         img.loading = 'lazy';
 
-        // Get the base path and extension
-        const basePath = image.src.replace(/\.(jpg|png|webp)$/, '');
-        const extension = image.src.match(/\.(jpg|png|webp)$/)?.[1] || 'jpg';
+        // Get the base path and extension correctly
+        let basePath, extension;
+
+        if (image.src.match(/-(thumb|gallery|hero)\.(jpg|png|webp|avif)$/)) {
+            // If the image src already has a suffix, remove it to get the base
+            basePath = image.src.replace(/-(thumb|gallery|hero)\.(jpg|png|webp|avif)$/, '');
+            extension = image.src.match(/\.(jpg|png|webp|avif)$/)?.[1] || 'jpg';
+        } else {
+            // If no suffix, extract the base path and extension
+            const match = image.src.match(/^(.+)\.(jpg|png|webp|avif)$/);
+            if (match) {
+                basePath = match[1];
+                extension = match[2];
+            } else {
+                // Fallback if we can't parse the filename
+                basePath = image.src.replace(/\.(jpg|png|webp|avif)$/, '');
+                extension = 'jpg';
+            }
+        }
 
         // Create responsive srcset with all 4 versions
         const srcset = [
@@ -239,7 +255,7 @@ function updateSlideshowWithRandomImages() {
             `${basePath}.${extension} 1600w`
         ].filter(src => src.includes('400w') || src.includes('800w') || src.includes('1200w') || src.includes('1600w')).join(', ');
 
-        // For now, use the original image to ensure it loads
+        // Use the original image to ensure it loads
         img.src = image.src;
 
 
@@ -262,6 +278,18 @@ function updateSlideshowWithRandomImages() {
             this.style.color = 'var(--slate)';
             this.style.fontSize = '1rem';
             this.alt = 'Image not available';
+
+            // Try to load the base image if this was a responsive version
+            if (image.src.includes('-thumb.') || image.src.includes('-gallery.') || image.src.includes('-hero.')) {
+                const basePath = image.src.replace(/-(thumb|gallery|hero)\.(jpg|png|webp|avif)$/, '');
+                const extension = image.src.match(/\.(jpg|png|webp|avif)$/)?.[1] || 'jpg';
+                const baseImage = `${basePath}.${extension}`;
+
+                if (baseImage !== image.src) {
+                    console.log(`Trying base image: ${baseImage}`);
+                    this.src = baseImage;
+                }
+            }
         };
 
         slide.appendChild(img);
@@ -285,15 +313,70 @@ function updateSlideshowWithRandomImages() {
     }
 }
 
+// Function to check if an image exists
+function imageExists(url) {
+    return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => resolve(true);
+        img.onerror = () => resolve(false);
+        img.src = url;
+    });
+}
+
+// Cache for responsive image availability
+const responsiveImageCache = new Map();
+
+// Function to check if responsive versions exist for a base image
+async function checkResponsiveVersions(basePath, extension) {
+    const cacheKey = `${basePath}.${extension}`;
+
+    if (responsiveImageCache.has(cacheKey)) {
+        return responsiveImageCache.get(cacheKey);
+    }
+
+    const versions = {
+        thumb: false,
+        gallery: false,
+        hero: false
+    };
+
+    // Check each version
+    versions.thumb = await imageExists(`${basePath}-thumb.${extension}`);
+    versions.gallery = await imageExists(`${basePath}-gallery.${extension}`);
+    versions.hero = await imageExists(`${basePath}-hero.${extension}`);
+
+    responsiveImageCache.set(cacheKey, versions);
+    return versions;
+}
+
 // Function to update slideshow image sizes based on current viewport
-function updateSlideshowImageSizes() {
+async function updateSlideshowImageSizes() {
     const slides = document.querySelectorAll('.slide img');
     const viewportWidth = window.innerWidth;
 
-    slides.forEach(img => {
+    for (const img of slides) {
         const currentSrc = img.src;
-        const basePath = currentSrc.replace(/-(thumb|gallery|hero)\.(jpg|png|webp)$/, '');
-        const extension = currentSrc.match(/\.(jpg|png|webp)$/)?.[1] || 'jpg';
+
+        // Extract the base path and extension correctly
+        // Handle files that already have -thumb, -gallery, or -hero suffixes
+        let basePath, extension;
+
+        if (currentSrc.match(/-(thumb|gallery|hero)\.(jpg|png|webp|avif)$/)) {
+            // If the current src already has a suffix, remove it to get the base
+            basePath = currentSrc.replace(/-(thumb|gallery|hero)\.(jpg|png|webp|avif)$/, '');
+            extension = currentSrc.match(/\.(jpg|png|webp|avif)$/)?.[1] || 'jpg';
+        } else {
+            // If no suffix, extract the base path and extension
+            const match = currentSrc.match(/^(.+)\.(jpg|png|webp|avif)$/);
+            if (match) {
+                basePath = match[1];
+                extension = match[2];
+            } else {
+                // Fallback if we can't parse the filename
+                basePath = currentSrc.replace(/\.(jpg|png|webp|avif)$/, '');
+                extension = 'jpg';
+            }
+        }
 
         let newSrc = currentSrc;
 
@@ -313,9 +396,28 @@ function updateSlideshowImageSizes() {
 
         // Only update if the src is different
         if (newSrc !== currentSrc) {
-            img.src = newSrc;
+            // Check if the responsive version exists before using it
+            const exists = await imageExists(newSrc);
+            if (exists) {
+                img.src = newSrc;
+            } else {
+                // If responsive version doesn't exist, try to use the base image
+                const baseImage = `${basePath}.${extension}`;
+                if (baseImage !== currentSrc) {
+                    const baseExists = await imageExists(baseImage);
+                    if (baseExists) {
+                        img.src = baseImage;
+                        console.log(`Using base image instead of responsive: ${baseImage}`);
+                    } else {
+                        // If neither exists, keep the current src
+                        console.warn(`Neither responsive nor base image found: ${newSrc}, keeping current: ${currentSrc}`);
+                    }
+                } else {
+                    console.warn(`Responsive image not found: ${newSrc}, keeping current: ${currentSrc}`);
+                }
+            }
         }
-    });
+    }
 }
 
 // Progressive image loading for better UX
@@ -414,6 +516,9 @@ function initSlideshow() {
         }
     });
 
+    // Initialize image sizes for current viewport
+    updateSlideshowImageSizes();
+
     function nextSlide() {
         if (slides.length === 0) return;
 
@@ -437,8 +542,8 @@ function initSlideshow() {
     let resizeTimer;
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(() => {
-            updateSlideshowImageSizes();
+        resizeTimer = setTimeout(async () => {
+            await updateSlideshowImageSizes();
         }, 250);
     });
 }
