@@ -12,9 +12,6 @@ async function build() {
         // Copy src/assets to dist/assets
         await fs.copy('src/assets', 'dist/assets');
 
-        // Copy src/scripts to dist/scripts
-        await fs.copy('src/scripts', 'dist/scripts');
-
         // Copy images to dist/images
         await fs.copy('images', 'dist/images');
 
