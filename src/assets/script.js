@@ -103,15 +103,17 @@ function setCurrentPageIndicator() {
         link.removeAttribute('tabindex');
     });
 
-    // Set current page indicator
-    navLinks.forEach(link => {
-        const linkPage = getPageFromHref(link.getAttribute('href'));
-        if (linkPage === currentPage) {
-            link.classList.add('current-page');
-            link.setAttribute('aria-current', 'page');
-            link.setAttribute('tabindex', '-1'); // Make it non-focusable
-        }
-    });
+    // Set current page indicator (but not for home page since there's no "Home" nav link)
+    if (currentPage !== 'home') {
+        navLinks.forEach(link => {
+            const linkPage = getPageFromHref(link.getAttribute('href'));
+            if (linkPage === currentPage) {
+                link.classList.add('current-page');
+                link.setAttribute('aria-current', 'page');
+                link.setAttribute('tabindex', '-1'); // Make it non-focusable
+            }
+        });
+    }
 }
 
 // Get current page name
