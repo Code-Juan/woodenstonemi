@@ -70,8 +70,14 @@
                 <h2>Request a Quote</h2>
                 <p>Fill out the form below and we'll get back to you with a detailed quote for your project.</p>
 
-                <form class="contact-form" id="contactForm" action="#" method="POST">
+                <form class="contact-form" id="contactForm" action="#" method="POST" enctype="multipart/form-data">
                     <div id="form-message" class="form-message" style="display: none;"></div>
+
+                    <!-- Honeypot field for spam protection (hidden from users) -->
+                    <div style="display: none;">
+                        <input type="text" name="website" tabindex="-1" autocomplete="off">
+                    </div>
+
                     <div class="form-row">
                         <div class="form-group">
                             <label for="name">Name *</label>
@@ -221,7 +227,7 @@
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const form = document.getElementById('contactForm');
             const submitBtn = document.getElementById('submitBtn');
             const loadingSpinner = document.getElementById('loading-spinner');
@@ -231,7 +237,7 @@
                 formMessage.textContent = message;
                 formMessage.className = `form-message ${type}`;
                 formMessage.style.display = 'block';
-                
+
                 if (type === 'success') {
                     formMessage.style.backgroundColor = '#d4edda';
                     formMessage.style.color = '#155724';
@@ -253,37 +259,29 @@
                 }
             }
 
-            form.addEventListener('submit', async function(e) {
+            form.addEventListener('submit', async function (e) {
                 e.preventDefault();
-                
+
                 setLoading(true);
                 formMessage.style.display = 'none';
 
                 // Collect form data
                 const formData = new FormData(form);
-                const data = {
-                    name: formData.get('name'),
-                    email: formData.get('email'),
-                    phone: formData.get('phone') || '',
-                    company: formData.get('company'),
-                    projectType: formData.get('projectType'),
-                    message: formData.get('projectDescription'),
-                    preferredContact: 'email' // Default to email
-                };
 
-                // Add interested scopes to message
+                // Add interested scopes to form data
                 const interestedScopes = formData.getAll('interestedScopes');
                 if (interestedScopes.length > 0) {
-                    data.message += '\n\nInterested Scopes:\n' + interestedScopes.join(', ');
+                    // Remove existing interestedScopes and add them back
+                    formData.delete('interestedScopes');
+                    interestedScopes.forEach(scope => {
+                        formData.append('interestedScopes', scope);
+                    });
                 }
 
                 try {
                     const response = await fetch('/api/contact/submit', {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(data)
+                        body: formData // Send as FormData to handle file uploads
                     });
 
                     const result = await response.json();
@@ -305,6 +303,41 @@
                     setLoading(false);
                 }
             });
+
+            // File upload handling
+            const fileInput = document.getElementById('attachments');
+            const fileList = document.getElementById('file-list');
+
+            fileInput.addEventListener('change', function () {
+                fileList.innerHTML = '';
+                const files = Array.from(this.files);
+
+                files.forEach((file, index) => {
+                    const fileItem = document.createElement('div');
+                    fileItem.className = 'file-item';
+                    fileItem.innerHTML = `
+                        <span class="file-name">${file.name}</span>
+                        <span class="file-size">(${(file.size / 1024 / 1024).toFixed(2)} MB)</span>
+                        <button type="button" class="remove-file" onclick="removeFile(${index})">×</button>
+                    `;
+                    fileList.appendChild(fileItem);
+                });
+            });
+
+            // Global function to remove files
+            window.removeFile = function (index) {
+                const dt = new DataTransfer();
+                const files = Array.from(fileInput.files);
+
+                files.forEach((file, i) => {
+                    if (i !== index) {
+                        dt.items.add(file);
+                    }
+                });
+
+                fileInput.files = dt.files;
+                fileInput.dispatchEvent(new Event('change'));
+            };
 
             // Set current year
             document.getElementById('year').textContent = new Date().getFullYear();
