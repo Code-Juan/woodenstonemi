@@ -928,14 +928,14 @@ document.addEventListener('DOMContentLoaded', () => {
     setupResponsiveImages();
     setupContainerQueries();
 
-    // Initialize slideshow only if slideshow container exists (homepage only)
-    const slideshowContainer = document.querySelector('.hero-slideshow .slideshow-container');
-    if (slideshowContainer) {
-        console.log('Slideshow container found, initializing...');
-        updateSlideshowWithRandomImages();
-        initSlideshow();
-    } else {
-        console.log('Slideshow container not found');
+    // Initialize slideshow only on homepage (index.html)
+    if (window.location.pathname.endsWith('index.html') || window.location.pathname === '/' || window.location.pathname === '') {
+        const slideshowContainer = document.querySelector('.hero-slideshow .slideshow-container');
+        if (slideshowContainer) {
+            console.log('Slideshow container found, initializing...');
+            updateSlideshowWithRandomImages();
+            initSlideshow();
+        }
     }
 
     // Initialize other features
@@ -960,102 +960,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initImageModal();
 
-    // Initialize file upload functionality
-    initFileUpload();
-
     // Initialize contact form functionality
     initContactForm();
 });
 
-// File Upload Functionality
-function initFileUpload() {
-    const fileInput = document.getElementById('attachments');
-    const fileList = document.getElementById('file-list');
 
-    if (!fileInput || !fileList) return;
-
-    const maxFileSize = 10 * 1024 * 1024; // 10MB
-    const acceptedTypes = [
-        'application/pdf',
-        'application/msword',
-        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-        'image/jpeg',
-        'image/jpg',
-        'image/png',
-        'image/gif',
-        'image/bmp',
-        'image/tiff',
-        'application/acad',
-        'image/vnd.dwg',
-        'application/zip',
-        'application/x-rar-compressed'
-    ];
-
-    fileInput.addEventListener('change', function (e) {
-        const files = Array.from(e.target.files);
-        fileList.innerHTML = '';
-
-        files.forEach((file, index) => {
-            // Validate file size
-            if (file.size > maxFileSize) {
-                alert(`File "${file.name}" is too large. Maximum size is 10MB.`);
-                return;
-            }
-
-            // Validate file type
-            if (!acceptedTypes.includes(file.type) && !file.name.match(/\.(pdf|doc|docx|jpg|jpeg|png|gif|bmp|tiff|dwg|dxf|zip|rar)$/i)) {
-                alert(`File "${file.name}" is not an accepted file type.`);
-                return;
-            }
-
-            // Create file item element
-            const fileItem = document.createElement('div');
-            fileItem.className = 'file-item';
-            fileItem.innerHTML = `
-                <span class="file-name">${file.name}</span>
-                <span class="file-size">${formatFileSize(file.size)}</span>
-                <button type="button" class="remove-file" onclick="removeFile(${index})" title="Remove file">×</button>
-            `;
-
-            fileList.appendChild(fileItem);
-        });
-    });
-}
-
-// Remove file from the list
-function removeFile(index) {
-    const fileInput = document.getElementById('attachments');
-    const fileList = document.getElementById('file-list');
-
-    if (!fileInput || !fileList) return;
-
-    // Create a new FileList without the removed file
-    const dt = new DataTransfer();
-    const files = Array.from(fileInput.files);
-
-    files.forEach((file, i) => {
-        if (i !== index) {
-            dt.items.add(file);
-        }
-    });
-
-    fileInput.files = dt.files;
-
-    // Re-trigger the change event to update the display
-    const event = new Event('change', { bubbles: true });
-    fileInput.dispatchEvent(event);
-}
-
-// Format file size for display
-function formatFileSize(bytes) {
-    if (bytes === 0) return '0 Bytes';
-
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-}
 
 // Contact Form Email Functionality - DISABLED (Using Postmark API instead)
 function initContactForm() {

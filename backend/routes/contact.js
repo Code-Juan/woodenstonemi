@@ -238,7 +238,7 @@ router.post('/submit', upload.array('attachments', parseInt(process.env.MAX_FILE
         const emailResponse = await postmarkClient.sendEmail({
             From: `"The Wooden Stone LLC Website" <${process.env.FROM_EMAIL || 'noreply@woodenstonemi.com'}>`,
             To: process.env.TO_EMAIL || 'info@woodenstonemi.com',
-            Subject: `🛠️ New Contact Form Submission - ${name} (${projectType || 'General Inquiry'})`,
+            Subject: `🛠️ New Contact Form Submission - ${name} (${formatProjectType(projectType) || 'General Inquiry'})`,
             HtmlBody: emailContent,
             TextBody: `
 New Contact Form Submission
@@ -247,9 +247,9 @@ Name: ${name}
 Email: ${email}
 ${phone ? `Phone: ${phone}` : ''}
 ${company ? `Company: ${company}` : ''}
-${projectType ? `Project Type: ${projectType}` : ''}
+${projectType ? `Project Type: ${formatProjectType(projectType)}` : ''}
 ${preferredContact ? `Preferred Contact: ${preferredContact}` : ''}
-${interestedScopes.length > 0 ? `Interested Scopes: ${interestedScopes.join(', ')}` : ''}
+${interestedScopes.length > 0 ? `Interested Scopes: ${interestedScopes.map(formatScope).join(', ')}` : ''}
 
 Project Description:
 ${projectDescription}

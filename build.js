@@ -19,7 +19,6 @@ async function build() {
         
         // Copy logo files to dist
         await fs.copy('The Wooden Stone Logo (Transparent).svg', 'dist/The Wooden Stone Logo (Transparent).svg');
-        await fs.copy('The Wooden Stone Logo (Resized).svg', 'dist/The Wooden Stone Logo (Resized).svg');
         await fs.copy('Wooden Stone Logo.svg', 'dist/Wooden Stone Logo.svg');
         
         // Copy CNAME if it exists
