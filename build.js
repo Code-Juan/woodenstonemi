@@ -39,6 +39,21 @@ async function build() {
             await fs.copy('sitemap.xml', 'dist/sitemap.xml');
         }
 
+        // Remove duplicate .html files to avoid SEO conflicts
+        const duplicateFiles = [
+            'dist/what-we-do.html',
+            'dist/scopes-materials.html', 
+            'dist/project-portfolio.html',
+            'dist/contact-us.html'
+        ];
+
+        for (const file of duplicateFiles) {
+            if (await fs.pathExists(file)) {
+                await fs.remove(file);
+                console.log(`Removed duplicate file: ${file}`);
+            }
+        }
+
     } catch (error) {
         console.error('Build failed:', error);
         process.exit(1);

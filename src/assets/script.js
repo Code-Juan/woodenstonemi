@@ -160,7 +160,7 @@ function getPageFromFilename(filename) {
 // Get page name from href
 function getPageFromHref(href) {
     if (!href) return '';
-    
+
     // Turn it into a pathname (handles absolute/relative)
     const pathname = href.includes('://') ? new URL(href, location.origin).pathname : href;
 
