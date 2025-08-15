@@ -84,6 +84,26 @@ function setCurrentPageIndicator() {
     const navLinks = document.querySelectorAll('nav a');
     const currentPage = getCurrentPage();
 
+    // Check if there's already a hardcoded current-page indicator
+    const existingCurrentPage = document.querySelector('nav a.current-page');
+
+    if (existingCurrentPage) {
+        // If there's already a hardcoded current page, verify it's correct
+        const existingPage = getPageFromHref(existingCurrentPage.getAttribute('href'));
+        if (existingPage === currentPage) {
+            // The hardcoded indicator is correct, no need to change anything
+            return;
+        }
+    }
+
+    // Clear any existing current-page classes
+    navLinks.forEach(link => {
+        link.classList.remove('current-page');
+        link.removeAttribute('aria-current');
+        link.removeAttribute('tabindex');
+    });
+
+    // Set current page indicator
     navLinks.forEach(link => {
         const linkPage = getPageFromHref(link.getAttribute('href'));
         if (linkPage === currentPage) {
@@ -99,6 +119,26 @@ function getCurrentPage() {
     const path = window.location.pathname;
     const filename = path.split('/').pop();
 
+    // Handle cases where pathname might be empty or just "/"
+    if (!filename || filename === '') {
+        // Check if we're on the root page
+        if (path === '/' || path === '') {
+            return 'home';
+        }
+        // Try to get from the full URL
+        const fullUrl = window.location.href;
+        const urlFilename = fullUrl.split('/').pop();
+        if (urlFilename && urlFilename.includes('.html')) {
+            return getPageFromFilename(urlFilename);
+        }
+        return 'home';
+    }
+
+    return getPageFromFilename(filename);
+}
+
+// Helper function to get page name from filename
+function getPageFromFilename(filename) {
     // Map filenames to page names
     const pageMap = {
         'index.html': 'home',
@@ -117,18 +157,7 @@ function getPageFromHref(href) {
     if (!href) return '';
 
     const filename = href.split('/').pop();
-
-    // Map filenames to page names
-    const pageMap = {
-        'index.html': 'home',
-        'main.html': 'home',
-        'what-we-do.html': 'what-we-do',
-        'scopes-materials.html': 'scopes-materials',
-        'project-portfolio.html': 'project-portfolio',
-        'contact-us.html': 'contact-us'
-    };
-
-    return pageMap[filename] || '';
+    return getPageFromFilename(filename);
 }
 
 // Responsive image loading with intersection observer
@@ -201,7 +230,7 @@ function getRandomInteriorImages(count = 6) {
 
                     if (!shouldExclude) {
                         allImages.push({
-                            src: `../../${imagePath}`,
+                            src: imagePath.startsWith('images/') ? imagePath : `images/${imagePath}`,
                             alt: `${project.name} - Project View`,
                             projectName: project.name
                         });
@@ -215,32 +244,32 @@ function getRandomInteriorImages(count = 6) {
     if (allImages.length < count) {
         const fallbackImages = [
             {
-                src: "../../images/Previous Jobs/1. Woodview Commons/(Kitchen 1) woodview-commons-ann-arbor-mi-building-photo.jpg",
+                src: "images/Previous Jobs/1. Woodview Commons/(Kitchen 1) woodview-commons-ann-arbor-mi-building-photo.jpg",
                 alt: "Woodview Commons Kitchen",
                 projectName: "WOODVIEW COMMONS FLATS"
             },
             {
-                src: "../../images/Previous Jobs/1. Woodview Commons/(Bath 1) woodview-commons-ann-arbor-mi-building-photo.jpg",
+                src: "images/Previous Jobs/1. Woodview Commons/(Bath 1) woodview-commons-ann-arbor-mi-building-photo.jpg",
                 alt: "Woodview Commons Bathroom",
                 projectName: "WOODVIEW COMMONS FLATS"
             },
             {
-                src: "../../images/Previous Jobs/4. 3740 2nd Ave Apartments/Kitchen1 VIEW_3740 Apartments.jpg",
+                src: "images/Previous Jobs/4. 3740 2nd Ave Apartments/Kitchen1 VIEW_3740 Apartments.jpg",
                 alt: "3740 2nd Ave Kitchen",
                 projectName: "3740 2ND AVE APARTMENTS"
             },
             {
-                src: "../../images/Previous Jobs/4. 3740 2nd Ave Apartments/bath1 VIEW_3740 Apartments.jpg",
+                src: "images/Previous Jobs/4. 3740 2nd Ave Apartments/bath1 VIEW_3740 Apartments.jpg",
                 alt: "3740 2nd Ave Bathroom",
                 projectName: "3740 2ND AVE APARTMENTS"
             },
             {
-                src: "../../images/Previous Jobs/19. Higgenbotham Garden Apartments/view-of-kitchen.jpg",
+                src: "images/Previous Jobs/19. Higgenbotham Garden Apartments/view-of-kitchen.jpg",
                 alt: "Higgenbotham Garden Apartments Kitchen",
                 projectName: "HIGGENBOTHAM GARDEN APARTMENTS"
             },
             {
-                src: "../../images/Previous Jobs/20. Higgenbotham School Apartments/commons-render.jpg",
+                src: "images/Previous Jobs/20. Higgenbotham School Apartments/commons-render.png",
                 alt: "Higgenbotham School Apartments Commons",
                 projectName: "HIGGENBOTHAM SCHOOL APARTMENTS"
             }

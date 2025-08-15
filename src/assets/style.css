@@ -203,12 +203,16 @@ nav a.current-page {
     font-weight: bold;
     cursor: default;
     pointer-events: none;
-    opacity: 0.7;
+    opacity: 1;
+    text-decoration: none;
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 2px;
 }
 
 nav a.current-page:hover {
     color: var(--accent-color);
     text-decoration: none;
+    cursor: default;
 }
 
 /* Mobile Menu Toggle */
@@ -1430,6 +1434,20 @@ body.loading {
 
     nav a:last-child {
         border-bottom: none;
+    }
+
+    /* Mobile current page indicator */
+    nav a.current-page {
+        background-color: var(--accent-color);
+        color: white;
+        border-bottom: none;
+        border-radius: 4px;
+        margin: 2px 0;
+    }
+
+    nav a.current-page:hover {
+        background-color: var(--accent-color);
+        color: white;
     }
 
     /* Mobile Hero */
