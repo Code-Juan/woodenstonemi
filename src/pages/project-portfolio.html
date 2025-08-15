@@ -27,10 +27,16 @@
             const filename = path.split('/').pop() || 'index.html';
             const pageMap = {
                 'index.html': 'home',
+                'index': 'home',
+                '': 'home',
                 'what-we-do.html': 'what-we-do',
+                'what-we-do': 'what-we-do',
                 'scopes-materials.html': 'scopes-materials',
+                'scopes-materials': 'scopes-materials',
                 'project-portfolio.html': 'project-portfolio',
-                'contact-us.html': 'contact-us'
+                'project-portfolio': 'project-portfolio',
+                'contact-us.html': 'contact-us',
+                'contact-us': 'contact-us'
             };
             const currentPage = pageMap[filename] || 'home';
 
