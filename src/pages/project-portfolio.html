@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Portfolio - The Wooden Stone LLC</title>
+
+    <!-- Resource hints for faster loading -->
+    <link rel="preload" href="assets/style.css" as="style">
+    <link rel="preload" href="assets/script.js" as="script">
+    <link rel="preload" href="The Wooden Stone Logo (Transparent).svg" as="image">
+
+    <!-- DNS prefetch for external resources -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+
+    <!-- Font preconnects to prevent FOIT/FOUT -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Inline script to prevent navigation flash -->
+    <script>
+        // Immediate current page detection to prevent flash
+        (function () {
+            const path = window.location.pathname;
+            const filename = path.split('/').pop() || 'index.html';
+            const pageMap = {
+                'index.html': 'home',
+                'index': 'home',
+                '': 'home',
+                'what-we-do.html': 'what-we-do',
+                'what-we-do': 'what-we-do',
+                'scopes-materials.html': 'scopes-materials',
+                'scopes-materials': 'scopes-materials',
+                'project-portfolio.html': 'project-portfolio',
+                'project-portfolio': 'project-portfolio',
+                'contact-us.html': 'contact-us',
+                'contact-us': 'contact-us'
+            };
+            const currentPage = pageMap[filename] || 'home';
+
+            // Apply current page styling immediately
+            document.addEventListener('DOMContentLoaded', function () {
+                const navLinks = document.querySelectorAll('nav a');
+                navLinks.forEach(link => {
+                    const href = link.getAttribute('href');
+                    const linkPage = href ? pageMap[href.split('/').pop()] : '';
+                    if (linkPage === currentPage) {
+                        link.classList.add('current-page');
+                        link.setAttribute('aria-current', 'page');
+                        link.setAttribute('tabindex', '-1');
+                    }
+                });
+            });
+        })();
+    </script>
+
+    <link rel="stylesheet" href="assets/style.css">
+    <script defer src="assets/script.js"></script>
+    <script defer src="assets/projects-data.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Open+Sans&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <a href="index.html">
+                <img src="The Wooden Stone Logo (Transparent).svg" alt="The Wooden Stone LLC Logo">
+            </a>
+        </div>
+        <button class="mobile-menu-toggle" aria-label="Toggle navigation menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <nav>
+            <a href="what-we-do.html">What We Do</a>
+            <a href="scopes-materials.html">Scopes & Materials</a>
+            <a href="project-portfolio.html">Project Portfolio</a>
+            <a href="contact-us.html">Contact Us</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="portfolio-hero">
+        <div class="hero-background"></div>
+        <div class="hero-content">
+            <h1>PROJECT PORTFOLIO</h1>
+            <h2>MULTI-RESIDENTIAL & ELDERLY CARE</h2>
+            <p>Specializing in assisted living facilities and multi-family developments.</p>
+        </div>
+    </section>
+
+    <!-- Filter Section -->
+    <section class="portfolio-filters">
+        <div class="container">
+            <h2 class="filters-title">FILTERS</h2>
+            <div class="filter-controls">
+                <div class="filter-group">
+                    <label for="type-filter">Type</label>
+                    <select id="type-filter" class="filter-select">
+                        <option value="">SELECT TYPE</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="scopes-filter">Scopes Performed</label>
+                    <div class="multi-select-container">
+                        <div class="multi-select-display" id="scopes-display">
+                            <span class="placeholder">SELECT SCOPES</span>
+                        </div>
+                        <div class="multi-select-dropdown" id="scopes-dropdown">
+                            <!-- Options will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <button id="clear-filters" class="clear-filters-btn">Clear Filters</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Container - Dynamically populated by JavaScript -->
+    <div id="projects-container">
+        <!-- Projects will be loaded here -->
+    </div>
+
+    <!-- Call to Action -->
+    <section class="cta-section">
+        <div class="container">
+            <h2>Inspired by Our Work?</h2>
+            <p>Let's discuss how we can bring your vision to life</p>
+            <a href="contact-us.html" class="btn">Start Your Project</a>
+        </div>
+    </section>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="back-to-top-btn" aria-label="Back to top">↑</button>
+
+    <!-- Image Modal/Lightbox -->
+    <div class="image-modal" id="imageModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose" aria-label="Close modal">×</button>
+            <div class="modal-image-container">
+                <img class="modal-image" id="modalImage" src="" alt="">
+                <div class="zoom-lens" id="zoomLens"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; <span id="year"></span> The Wooden Stone LLC. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>

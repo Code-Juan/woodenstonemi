@@ -1,0 +1,28 @@
+[build]
+  publish = "dist"
+  command = "npm run build"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/what-we-do"
+  to = "/what-we-do.html"
+  status = 200
+
+[[redirects]]
+  from = "/scopes-materials"
+  to = "/scopes-materials.html"
+  status = 200
+
+[[redirects]]
+  from = "/project-portfolio"
+  to = "/project-portfolio.html"
+  status = 200
+
+[[redirects]]
+  from = "/contact-us"
+  to = "/contact-us.html"
+  status = 200

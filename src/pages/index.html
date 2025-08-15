@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Wooden Stone LLC</title>
+
+    <!-- Resource hints for faster loading -->
+    <link rel="preload" href="assets/style.css" as="style">
+    <link rel="preload" href="assets/script.js" as="script">
+    <link rel="preload" href="The Wooden Stone Logo (Transparent).svg" as="image">
+
+    <!-- Font preconnects to prevent FOIT/FOUT -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Inline script to prevent navigation flash -->
+    <script>
+        // Immediate current page detection to prevent flash
+        (function () {
+            const path = window.location.pathname;
+            const filename = path.split('/').pop() || 'index.html';
+            const pageMap = {
+                'index.html': 'home',
+                'index': 'home',
+                '': 'home',
+                'what-we-do.html': 'what-we-do',
+                'what-we-do': 'what-we-do',
+                'scopes-materials.html': 'scopes-materials',
+                'scopes-materials': 'scopes-materials',
+                'project-portfolio.html': 'project-portfolio',
+                'project-portfolio': 'project-portfolio',
+                'contact-us.html': 'contact-us',
+                'contact-us': 'contact-us'
+            };
+            const currentPage = pageMap[filename] || 'home';
+
+            // Apply current page styling immediately
+            document.addEventListener('DOMContentLoaded', function () {
+                const navLinks = document.querySelectorAll('nav a');
+                navLinks.forEach(link => {
+                    const href = link.getAttribute('href');
+                    const linkPage = href ? pageMap[href.split('/').pop()] : '';
+
+                    // Only mark as current page if we're on the home page AND this is a valid navigation link
+                    // For the home page, we don't mark any nav links as current since there's no "Home" link
+                    if (linkPage === currentPage && currentPage !== 'home') {
+                        link.classList.add('current-page');
+                        link.setAttribute('aria-current', 'page');
+                        link.setAttribute('tabindex', '-1');
+                    }
+                });
+            });
+        })();
+    </script>
+
+    <link rel="stylesheet" href="assets/style.css">
+    <script defer src="assets/projects-data.js"></script>
+    <script defer src="assets/script.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Open+Sans&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <a href="index.html">
+                <img src="The Wooden Stone Logo (Transparent).svg" alt="The Wooden Stone LLC Logo">
+            </a>
+        </div>
+        <button class="mobile-menu-toggle" aria-label="Toggle navigation menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <nav>
+            <a href="what-we-do.html">What We Do</a>
+            <a href="scopes-materials.html">Scopes & Materials</a>
+            <a href="project-portfolio.html">Project Portfolio</a>
+            <a href="contact-us.html">Contact Us</a>
+        </nav>
+    </header>
+
+    <!-- Hero Sections -->
+    <div class="hero-container">
+        <section class="hero-logo">
+            <div class="logo-container">
+                <img src="The Wooden Stone Logo (Transparent).svg" alt="The Wooden Stone LLC Logo"
+                    class="hero-logo-img">
+            </div>
+        </section>
+        <section class="hero-slideshow">
+            <div class="slideshow-container">
+                <div class="slides">
+                    <!-- Slides will be dynamically populated with random interior images -->
+                </div>
+            </div>
+        </section>
+        <section class="hero-fade-overlay"></section>
+    </div>
+
+    <!-- Mission Statement Section -->
+    <section class="mission-section">
+        <div class="mission-content">
+            <h2>Our Mission</h2>
+            <p>At The Wooden Stone, our mission is to support general contractors by delivering reliable, high-quality
+                countertop and cabinetry solutions with industry-leading efficiency and professionalism. We specialize
+                in commercial projects, streamlining the fabrication and installation process to help our partners stay
+                on schedule and ahead of deadlines.</p>
+            <p>We are driven by a commitment to efficiency, teamwork, innovation, and safety—both on the jobsite and in
+                our shop. Our goal is to build trust through consistent performance, while investing in the people who
+                make it possible. By offering competitive benefits and fostering a supportive workplace, we aim to
+                create a company culture where employees thrive and customers have confidence in every project we
+                complete.</p>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="cta-section">
+        <a href="contact-us.html#request-quote" class="cta-button">Request a Bid Today</a>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services">
+        <div class="service-card">
+            <h3>ESTIMATING</h3>
+            <div class="service-image">
+                <img src="images/estimating-blueprint.jpg"
+                    alt="Architectural blueprint with drafting compass showing detailed floor plan" loading="lazy"
+                    srcset="images/estimating-blueprint-thumb.jpg 400w, images/estimating-blueprint-gallery.jpg 800w, images/estimating-blueprint-hero.jpg 1200w, images/estimating-blueprint.jpg 1600w"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw">
+            </div>
+        </div>
+        <div class="service-card">
+            <h3>PRE CONSTRUCTION</h3>
+            <div class="service-image">
+                <img src="images/pre-construction-team.jpg"
+                    alt="Three construction workers reviewing blueprints on concrete floor" loading="lazy"
+                    srcset="images/pre-construction-team-thumb.jpg 400w, images/pre-construction-team-gallery.jpg 800w, images/pre-construction-team-hero.jpg 1200w, images/pre-construction-team.jpg 1600w"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw">
+            </div>
+        </div>
+        <div class="service-card">
+            <h3>ON TIME INSTALLATIONS</h3>
+            <div class="service-image">
+                <img src="images/on-time-installations.jpg"
+                    alt="Modern bathroom with double vanity, marble countertop, and elegant fixtures" loading="lazy"
+                    srcset="images/on-time-installations-thumb.jpg 400w, images/on-time-installations-gallery.jpg 800w, images/on-time-installations-hero.jpg 1200w, images/on-time-installations.jpg 1600w"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw">
+            </div>
+        </div>
+        <div class="service-card">
+            <h3>QUALITY & INTEGRITY</h3>
+            <div class="service-image">
+                <img src="images/quality-inspection.jpg"
+                    alt="Construction worker with clipboard inspecting wall damage and cracks" loading="lazy"
+                    srcset="images/quality-inspection-thumb.jpg 400w, images/quality-inspection-gallery.jpg 800w, images/quality-inspection-hero.jpg 1200w, images/quality-inspection.jpg 1600w"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw">
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; <span id="year"></span> The Wooden Stone LLC. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>

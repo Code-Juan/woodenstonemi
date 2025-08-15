@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What We Do - The Wooden Stone LLC</title>
+    <!-- Font preconnects to prevent FOIT/FOUT -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Inline script to prevent navigation flash -->
+    <script>
+        // Immediate current page detection to prevent flash
+        (function () {
+            const path = window.location.pathname;
+            const filename = path.split('/').pop() || 'index.html';
+            const pageMap = {
+                'index.html': 'home',
+                'index': 'home',
+                '': 'home',
+                'what-we-do.html': 'what-we-do',
+                'what-we-do': 'what-we-do',
+                'scopes-materials.html': 'scopes-materials',
+                'scopes-materials': 'scopes-materials',
+                'project-portfolio.html': 'project-portfolio',
+                'project-portfolio': 'project-portfolio',
+                'contact-us.html': 'contact-us',
+                'contact-us': 'contact-us'
+            };
+            const currentPage = pageMap[filename] || 'home';
+
+            // Apply current page styling immediately
+            document.addEventListener('DOMContentLoaded', function () {
+                const navLinks = document.querySelectorAll('nav a');
+                navLinks.forEach(link => {
+                    const href = link.getAttribute('href');
+                    const linkPage = href ? pageMap[href.split('/').pop()] : '';
+                    if (linkPage === currentPage) {
+                        link.classList.add('current-page');
+                        link.setAttribute('aria-current', 'page');
+                        link.setAttribute('tabindex', '-1');
+                    }
+                });
+            });
+        })();
+    </script>
+
+    <link rel="stylesheet" href="assets/style.css">
+    <script defer src="assets/script.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Open+Sans&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <a href="index.html">
+                <img src="The Wooden Stone Logo (Transparent).svg" alt="The Wooden Stone LLC Logo">
+            </a>
+        </div>
+        <button class="mobile-menu-toggle" aria-label="Toggle navigation menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <nav>
+            <a href="what-we-do.html">What We Do</a>
+            <a href="scopes-materials.html">Scopes & Materials</a>
+            <a href="project-portfolio.html">Project Portfolio</a>
+            <a href="contact-us.html">Contact Us</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="page-hero what-we-do-hero">
+        <div class="hero-content">
+            <h1>WHAT WE DO</h1>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="content-section">
+        <div class="container">
+            <div class="service-overview">
+                <h2>Our Stonework Services</h2>
+                <p>The Wooden Stone LLC specializes in high-quality stonework for both large scale commercial and
+                    multi-family projects. We work with developers, construction managers, architects,
+                    property owners, and management companies to ensure exceptional results from initial planning
+                    through final installation.</p>
+
+                <div class="service-highlights">
+                    <div class="highlight-item">
+                        <h3>Custom Stone Fabrication</h3>
+                        <p>Precision cutting and shaping of natural stone for your specific project requirements.</p>
+                    </div>
+                    <div class="highlight-item">
+                        <h3>Installation & Construction</h3>
+                        <p>Professional installation services with attention to detail and quality craftsmanship.</p>
+                    </div>
+                    <div class="highlight-item">
+                        <h3>Project Management</h3>
+                        <p>Complete project oversight from concept to completion, ensuring timelines and quality
+                            standards.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Full Package Service Section -->
+    <section class="full-package-section">
+        <div class="container">
+            <div class="service-overview">
+                <h2>Our Full Package Service</h2>
+                <div class="service-highlights">
+                    <div class="highlight-item">
+                        <h3>Supply of Casework & Hardware</h3>
+                        <p>Coordinate and manage bulk deliveries of premium cabinetry and hardware components to the
+                            project site, ensuring timely arrival prior to installation commencement.</p>
+                    </div>
+                    <div class="highlight-item">
+                        <h3>Casework & Hardware Installation</h3>
+                        <p>Execute strategic installation mobilization in accordance with the construction management
+                            team's established schedule and project timeline requirements.</p>
+                    </div>
+                    <div class="highlight-item">
+                        <h3>Countertop Field Measurements</h3>
+                        <p>Conduct precise field measurements utilizing advanced laser templating technology immediately
+                            following casework installation to guarantee optimal fit and finish.</p>
+                    </div>
+                    <div class="highlight-item">
+                        <h3>Countertop Production</h3>
+                        <p>Initiate fabrication processes immediately upon completion of field measurements, ensuring
+                            efficient production workflow and quality standards.</p>
+                    </div>
+                    <div class="highlight-item">
+                        <h3>Finish Trim Carpentry Installation</h3>
+                        <p>Execute comprehensive finish trim carpentry installation including base trim, door casings,
+                            and bathroom accessories during countertop production phase.</p>
+                    </div>
+                    <div class="highlight-item">
+                        <h3>Countertop Installation</h3>
+                        <p>Complete installation of custom-fabricated countertops utilizing precision laser templating
+                            data to achieve seamless integration and superior finish quality.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section class="process-section">
+        <div class="container">
+            <h2>Our Process</h2>
+            <div class="additional-services-grid">
+                <div class="service-item">
+                    <h3>Estimating</h3>
+                    <p>Develop comprehensive project proposals utilizing detailed architectural plans and specifications
+                        to ensure precise alignment with project objectives and budgetary requirements.</p>
+                </div>
+                <div class="service-item">
+                    <h3>Pre-Construction & Planning</h3>
+                    <p>Conduct thorough project analysis and logistics planning to establish strategic implementation
+                        timelines that meet or exceed projected construction schedule expectations.</p>
+                </div>
+                <div class="service-item">
+                    <h3>Project Management</h3>
+                    <p>Maintain rigorous project oversight through weekly trade partner coordination meetings and
+                        consistent communication with project management teams to ensure schedule compliance and
+                        superior quality standards.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta-section">
+        <div class="container">
+            <h2>Ready to Start Your Project?</h2>
+            <p>Contact us today to discuss your stonework needs</p>
+            <a href="contact-us.html" class="btn">Get Started</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; <span id="year"></span> The Wooden Stone LLC. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>
