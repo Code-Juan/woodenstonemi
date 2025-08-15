@@ -2325,6 +2325,7 @@ textarea:focus {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 2rem;
+    align-items: stretch;
 }
 
 .material-item {
@@ -2337,6 +2338,8 @@ textarea:focus {
     margin-bottom: 1rem;
     background-color: var(--marble);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    min-height: 200px;
+    height: 100%;
 }
 
 .material-item:last-child {
@@ -2400,6 +2403,8 @@ textarea:focus {
     margin: 0 0 0.5rem 0;
     text-transform: uppercase;
     letter-spacing: 1px;
+    line-height: 1.2;
+    min-height: calc(1.2em * 2);
 }
 
 .material-content h4 {
@@ -2409,6 +2414,8 @@ textarea:focus {
     margin: 0 0 1rem 0;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    line-height: 1.1;
+    min-height: 1.1em;
 }
 
 .material-content p {
