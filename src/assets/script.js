@@ -165,16 +165,15 @@ function getPageFromHref(href) {
     const segments = cleanHref.split('/');
     const lastSegment = segments[segments.length - 1];
 
-    // Map path segments to page names
+        // Map path segments to page names
     const pageMap = {
         'what-we-do': 'what-we-do',
         'scopes-materials': 'scopes-materials',
         'project-portfolio': 'project-portfolio',
-        'contact-us': 'contact-us',
-        '': 'home' // Empty segment means home
+        'contact-us': 'contact-us'
     };
-
-    return pageMap[lastSegment] || 'home';
+    
+    return pageMap[lastSegment] || '';
 }
 
 // Responsive image loading with intersection observer
