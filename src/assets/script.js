@@ -160,13 +160,14 @@ function getPageFromFilename(filename) {
 // Get page name from href
 function getPageFromHref(href) {
     if (!href) return '';
+    
+    // Turn it into a pathname (handles absolute/relative)
+    const pathname = href.includes('://') ? new URL(href, location.origin).pathname : href;
 
-    // Remove trailing slash and get the last segment
-    const cleanHref = href.replace(/\/$/, '');
-    const segments = cleanHref.split('/');
-    const lastSegment = segments[segments.length - 1];
+    // Get the last segment, strip trailing slash and .html/.htm, and any query/hash just in case
+    const last = pathname.replace(/[?#].*$/, '').replace(/\/$/, '').split('/').pop() || '';
+    const slug = last.replace(/\.html?$/i, ''); // support .html and .htm
 
-    // Map path segments to page names
     const pageMap = {
         'what-we-do': 'what-we-do',
         'scopes-materials': 'scopes-materials',
@@ -174,7 +175,7 @@ function getPageFromHref(href) {
         'contact-us': 'contact-us'
     };
 
-    return pageMap[lastSegment] || '';
+    return pageMap[slug] || '';
 }
 
 // Responsive image loading with intersection observer
