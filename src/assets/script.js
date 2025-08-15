@@ -119,29 +119,31 @@ function setCurrentPageIndicator() {
 // Get current page name
 function getCurrentPage() {
     const path = window.location.pathname;
-    const filename = path.split('/').pop();
 
-    // Handle cases where pathname might be empty or just "/"
-    if (!filename || filename === '') {
-        // Check if we're on the root page
-        if (path === '/' || path === '') {
-            return 'home';
-        }
-        // Try to get from the full URL
-        const fullUrl = window.location.href;
-        const urlFilename = fullUrl.split('/').pop();
-        if (urlFilename && urlFilename.includes('.html')) {
-            return getPageFromFilename(urlFilename);
-        }
+    // Handle root page
+    if (path === '/' || path === '') {
         return 'home';
     }
 
-    return getPageFromFilename(filename);
+    // Remove trailing slash and get the last segment
+    const cleanPath = path.replace(/\/$/, '');
+    const segments = cleanPath.split('/');
+    const lastSegment = segments[segments.length - 1];
+
+    // Map path segments to page names
+    const pageMap = {
+        'what-we-do': 'what-we-do',
+        'scopes-materials': 'scopes-materials',
+        'project-portfolio': 'project-portfolio',
+        'contact-us': 'contact-us'
+    };
+
+    return pageMap[lastSegment] || 'home';
 }
 
-// Helper function to get page name from filename
+// Helper function to get page name from filename (for backward compatibility)
 function getPageFromFilename(filename) {
-    // Map filenames to page names
+    // Map filenames to page names (for any remaining .html references)
     const pageMap = {
         'index.html': 'home',
         'main.html': 'home',
@@ -158,8 +160,21 @@ function getPageFromFilename(filename) {
 function getPageFromHref(href) {
     if (!href) return '';
 
-    const filename = href.split('/').pop();
-    return getPageFromFilename(filename);
+    // Remove trailing slash and get the last segment
+    const cleanHref = href.replace(/\/$/, '');
+    const segments = cleanHref.split('/');
+    const lastSegment = segments[segments.length - 1];
+
+    // Map path segments to page names
+    const pageMap = {
+        'what-we-do': 'what-we-do',
+        'scopes-materials': 'scopes-materials',
+        'project-portfolio': 'project-portfolio',
+        'contact-us': 'contact-us',
+        '': 'home' // Empty segment means home
+    };
+
+    return pageMap[lastSegment] || 'home';
 }
 
 // Responsive image loading with intersection observer
