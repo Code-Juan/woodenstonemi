@@ -24,12 +24,13 @@ document.addEventListener('DOMContentLoaded', function () {
         const navLinks = nav.querySelectorAll('a');
         navLinks.forEach(link => {
             link.addEventListener('click', function (e) {
-                // Don't close menu if clicking on current page link
+                // Only prevent default and return if clicking on current page link
                 if (link.classList.contains('current-page')) {
                     e.preventDefault();
                     return;
                 }
 
+                // For all other links, close the mobile menu and allow normal navigation
                 nav.classList.remove('active');
                 mobileMenuToggle.classList.remove('active');
                 mobileMenuToggle.setAttribute('aria-expanded', 'false');

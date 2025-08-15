@@ -34,6 +34,11 @@ async function build() {
             await fs.copy('site.webmanifest', 'dist/site.webmanifest');
         }
 
+        // Copy sitemap.xml if it exists
+        if (await fs.pathExists('sitemap.xml')) {
+            await fs.copy('sitemap.xml', 'dist/sitemap.xml');
+        }
+
     } catch (error) {
         console.error('Build failed:', error);
         process.exit(1);
