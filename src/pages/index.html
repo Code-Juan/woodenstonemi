@@ -42,7 +42,10 @@
                 navLinks.forEach(link => {
                     const href = link.getAttribute('href');
                     const linkPage = href ? pageMap[href.split('/').pop()] : '';
-                    if (linkPage === currentPage) {
+
+                    // Only mark as current page if we're on the home page AND this is a valid navigation link
+                    // For the home page, we don't mark any nav links as current since there's no "Home" link
+                    if (linkPage === currentPage && currentPage !== 'home') {
                         link.classList.add('current-page');
                         link.setAttribute('aria-current', 'page');
                         link.setAttribute('tabindex', '-1');
