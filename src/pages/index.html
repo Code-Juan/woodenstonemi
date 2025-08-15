@@ -31,10 +31,14 @@
     <!-- Canonical URL -->
     <link rel="canonical" href="https://woodenstonemi.com">
 
-    <!-- Favicon -->
+    <!-- Enhanced Favicon for Google Search Results -->
     <link rel="icon" type="image/svg+xml" href="/The Wooden Stone Logo (Transparent).svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/The Wooden Stone Logo (Transparent).svg">
+    <link rel="icon" type="image/png" sizes="16x16" href="/The Wooden Stone Logo (Transparent).svg">
+    <link rel="apple-touch-icon" sizes="180x180" href="/The Wooden Stone Logo (Transparent).svg">
+    <link rel="manifest" href="/site.webmanifest">
 
-    <!-- Structured Data for SEO -->
+    <!-- Enhanced Structured Data for SEO and Logo Display -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -42,8 +46,20 @@
         "name": "The Wooden Stone LLC",
         "description": "Commercial stonework and countertop contractors specializing in multi-family and commercial projects",
         "url": "https://woodenstonemi.com",
-        "logo": "https://woodenstonemi.com/The Wooden Stone Logo (Transparent).svg",
-        "image": "https://woodenstonemi.com/The Wooden Stone Logo (Transparent).svg",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://woodenstonemi.com/The Wooden Stone Logo (Transparent).svg",
+            "width": 200,
+            "height": 60,
+            "caption": "The Wooden Stone LLC Logo"
+        },
+        "image": {
+            "@type": "ImageObject",
+            "url": "https://woodenstonemi.com/The Wooden Stone Logo (Transparent).svg",
+            "width": 200,
+            "height": 60,
+            "caption": "The Wooden Stone LLC - Commercial Contractors"
+        },
         "address": {
             "@type": "PostalAddress",
             "addressCountry": "US",

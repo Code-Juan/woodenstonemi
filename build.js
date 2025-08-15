@@ -29,6 +29,11 @@ async function build() {
             await fs.copy('robots.txt', 'dist/robots.txt');
         }
 
+        // Copy site.webmanifest if it exists
+        if (await fs.pathExists('site.webmanifest')) {
+            await fs.copy('site.webmanifest', 'dist/site.webmanifest');
+        }
+
     } catch (error) {
         console.error('Build failed:', error);
         process.exit(1);
