@@ -27,82 +27,42 @@ const projectsData = [
     },
     {
         id: 2,
-        name: "ICON DEVELOPMENT OFFICE RENOVATION",
-        location: "Clinton Twp, MI",
-        type: "Office Renovation",
-        details: "Commercial Office Space",
+        name: "SEATON PLACE APARTMENTS",
+        location: "Chesterfield, MI",
+        type: "Multifamily Units & Amenities",
+        details: "100 Units, New Construction",
         scopes: "Quartz Countertops, Casework & Finish Trim Carpentry Installation",
         materials: "Quartz Countertops, Sink Fixtures, Cabinetry",
         client: "Icon Development, Inc",
-        dates: "April 2025 - May 2025",
+        dates: "Jan 2024 - Dec 2026",
         images: ["placeholder", "placeholder", "placeholder"]
     },
     {
         id: 3,
-        name: "THE PRESERVE ON ASH",
-        location: "Detroit, MI",
+        name: "PLYMOUTH WALK APARTMENTS",
+        location: "Plymouth Township, MI",
         type: "Multifamily Units & Amenities",
-        details: "73 Units, New Construction",
+        details: "268 Units, New Construction",
         scopes: "Quartz Countertops",
-        materials: "Quartz Countertops",
+        materials: "Quartz Countertops, Sink Fixtures",
         client: "Sachse Construction",
-        dates: "Apr 2025 - Aug 2025",
+        dates: "Jan 2026 - Nov 2026",
         images: ["placeholder", "placeholder", "placeholder"]
     },
     {
         id: 4,
-        name: "3740 2ND AVE APARTMENTS",
-        location: "Detroit, MI",
+        name: "WALDON PONDS APARTMENTS",
+        location: "Marshall, MI",
         type: "Multifamily Units & Amenities",
-        details: "57 Units, New Construction",
-        scopes: "Quartz Countertops",
-        materials: "Quartz Countertops, Sink Fixtures",
-        client: "Greatwater Opportuniy Capital/The Monahan Company",
-        dates: "Jan 2025 - Feb 2025",
-        images: [
-            "images/Previous Jobs/4. 3740 2nd Ave Apartments/Kitchen1 VIEW_3740 Apartments.jpg",
-            "images/Previous Jobs/4. 3740 2nd Ave Apartments/bath1 VIEW_3740 Apartments.jpg",
-            "images/Previous Jobs/4. 3740 2nd Ave Apartments/SITE VIEW_3740 Apartments.jpg"
-        ]
+        details: "100 Units, Renovation",
+        scopes: "Quartz Countertops, Casework & Finish Trim Carpentry Installation",
+        materials: "Quartz Countertops, Sink Fixtures, Cabinetry",
+        client: "Icon Development, Inc",
+        dates: "Mar 2025 - April 2025",
+        images: ["placeholder", "placeholder", "placeholder"]
     },
     {
         id: 5,
-        name: "450 AMSTERDAM APARTMENTS",
-        location: "Detroit, MI",
-        type: "Multifamily Units & Amenities",
-        details: "92 Units, New Construction",
-        scopes: "Quartz Countertops",
-        materials: "Quartz Countertops, Sink Fixtures",
-        client: "Greatwater Opportunity Capital/Jonna Construction Company",
-        dates: "Mar 2025 - May 2025",
-        images: ["placeholder", "placeholder", "placeholder"]
-    },
-    {
-        id: 6,
-        name: "TERRA STATION APARTMENTS",
-        location: "Hudsonville, MI",
-        type: "Multifamily Units & Amenities",
-        details: "141 Units, New Construction",
-        scopes: "Quartz Countertops",
-        materials: "Quartz Countertops, Sink Fixtures",
-        client: "Williams Distributing",
-        dates: "Aug 2025 - Dec 2025",
-        images: ["placeholder", "placeholder", "placeholder"]
-    },
-    {
-        id: 7,
-        name: "BRIGHTDAWN APARTMENTS",
-        location: "Ann Arbor, MI",
-        type: "Multifamily Units & Amenities",
-        details: "120 Units, New Construction",
-        scopes: "Quartz Countertops",
-        materials: "Quartz Countertops, Sink Fixtures",
-        client: "Braun Construction Group",
-        dates: "April 2025 - Sept 2025",
-        images: ["placeholder", "placeholder", "placeholder"]
-    },
-    {
-        id: 8,
         name: "IRONWORKS APARTMENTS",
         location: "Kalamazoo, MI",
         type: "Multifamily Units & Amenities",
@@ -114,19 +74,43 @@ const projectsData = [
         images: ["placeholder", "placeholder", "placeholder"]
     },
     {
-        id: 9,
-        name: "STATE & MAIN APARTMENTS",
-        location: "Zeeland, MI",
+        id: 6,
+        name: "BRIGHTDAWN APARTMENTS",
+        location: "Ann Arbor, MI",
         type: "Multifamily Units & Amenities",
-        details: "22 Units, New Construction",
+        details: "120 Units, New Construction",
         scopes: "Quartz Countertops",
         materials: "Quartz Countertops, Sink Fixtures",
-        client: "Williams Distributing",
+        client: "Braun Construction Group",
+        dates: "April 2025 - Sept 2025",
+        images: ["placeholder", "placeholder", "placeholder"]
+    },
+    {
+        id: 7,
+        name: "THE PRESERVE ON ASH",
+        location: "Detroit, MI",
+        type: "Multifamily Units & Amenities",
+        details: "73 Units, New Construction",
+        scopes: "Quartz Countertops",
+        materials: "Quartz Countertops",
+        client: "Sachse Construction",
+        dates: "Apr 2025 - Aug 2025",
+        images: ["placeholder", "placeholder", "placeholder"]
+    },
+    {
+        id: 8,
+        name: "ICON DEVELOPMENT OFFICE RENOVATION",
+        location: "Clinton Twp, MI",
+        type: "Office Renovation",
+        details: "Commercial Office Space",
+        scopes: "Quartz Countertops, Casework & Finish Trim Carpentry Installation",
+        materials: "Quartz Countertops, Sink Fixtures, Cabinetry",
+        client: "Icon Development, Inc",
         dates: "April 2025 - May 2025",
         images: ["placeholder", "placeholder", "placeholder"]
     },
     {
-        id: 10,
+        id: 9,
         name: "FREEWHEEL APARTMENTS",
         location: "Marquette, MI",
         type: "Multifamily Units & Amenities",
@@ -140,115 +124,32 @@ const projectsData = [
         ]
     },
     {
-        id: 11,
-        name: "LEE CREST APARTMENTS",
+        id: 10,
+        name: "450 AMSTERDAM APARTMENTS",
         location: "Detroit, MI",
         type: "Multifamily Units & Amenities",
-        details: "100 Units, New Construction",
+        details: "92 Units, New Construction",
         scopes: "Quartz Countertops",
         materials: "Quartz Countertops, Sink Fixtures",
-        client: "Greatwater Opportunity Capital/The Monahan Company",
-        dates: "Jan 2025 - Feb 2025",
-        images: [
-            "images/Previous Jobs/11. Lee Crest Apartments/Site View_LeeCrest.jpg"
-        ]
-    },
-    {
-        id: 12,
-        name: "CHATHAM APARTMENTS",
-        location: "Detroit, MI",
-        type: "Multifamily Units & Amenities",
-        details: "73 Units, New Construction",
-        scopes: "Quartz Countertops",
-        materials: "Quartz Countertops, Sink Fixtures",
-        client: "Greatwater Opportunity Capital/The Monahan Company",
+        client: "Greatwater Opportunity Capital/Jonna Construction Company",
         dates: "Mar 2025 - May 2025",
         images: ["placeholder", "placeholder", "placeholder"]
     },
     {
-        id: 13,
-        name: "PALMS APARTMENTS",
-        location: "Detroit, MI",
+        id: 11,
+        name: "STATE & MAIN APARTMENTS",
+        location: "Zeeland, MI",
         type: "Multifamily Units & Amenities",
-        details: "61 Units, New Construction",
+        details: "22 Units, New Construction",
         scopes: "Quartz Countertops",
         materials: "Quartz Countertops, Sink Fixtures",
-        client: "Greatwater Opportunity Capital",
-        dates: "Dec 2024 - Feb 2025",
+        client: "Williams Distributing",
+        dates: "April 2025 - May 2025",
         images: ["placeholder", "placeholder", "placeholder"]
     },
     {
-        id: 14,
-        name: "2135 HUBBARD",
-        location: "Detroit, MI",
-        type: "Multifamily Units & Amenities",
-        details: "31 Units, New Construction",
-        scopes: "Quartz Countertops",
-        materials: "Quartz Countertops, Sink Fixtures",
-        client: "Greatwater Opportunity Capital/Artisian Contractors",
-        dates: "Aug 2024 - Oct 2024",
-        images: [
-            "images/Previous Jobs/14. 2135 Hubbard/mavor-apartments-detroit-mi-building-photo.jpg",
-            "images/Previous Jobs/14. 2135 Hubbard/mavor-apartments-detroit-mi-building-photo (1).jpg",
-            "images/Previous Jobs/14. 2135 Hubbard/mavor-apartments-detroit-mi-building-photo (2).jpg"
-        ]
-    },
-    {
-        id: 15,
-        name: "DETROIT COMMERCIAL BUILDING",
-        location: "Detroit, MI",
-        type: "Commercial Building",
-        details: "Commercial Space",
-        scopes: "Casework & Finish Trim Carpentry Installation",
-        materials: "",
-        client: "Icon Development, Inc",
-        dates: "Sep 2024 - Oct 2024",
-        images: ["placeholder", "placeholder", "placeholder"]
-    },
-    {
-        id: 16,
-        name: "25 E. PALMER (BARLUM APARTMENTS)",
-        location: "Detroit, MI",
-        type: "Multifamily Units & Amenities",
-        details: "30 Units, New Construction",
-        scopes: "Quartz Countertops",
-        materials: "Quartz Countertops, Sink Fixtures",
-        client: "Greatwater Opportunity Capital",
-        dates: "Sep 2024 - Oct 2024",
-        images: [
-            "images/Previous Jobs/16. 25 E. Palmer (Barlum Apartments)/the-barlum-detroit-mi-primary-photo.jpg",
-            "images/Previous Jobs/16. 25 E. Palmer (Barlum Apartments)/the-barlum-detroit-mi-building-photo.jpg",
-            "images/Previous Jobs/16. 25 E. Palmer (Barlum Apartments)/the-barlum-detroit-mi-building-photo (1).jpg",
-            "images/Previous Jobs/16. 25 E. Palmer (Barlum Apartments)/the-barlum-detroit-mi-building-photo (2).jpg"
-        ]
-    },
-    {
-        id: 17,
-        name: "TEAM WELLNESS",
-        location: "Detroit, MI",
-        type: "Commercial",
-        details: "Healthcare Facility",
-        scopes: "Quartz Countertops",
-        materials: "Quartz Countertops, Sink Fixtures",
-        client: "Icon Development, Inc",
-        dates: "Dec 2024 - Jan 2025",
-        images: ["placeholder", "placeholder", "placeholder"]
-    },
-    {
-        id: 18,
-        name: "WALDON PONDS APARTMENTS",
-        location: "Marshall, MI",
-        type: "Multifamily Units & Amenities",
-        details: "100 Units, Renovation",
-        scopes: "Quartz Countertops, Casework & Finish Trim Carpentry Installation",
-        materials: "Quartz Countertops, Sink Fixtures, Cabinetry",
-        client: "Icon Development, Inc",
-        dates: "Mar 2025 - April 2025",
-        images: ["placeholder", "placeholder", "placeholder"]
-    },
-    {
-        id: 19,
-        name: "HIGGENBOTHAM GARDEN APARTMENTS",
+        id: 12,
+        name: "HIGGINBOTHAM GARDEN APARTMENTS",
         location: "Detroit, MI",
         type: "Multifamily Units & Amenities",
         details: "63 Units, New Construction",
@@ -263,8 +164,8 @@ const projectsData = [
         ]
     },
     {
-        id: 20,
-        name: "HIGGENBOTHAM SCHOOL APARTMENTS",
+        id: 13,
+        name: "HIGGINBOTHAM SCHOOL APARTMENTS",
         location: "Detroit, MI",
         type: "Multifamily Units & Amenities",
         details: "85 Units, New Construction",
@@ -280,7 +181,57 @@ const projectsData = [
         ]
     },
     {
-        id: 21,
+        id: 14,
+        name: "LEE CREST APARTMENTS",
+        location: "Detroit, MI",
+        type: "Multifamily Units & Amenities",
+        details: "100 Units, New Construction",
+        scopes: "Quartz Countertops",
+        materials: "Quartz Countertops, Sink Fixtures",
+        client: "Greatwater Opportunity Capital/The Monahan Company",
+        dates: "Jan 2025 - Feb 2025",
+        images: [
+            "images/Previous Jobs/11. Lee Crest Apartments/Site View_LeeCrest.jpg"
+        ]
+    },
+    {
+        id: 15,
+        name: "CHATHAM APARTMENTS",
+        location: "Detroit, MI",
+        type: "Multifamily Units & Amenities",
+        details: "73 Units, New Construction",
+        scopes: "Quartz Countertops",
+        materials: "Quartz Countertops, Sink Fixtures",
+        client: "Greatwater Opportunity Capital/The Monahan Company",
+        dates: "Mar 2025 - May 2025",
+        images: ["placeholder", "placeholder", "placeholder"]
+    },
+    {
+        id: 16,
+        name: "DETROIT COMMERCIAL BUILDING",
+        location: "Detroit, MI",
+        type: "Commercial Building",
+        details: "Commercial Space",
+        scopes: "Casework & Finish Trim Carpentry Installation",
+        materials: "",
+        client: "Icon Development, Inc",
+        dates: "Sep 2024 - Oct 2024",
+        images: ["placeholder", "placeholder", "placeholder"]
+    },
+    {
+        id: 17,
+        name: "TERRA STATION APARTMENTS",
+        location: "Hudsonville, MI",
+        type: "Multifamily Units & Amenities",
+        details: "141 Units, New Construction",
+        scopes: "Quartz Countertops",
+        materials: "Quartz Countertops, Sink Fixtures",
+        client: "Williams Distributing",
+        dates: "Aug 2025 - Dec 2025",
+        images: ["placeholder", "placeholder", "placeholder"]
+    },
+    {
+        id: 18,
         name: "BALDWIN WOODS APARTMENTS",
         location: "Grand Blanc, MI",
         type: "Multifamily Units & Amenities",
@@ -292,28 +243,77 @@ const projectsData = [
         images: ["placeholder", "placeholder", "placeholder"]
     },
     {
-        id: 22,
-        name: "PLYMOUTH WALK APARTMENTS",
-        location: "Plymouth Township, MI",
+        id: 19,
+        name: "3740 2ND AVE APARTMENTS",
+        location: "Detroit, MI",
         type: "Multifamily Units & Amenities",
-        details: "268 Units, New Construction",
+        details: "57 Units, New Construction",
         scopes: "Quartz Countertops",
         materials: "Quartz Countertops, Sink Fixtures",
-        client: "Sachse Construction",
-        dates: "Jan 2026 - Nov 2026",
+        client: "Greatwater Opportuniy Capital/The Monahan Company",
+        dates: "Jan 2025 - Feb 2025",
+        images: [
+            "images/Previous Jobs/4. 3740 2nd Ave Apartments/Kitchen1 VIEW_3740 Apartments.jpg",
+            "images/Previous Jobs/4. 3740 2nd Ave Apartments/bath1 VIEW_3740 Apartments.jpg",
+            "images/Previous Jobs/4. 3740 2nd Ave Apartments/SITE VIEW_3740 Apartments.jpg"
+        ]
+    },
+    {
+        id: 20,
+        name: "TEAM WELLNESS",
+        location: "Detroit, MI",
+        type: "Commercial",
+        details: "Healthcare Facility",
+        scopes: "Quartz Countertops",
+        materials: "Quartz Countertops, Sink Fixtures",
+        client: "Icon Development, Inc",
+        dates: "Dec 2024 - Jan 2025",
         images: ["placeholder", "placeholder", "placeholder"]
     },
     {
-        id: 23,
-        name: "SEATONE PLACE APARTMENTS",
-        location: "Chesterfield, MI",
+        id: 21,
+        name: "PALMS APARTMENTS",
+        location: "Detroit, MI",
         type: "Multifamily Units & Amenities",
-        details: "100 Units, New Construction",
-        scopes: "Quartz Countertops, Casework & Finish Trim Carpentry Installation",
-        materials: "Quartz Countertops, Sink Fixtures, Cabinetry",
-        client: "Icon Development, Inc",
-        dates: "Jan 2024 - Dec 2026",
+        details: "61 Units, New Construction",
+        scopes: "Quartz Countertops",
+        materials: "Quartz Countertops, Sink Fixtures",
+        client: "Greatwater Opportunity Capital",
+        dates: "Dec 2024 - Feb 2025",
         images: ["placeholder", "placeholder", "placeholder"]
+    },
+    {
+        id: 22,
+        name: "2135 HUBBARD",
+        location: "Detroit, MI",
+        type: "Multifamily Units & Amenities",
+        details: "31 Units, New Construction",
+        scopes: "Quartz Countertops",
+        materials: "Quartz Countertops, Sink Fixtures",
+        client: "Greatwater Opportunity Capital/Artisian Contractors",
+        dates: "Aug 2024 - Oct 2024",
+        images: [
+            "images/Previous Jobs/14. 2135 Hubbard/mavor-apartments-detroit-mi-building-photo.jpg",
+            "images/Previous Jobs/14. 2135 Hubbard/mavor-apartments-detroit-mi-building-photo (1).jpg",
+            "images/Previous Jobs/14. 2135 Hubbard/mavor-apartments-detroit-mi-building-photo (2).jpg"
+        ]
+    },
+    {
+        id: 23,
+        name: "25 E. PALMER (BARLUM APARTMENTS)",
+        location: "Detroit, MI",
+        type: "Multifamily Units & Amenities",
+        details: "30 Units, New Construction",
+        scopes: "Quartz Countertops",
+        materials: "Quartz Countertops, Sink Fixtures",
+        client: "Greatwater Opportunity Capital",
+        dates: "Sep 2024 - Oct 2024",
+        images: [
+            "images/Previous Jobs/16. 25 E. Palmer (Barlum Apartments)/the-barlum-detroit-mi-primary-photo.jpg",
+            "images/Previous Jobs/16. 25 E. Palmer (Barlum Apartments)/the-barlum-detroit-mi-building-photo.jpg",
+            "images/Previous Jobs/16. 25 E. Palmer (Barlum Apartments)/the-barlum-detroit-mi-building-photo (1).jpg",
+            "images/Previous Jobs/16. 25 E. Palmer (Barlum Apartments)/the-barlum-detroit-mi-building-photo (2).jpg"
+        ]
     }
 ];
 
@@ -361,10 +361,11 @@ function generateProjectHTML(project) {
 }
 
 // Function to render all projects
-function renderProjects() {
+function renderProjects(filteredProjects = null) {
     const projectsContainer = document.getElementById('projects-container');
     if (projectsContainer) {
-        projectsContainer.innerHTML = projectsData.map(project => generateProjectHTML(project)).join('');
+        const projectsToRender = filteredProjects || projectsData;
+        projectsContainer.innerHTML = projectsToRender.map(project => generateProjectHTML(project)).join('');
 
         // Re-initialize carousel functionality after rendering
         initializeCarousels();
@@ -515,7 +516,183 @@ function initializeCarousels() {
     });
 }
 
+// Filter functionality
+let selectedType = '';
+let selectedScopes = [];
+
+// Function to get unique types from projects
+function getUniqueTypes() {
+    const types = projectsData.map(project => project.type);
+    return [...new Set(types)].sort();
+}
+
+// Function to get unique scopes from projects
+function getUniqueScopes() {
+    const allScopes = projectsData.map(project => project.scopes);
+    const scopeList = allScopes.flatMap(scopes =>
+        scopes.split(',').map(scope => scope.trim())
+    );
+    return [...new Set(scopeList)].sort();
+}
+
+// Function to populate filter options
+function populateFilters() {
+    // Populate type filter
+    const typeFilter = document.getElementById('type-filter');
+    if (typeFilter) {
+        const types = getUniqueTypes();
+        types.forEach(type => {
+            const option = document.createElement('option');
+            option.value = type;
+            option.textContent = type;
+            typeFilter.appendChild(option);
+        });
+    }
+
+    // Populate scopes filter
+    const scopesDropdown = document.getElementById('scopes-dropdown');
+    if (scopesDropdown) {
+        const scopes = getUniqueScopes();
+        scopes.forEach(scope => {
+            const option = document.createElement('div');
+            option.className = 'multi-select-option';
+            option.innerHTML = `
+                <input type="checkbox" id="scope-${scope.replace(/\s+/g, '-')}" value="${scope}">
+                <label for="scope-${scope.replace(/\s+/g, '-')}">${scope}</label>
+            `;
+            scopesDropdown.appendChild(option);
+        });
+    }
+}
+
+// Function to filter projects
+function filterProjects() {
+    let filtered = projectsData;
+
+    // Filter by type
+    if (selectedType) {
+        filtered = filtered.filter(project => project.type === selectedType);
+    }
+
+    // Filter by scopes
+    if (selectedScopes.length > 0) {
+        filtered = filtered.filter(project => {
+            const projectScopes = project.scopes.split(',').map(scope => scope.trim());
+            return selectedScopes.some(selectedScope =>
+                projectScopes.includes(selectedScope)
+            );
+        });
+    }
+
+    renderProjects(filtered);
+}
+
+// Function to update scopes display
+function updateScopesDisplay() {
+    const scopesDisplay = document.getElementById('scopes-display');
+    if (scopesDisplay) {
+        if (selectedScopes.length === 0) {
+            scopesDisplay.innerHTML = '<span class="placeholder">SELECT SCOPES</span>';
+        } else {
+            const selectedItems = selectedScopes.map(scope =>
+                `<span class="selected-item">${scope}<span class="remove" data-scope="${scope}">×</span></span>`
+            ).join('');
+            scopesDisplay.innerHTML = `<div class="selected-items">${selectedItems}</div>`;
+        }
+    }
+}
+
+// Function to initialize filter event listeners
+function initializeFilters() {
+    // Type filter
+    const typeFilter = document.getElementById('type-filter');
+    if (typeFilter) {
+        typeFilter.addEventListener('change', (e) => {
+            selectedType = e.target.value;
+            filterProjects();
+        });
+    }
+
+    // Scopes multi-select
+    const scopesDisplay = document.getElementById('scopes-display');
+    const scopesDropdown = document.getElementById('scopes-dropdown');
+
+    if (scopesDisplay && scopesDropdown) {
+        // Toggle dropdown
+        scopesDisplay.addEventListener('click', () => {
+            scopesDropdown.classList.toggle('active');
+            scopesDisplay.classList.toggle('active');
+        });
+
+        // Handle scope selection
+        scopesDropdown.addEventListener('change', (e) => {
+            if (e.target.type === 'checkbox') {
+                const scope = e.target.value;
+                if (e.target.checked) {
+                    if (!selectedScopes.includes(scope)) {
+                        selectedScopes.push(scope);
+                    }
+                } else {
+                    selectedScopes = selectedScopes.filter(s => s !== scope);
+                }
+                updateScopesDisplay();
+                filterProjects();
+            }
+        });
+
+        // Handle remove scope
+        scopesDisplay.addEventListener('click', (e) => {
+            if (e.target.classList.contains('remove')) {
+                const scope = e.target.dataset.scope;
+                selectedScopes = selectedScopes.filter(s => s !== scope);
+                updateScopesDisplay();
+
+                // Uncheck the checkbox
+                const checkbox = document.getElementById(`scope-${scope.replace(/\s+/g, '-')}`);
+                if (checkbox) {
+                    checkbox.checked = false;
+                }
+
+                filterProjects();
+            }
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!scopesDisplay.contains(e.target) && !scopesDropdown.contains(e.target)) {
+                scopesDropdown.classList.remove('active');
+                scopesDisplay.classList.remove('active');
+            }
+        });
+    }
+
+    // Clear filters button
+    const clearFiltersBtn = document.getElementById('clear-filters');
+    if (clearFiltersBtn) {
+        clearFiltersBtn.addEventListener('click', () => {
+            selectedType = '';
+            selectedScopes = [];
+
+            // Reset type filter
+            if (typeFilter) {
+                typeFilter.value = '';
+            }
+
+            // Reset scopes checkboxes
+            const checkboxes = scopesDropdown.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+
+            updateScopesDisplay();
+            filterProjects();
+        });
+    }
+}
+
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function () {
+    populateFilters();
+    initializeFilters();
     renderProjects();
 });

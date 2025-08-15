@@ -1057,107 +1057,11 @@ function formatFileSize(bytes) {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 }
 
-// Contact Form Email Functionality
+// Contact Form Email Functionality - DISABLED (Using Postmark API instead)
 function initContactForm() {
-    const contactForm = document.getElementById('contactForm');
-
-    if (!contactForm) return;
-
-    // Initialize EmailJS
-    if (typeof emailjs !== 'undefined') {
-        // For static sites, we need to use the credentials directly
-        // In production, these should be injected during build process
-        const emailjsUserId = 'ghhELlW-s8HL820_1';
-        emailjs.init(emailjsUserId);
-    }
-
-    contactForm.addEventListener('submit', function (e) {
-        e.preventDefault();
-
-        // Show loading state
-        const submitBtn = contactForm.querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
-        submitBtn.textContent = 'Sending...';
-        submitBtn.disabled = true;
-
-        // Collect form data
-        const formData = new FormData(contactForm);
-        const formObject = {};
-
-        // Convert FormData to object
-        for (let [key, value] of formData.entries()) {
-            if (key === 'interestedScopes') {
-                // Handle multiple checkboxes
-                if (!formObject[key]) {
-                    formObject[key] = [];
-                }
-                formObject[key].push(value);
-            } else {
-                formObject[key] = value;
-            }
-        }
-
-        // Prepare email template parameters
-        const templateParams = {
-            from_name: formObject.name,
-            from_company: formObject.company,
-            from_email: formObject.email,
-            from_phone: formObject.phone || 'Not provided',
-            project_type: formObject.projectType,
-            interested_scopes: formObject.interestedScopes ? formObject.interestedScopes.join(', ') : 'None selected',
-            project_description: formObject.projectDescription,
-            message: `
-New quote request from ${formObject.name} (${formObject.company})
-
-Contact Information:
-- Email: ${formObject.email}
-- Phone: ${formObject.phone || 'Not provided'}
-
-Project Details:
-- Project Type: ${formObject.projectType}
-- Interested Scopes: ${formObject.interestedScopes ? formObject.interestedScopes.join(', ') : 'None selected'}
-
-Project Description:
-${formObject.projectDescription}
-
-This message was sent from the contact form on your website.
-            `
-        };
-
-        // Send email using EmailJS
-        if (typeof emailjs !== 'undefined') {
-            const serviceId = 'service_w7te4xp';
-            const templateId = 'template_zwu0xh8';
-            emailjs.send(serviceId, templateId, templateParams)
-                .then(function (response) {
-                    // Success
-                    showFormMessage('Thank you! Your message has been sent successfully. We\'ll get back to you within 24 hours.', 'success');
-                    contactForm.reset();
-
-                    // Clear file list
-                    const fileList = document.getElementById('file-list');
-                    if (fileList) {
-                        fileList.innerHTML = '';
-                    }
-                }, function (error) {
-                    // Error
-                    showFormMessage('Sorry, there was an error sending your message. Please try again or contact us directly at atocco@woodenstonemi.com', 'error');
-                })
-                .finally(function () {
-                    // Reset button state
-                    submitBtn.textContent = originalText;
-                    submitBtn.disabled = false;
-                });
-        } else {
-            // Fallback: Use mailto link if EmailJS is not available
-            const mailtoLink = createMailtoLink(formObject);
-            window.location.href = mailtoLink;
-
-            // Reset button state
-            submitBtn.textContent = originalText;
-            submitBtn.disabled = false;
-        }
-    });
+    // This function is disabled because we're using the Postmark API
+    // The contact form in contact-us.html has its own JavaScript handler
+    return;
 }
 
 // Create mailto link as fallback

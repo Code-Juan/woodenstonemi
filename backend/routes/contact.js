@@ -72,22 +72,21 @@ const validateContactForm = [
         .withMessage('Please provide a valid email address'),
     body('phone')
         .optional()
-        .isMobilePhone()
-        .withMessage('Please provide a valid phone number'),
+        .trim()
+        .isLength({ min: 10, max: 20 })
+        .withMessage('Phone number must be between 10 and 20 characters'),
     body('company')
-        .optional()
         .trim()
-        .isLength({ max: 100 })
-        .withMessage('Company name must be less than 100 characters'),
+        .isLength({ min: 1, max: 100 })
+        .withMessage('Company name is required and must be less than 100 characters'),
     body('projectType')
-        .optional()
         .trim()
-        .isLength({ max: 50 })
-        .withMessage('Project type must be less than 50 characters'),
-    body('message')
+        .isLength({ min: 1, max: 50 })
+        .withMessage('Project type is required and must be less than 50 characters'),
+    body('projectDescription')
         .trim()
         .isLength({ min: 10, max: 2000 })
-        .withMessage('Message must be between 10 and 2000 characters'),
+        .withMessage('Project description must be between 10 and 2000 characters'),
     body('preferredContact')
         .optional()
         .isIn(['email', 'phone'])
@@ -117,7 +116,7 @@ router.post('/submit', upload.array('attachments', parseInt(process.env.MAX_FILE
             phone,
             company,
             projectType,
-            message,
+            projectDescription,
             preferredContact
         } = req.body;
 
@@ -125,6 +124,30 @@ router.post('/submit', upload.array('attachments', parseInt(process.env.MAX_FILE
         const interestedScopes = Array.isArray(req.body.interestedScopes)
             ? req.body.interestedScopes
             : req.body.interestedScopes ? [req.body.interestedScopes] : [];
+
+        // Format project type for display
+        const formatProjectType = (type) => {
+            const typeMap = {
+                'multi-family': 'Multi-Family',
+                'assisted-living': 'Assisted Living',
+                'commercial': 'Commercial',
+                'single-family': 'Single Family'
+            };
+            return typeMap[type] || type;
+        };
+
+        // Format scopes for display
+        const formatScope = (scope) => {
+            const scopeMap = {
+                'stone-countertops': 'Stone Countertops',
+                'casework-supply': 'Casework Supply',
+                'casework-installation': 'Casework Installation',
+                'casework-finish-trim': 'Finish Trim Installation',
+                'sink-fixture-supply': 'Sink Fixture Supply',
+                'bathroom-accessory-supply': 'Bathroom Accessory Supply'
+            };
+            return scopeMap[scope] || scope;
+        };
 
         // Create enhanced email content
         const emailContent = `
@@ -170,24 +193,24 @@ router.post('/submit', upload.array('attachments', parseInt(process.env.MAX_FILE
                         <span class="value">${company}</span>
                     </div>` : ''}
                     
-                    ${projectType ? `<div class="field">
-                        <span class="label">Project Type:</span>
-                        <span class="value">${projectType}</span>
-                    </div>` : ''}
-                    
-                    ${preferredContact ? `<div class="field">
-                        <span class="label">Preferred Contact:</span>
-                        <span class="value">${preferredContact}</span>
-                    </div>` : ''}
-                    
-                    ${interestedScopes.length > 0 ? `<div class="field">
-                        <span class="label">Interested Scopes:</span>
-                        <div class="value scopes">${interestedScopes.join(', ')}</div>
-                    </div>` : ''}
+                                         ${projectType ? `<div class="field">
+                         <span class="label">Project Type:</span>
+                         <span class="value">${formatProjectType(projectType)}</span>
+                     </div>` : ''}
+                     
+                     ${preferredContact ? `<div class="field">
+                         <span class="label">Preferred Contact:</span>
+                         <span class="value">${preferredContact}</span>
+                     </div>` : ''}
+                     
+                     ${interestedScopes.length > 0 ? `<div class="field">
+                         <span class="label">Interested Scopes:</span>
+                         <div class="value scopes">${interestedScopes.map(formatScope).join(', ')}</div>
+                     </div>` : ''}
                     
                     <div class="field">
-                        <span class="label">Message:</span>
-                        <div class="message-box">${message.replace(/\n/g, '<br>')}</div>
+                        <span class="label">Project Description:</span>
+                        <div class="message-box">${projectDescription.replace(/\n/g, '<br>')}</div>
                     </div>
                     
                     ${req.files && req.files.length > 0 ? `<div class="field">
@@ -213,7 +236,7 @@ router.post('/submit', upload.array('attachments', parseInt(process.env.MAX_FILE
 
         // Send email via Postmark
         const emailResponse = await postmarkClient.sendEmail({
-            From: process.env.FROM_EMAIL || 'noreply@woodenstonemi.com',
+            From: `"The Wooden Stone LLC Website" <${process.env.FROM_EMAIL || 'noreply@woodenstonemi.com'}>`,
             To: process.env.TO_EMAIL || 'info@woodenstonemi.com',
             Subject: `🛠️ New Contact Form Submission - ${name} (${projectType || 'General Inquiry'})`,
             HtmlBody: emailContent,
@@ -228,8 +251,8 @@ ${projectType ? `Project Type: ${projectType}` : ''}
 ${preferredContact ? `Preferred Contact: ${preferredContact}` : ''}
 ${interestedScopes.length > 0 ? `Interested Scopes: ${interestedScopes.join(', ')}` : ''}
 
-Message:
-${message}
+Project Description:
+${projectDescription}
 
 ${req.files && req.files.length > 0 ? `Attachments: ${req.files.map(file => file.originalname).join(', ')}` : ''}
 
@@ -240,12 +263,15 @@ Submitted at: ${new Date().toLocaleString()}
             Attachments: attachments
         });
 
-        // Send confirmation email to the user
-        const confirmationEmail = await postmarkClient.sendEmail({
-            From: process.env.FROM_EMAIL || 'noreply@woodenstonemi.com',
-            To: email,
-            Subject: 'Thank you for contacting The Wooden Stone LLC',
-            HtmlBody: `
+        // Send confirmation email to the user (only if same domain during approval period)
+        let confirmationEmail = null;
+        if (email.endsWith('@woodenstonemi.com')) {
+            try {
+                confirmationEmail = await postmarkClient.sendEmail({
+                    From: `"The Wooden Stone LLC" <${process.env.FROM_EMAIL || 'noreply@woodenstonemi.com'}>`,
+                    To: email,
+                    Subject: 'Thank you for contacting The Wooden Stone LLC',
+                    HtmlBody: `
                 <!DOCTYPE html>
                 <html>
                 <head>
@@ -267,8 +293,8 @@ Submitted at: ${new Date().toLocaleString()}
                         
                         <p>Thank you for reaching out to <strong>The Wooden Stone LLC</strong>. We have received your message and will get back to you within 24-48 hours.</p>
                         
-                        <p>Here's a copy of your message:</p>
-                        <div class="message-box">${message.replace(/\n/g, '<br>')}</div>
+                        <p>Here's a copy of your project description:</p>
+                        <div class="message-box">${projectDescription.replace(/\n/g, '<br>')}</div>
                         
                         <p>If you have any urgent questions, please don't hesitate to call us directly.</p>
                         
@@ -282,15 +308,15 @@ Submitted at: ${new Date().toLocaleString()}
                 </body>
                 </html>
             `,
-            TextBody: `
+                    TextBody: `
 Thank you for contacting us!
 
 Dear ${name},
 
 Thank you for reaching out to The Wooden Stone LLC. We have received your message and will get back to you within 24-48 hours.
 
-Here's a copy of your message:
-${message}
+Here's a copy of your project description:
+${projectDescription}
 
 If you have any urgent questions, please don't hesitate to call us directly.
 
@@ -300,8 +326,13 @@ The Wooden Stone LLC Team
 The Wooden Stone LLC
 44720 Trinity Dr, Clinton Township, MI 48038
             `,
-            MessageStream: 'outbound'
-        });
+                    MessageStream: 'outbound'
+                });
+            } catch (error) {
+                console.error('Confirmation email error:', error);
+                // Don't fail the whole request if confirmation email fails
+            }
+        }
 
         // Clean up uploaded files
         if (req.files) {

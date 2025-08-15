@@ -9,7 +9,7 @@
     <!-- Resource hints for faster loading -->
     <link rel="preload" href="../assets/style.css" as="style">
     <link rel="preload" href="../assets/script.js" as="script">
-    <link rel="preload" href="../../The Wooden Stone Logo (Resized).svg" as="image">
+    <link rel="preload" href="/The Wooden Stone Logo (Resized).svg" as="image">
 
     <!-- DNS prefetch for external resources -->
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
@@ -27,7 +27,7 @@
     <header>
         <div class="logo">
             <a href="index.html">
-                <img src="../../The Wooden Stone Logo (Transparent).svg" alt="The Wooden Stone LLC Logo">
+                <img src="/The Wooden Stone Logo (Transparent).svg" alt="The Wooden Stone LLC Logo">
             </a>
         </div>
         <button class="mobile-menu-toggle" aria-label="Toggle navigation menu">
@@ -50,6 +50,34 @@
             <h1>PROJECT PORTFOLIO</h1>
             <h2>MULTI-RESIDENTIAL & ELDERLY CARE</h2>
             <p>Specializing in assisted living facilities and multi-family developments.</p>
+        </div>
+    </section>
+
+    <!-- Filter Section -->
+    <section class="portfolio-filters">
+        <div class="container">
+            <div class="filter-controls">
+                <div class="filter-group">
+                    <label for="type-filter">Type</label>
+                    <select id="type-filter" class="filter-select">
+                        <option value="">SELECT TYPE</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="scopes-filter">Scopes Performed</label>
+                    <div class="multi-select-container">
+                        <div class="multi-select-display" id="scopes-display">
+                            <span class="placeholder">SELECT SCOPES</span>
+                        </div>
+                        <div class="multi-select-dropdown" id="scopes-dropdown">
+                            <!-- Options will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <button id="clear-filters" class="clear-filters-btn">Clear Filters</button>
+                </div>
+            </div>
         </div>
     </section>
 

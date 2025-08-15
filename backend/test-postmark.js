@@ -1,5 +1,5 @@
 const Postmark = require('postmark');
-require('dotenv').config({ path: './config/.env' });
+require('dotenv').config({ path: './backend/config/.env' });
 
 async function testPostmark() {
     console.log('🧪 Testing Postmark Configuration...\n');

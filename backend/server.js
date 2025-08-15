@@ -45,6 +45,9 @@ app.use(express.static(path.join(__dirname, '..', 'src', 'pages')));
 app.use('/assets', express.static(path.join(__dirname, '..', 'src', 'assets')));
 app.use('/images', express.static(path.join(__dirname, '..', 'images')));
 
+// Serve logo files from root directory
+app.use(express.static(path.join(__dirname, '..')));
+
 // Routes
 app.use('/api/contact', require('./routes/contact'));
 
