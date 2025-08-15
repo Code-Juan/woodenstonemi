@@ -13,7 +13,7 @@
         "optimize-images": "node src/scripts/optimize-images.js",
         "optimize-all": "node src/scripts/optimize-images.js ./images ./images/optimized",
         "process-new": "node src/scripts/upload-handler.js --process-existing",
-        "build": "npm run optimize-all && echo 'Build process complete'",
+        "build:local": "npm run optimize-all && echo 'Build process complete'",
         "install-deps": "npm install chokidar sharp",
         "debug": "cross-env DEBUG=* node src/scripts/upload-handler.js",
         "debug-dev": "cross-env DEBUG=* concurrently \"python -m http.server 8000 --directory src/pages\" \"npm run debug\"",
