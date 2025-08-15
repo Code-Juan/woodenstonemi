@@ -24,6 +24,11 @@ async function build() {
             await fs.copy('CNAME', 'dist/CNAME');
         }
 
+        // Copy robots.txt if it exists
+        if (await fs.pathExists('robots.txt')) {
+            await fs.copy('robots.txt', 'dist/robots.txt');
+        }
+
     } catch (error) {
         console.error('Build failed:', error);
         process.exit(1);
