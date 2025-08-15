@@ -119,7 +119,7 @@ header {
     align-items: center;
     padding: var(--spacing-sm) var(--container-padding);
     background-color: var(--bg-color);
-    border-bottom: 1px solid var(--slate);
+    border-bottom: 1px solid transparent;
     position: relative;
     flex-wrap: wrap;
     gap: var(--spacing-sm);
@@ -134,6 +134,11 @@ header {
     .logo {
         position: absolute;
         left: var(--container-padding);
+        border: none;
+        outline: none;
+        box-shadow: none;
+        padding: 0;
+        margin: 0;
     }
 
     .mobile-menu-toggle {
@@ -149,11 +154,26 @@ header img {
     object-fit: contain;
     padding: 0;
     margin: 0;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    display: block;
 }
 
 .logo a {
     text-decoration: none;
     display: block;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+}
+
+.logo a:focus {
+    outline: none;
+    border: none;
+    box-shadow: none;
 }
 
 /* Navigation with Mobile Menu */
@@ -278,7 +298,7 @@ nav a.current-page:hover {
     position: absolute;
     top: 0;
     left: calc(100% / 3);
-    width: calc(100% * 1 / 2);
+    width: calc(100% * 1 / 5);
     height: 100%;
     background: linear-gradient(to right, var(--marble) 0%, var(--marble) 20%, rgba(229, 227, 223, 0.8) 40%, rgba(229, 227, 223, 0.4) 60%, transparent 100%);
     pointer-events: none;
@@ -361,7 +381,7 @@ nav a.current-page:hover {
 
 /* Contact Us Hero Section */
 .contact-hero {
-    background-image: url('images/contact-us-hero.jpg');
+    background-image: url('../../images/contact-us-hero.jpg');
 }
 
 .contact-hero p {
@@ -370,7 +390,7 @@ nav a.current-page:hover {
 
 /* What We Do Hero Section */
 .what-we-do-hero {
-    background-image: url('images/what-we-do-hero.jpg');
+    background-image: url('../../images/what-we-do-hero.jpg');
     background-position: right 65%;
 }
 
@@ -1582,21 +1602,29 @@ textarea:focus {
     outline-offset: 2px;
 }
 
-/* Skip to Content Link */
+/* Skip to Content Link (no sliver at top) */
 .skip-link {
-    position: absolute;
-    top: -40px;
-    left: 6px;
+    position: fixed;
+    left: 8px;
+    top: 8px;
     background: var(--accent-color);
     color: var(--white);
     padding: 8px;
     text-decoration: none;
     border-radius: 4px;
     z-index: 1001;
+
+    /* hide it cleanly until focused */
+    transform: translateY(-200%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform .2s ease, opacity .2s ease;
 }
 
 .skip-link:focus {
-    top: 6px;
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
 }
 
 /* Portfolio Page Specific Styles */
@@ -1618,7 +1646,7 @@ textarea:focus {
     right: 0;
     bottom: 0;
     background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)),
-        url('images/project-portfolio.jpg') center/100% auto;
+        url('../../images/project-portfolio.jpg') center/100% auto;
     filter: blur(2px);
     z-index: 1;
 }
@@ -1906,7 +1934,7 @@ textarea:focus {
     right: 0;
     bottom: 0;
     background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)),
-        url('images/Scopes & Materials/main-background.jpg') center/100% auto;
+        url('../../images/Scopes & Materials/main-background.jpg') center/100% auto;
     filter: blur(2px);
     z-index: 1;
 }
@@ -2337,4 +2365,32 @@ textarea:focus {
 .contact-form select:focus:invalid,
 .contact-form textarea:focus:invalid {
     box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.25);
+}
+
+/* Loading spinner styles */
+.loading-spinner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }

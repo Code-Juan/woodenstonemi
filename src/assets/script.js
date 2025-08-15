@@ -201,7 +201,7 @@ function getRandomInteriorImages(count = 6) {
 
                     if (!shouldExclude) {
                         allImages.push({
-                            src: imagePath,
+                            src: `../../${imagePath}`,
                             alt: `${project.name} - Project View`,
                             projectName: project.name
                         });
@@ -215,32 +215,32 @@ function getRandomInteriorImages(count = 6) {
     if (allImages.length < count) {
         const fallbackImages = [
             {
-                src: "images/Previous Jobs/1. Woodview Commons/(Kitchen 1) woodview-commons-ann-arbor-mi-building-photo.jpg",
+                src: "../../images/Previous Jobs/1. Woodview Commons/(Kitchen 1) woodview-commons-ann-arbor-mi-building-photo.jpg",
                 alt: "Woodview Commons Kitchen",
                 projectName: "WOODVIEW COMMONS FLATS"
             },
             {
-                src: "images/Previous Jobs/1. Woodview Commons/(Bath 1) woodview-commons-ann-arbor-mi-building-photo.jpg",
+                src: "../../images/Previous Jobs/1. Woodview Commons/(Bath 1) woodview-commons-ann-arbor-mi-building-photo.jpg",
                 alt: "Woodview Commons Bathroom",
                 projectName: "WOODVIEW COMMONS FLATS"
             },
             {
-                src: "images/Previous Jobs/4. 3740 2nd Ave Apartments/Kitchen1 VIEW_3740 Apartments.jpg",
+                src: "../../images/Previous Jobs/4. 3740 2nd Ave Apartments/Kitchen1 VIEW_3740 Apartments.jpg",
                 alt: "3740 2nd Ave Kitchen",
                 projectName: "3740 2ND AVE APARTMENTS"
             },
             {
-                src: "images/Previous Jobs/4. 3740 2nd Ave Apartments/bath1 VIEW_3740 Apartments.jpg",
+                src: "../../images/Previous Jobs/4. 3740 2nd Ave Apartments/bath1 VIEW_3740 Apartments.jpg",
                 alt: "3740 2nd Ave Bathroom",
                 projectName: "3740 2ND AVE APARTMENTS"
             },
             {
-                src: "images/Previous Jobs/19. Higgenbotham Garden Apartments/view-of-kitchen.jpg",
+                src: "../../images/Previous Jobs/19. Higgenbotham Garden Apartments/view-of-kitchen.jpg",
                 alt: "Higgenbotham Garden Apartments Kitchen",
                 projectName: "HIGGENBOTHAM GARDEN APARTMENTS"
             },
             {
-                src: "images/Previous Jobs/20. Higgenbotham School Apartments/commons-render.jpg",
+                src: "../../images/Previous Jobs/20. Higgenbotham School Apartments/commons-render.jpg",
                 alt: "Higgenbotham School Apartments Commons",
                 projectName: "HIGGENBOTHAM SCHOOL APARTMENTS"
             }
@@ -274,6 +274,7 @@ function updateSlideshowWithRandomImages() {
 
     // Get random images from Previous Jobs
     const randomImages = getRandomInteriorImages(6);
+    console.log('Random images for slideshow:', randomImages);
 
     // Clear existing slides
     slidesContainer.innerHTML = '';
@@ -930,8 +931,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize slideshow only if slideshow container exists (homepage only)
     const slideshowContainer = document.querySelector('.hero-slideshow .slideshow-container');
     if (slideshowContainer) {
+        console.log('Slideshow container found, initializing...');
         updateSlideshowWithRandomImages();
         initSlideshow();
+    } else {
+        console.log('Slideshow container not found');
     }
 
     // Initialize other features
@@ -1093,27 +1097,8 @@ function initContactForm() {
             }
         }
 
-        // Determine which email(s) to send to based on project type
-        let recipientEmails = 'atocco@woodenstonemi.com'; // Default email
-
-        // Add additional emails based on project type or other criteria
-        switch (formObject.projectType) {
-            case 'multi-family':
-                recipientEmails = 'atocco@woodenstonemi.com, sales@woodenstonemi.com';
-                break;
-            case 'assisted-living':
-                recipientEmails = 'atocco@woodenstonemi.com, healthcare@woodenstonemi.com';
-                break;
-            case 'commercial':
-                recipientEmails = 'atocco@woodenstonemi.com, commercial@woodenstonemi.com';
-                break;
-            default:
-                recipientEmails = 'atocco@woodenstonemi.com, otherperson@example.com';
-        }
-
         // Prepare email template parameters
         const templateParams = {
-            to_email: recipientEmails,
             from_name: formObject.name,
             from_company: formObject.company,
             from_email: formObject.email,
