@@ -74,7 +74,7 @@ app.get('/project-portfolio', (req, res) => {
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-    console.error(err.stack);
+    console.error('Server error:', err.stack);
     res.status(500).json({
         error: 'Something went wrong!',
         message: process.env.NODE_ENV === 'development' ? err.message : 'Internal server error'
@@ -87,7 +87,5 @@ app.use((req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`🚀 Server running on port ${PORT}`);
-    console.log(`📧 Postmark integration ready`);
-    console.log(`🌐 Frontend served from src/pages`);
+    console.log(`Server running on port ${PORT}`);
 });

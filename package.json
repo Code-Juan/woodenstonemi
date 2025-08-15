@@ -3,27 +3,12 @@
     "version": "1.0.0",
     "description": "The Wooden Stone LLC Official Company Website",
     "main": "backend/server.js",
-      "scripts": {
-    "start": "node backend/server.js",
-    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
-    "dev:frontend": "python -m http.server 8000 --directory src/pages",
-    "dev:backend": "nodemon backend/server.js",
-    "build": "node build.js",
-        "watch": "node src/scripts/upload-handler.js",
-        "optimize-images": "node src/scripts/optimize-images.js",
-        "optimize-all": "node src/scripts/optimize-images.js ./images ./images/optimized",
-        "process-new": "node src/scripts/upload-handler.js --process-existing",
-        "build:local": "npm run optimize-all && echo 'Build process complete'",
-        "install-deps": "npm install chokidar sharp",
-        "debug": "cross-env DEBUG=* node src/scripts/upload-handler.js",
-        "debug-dev": "cross-env DEBUG=* concurrently \"python -m http.server 8000 --directory src/pages\" \"npm run debug\"",
-        "debug-images": "cross-env DEBUG=sharp,image-processor node src/scripts/optimize-images.js",
-        "dev-server": "python -m http.server 8000 --directory src/pages --bind 127.0.0.1",
-        "dev-debug": "cross-env DEBUG=* npm run dev-server",
-        "debug-server": "cross-env DEBUG=* node debug-server.js",
-        "debug-upload": "cross-env DEBUG=* node debug-upload-handler.js",
-        "cleanup": "node -e \"const fs=require('fs');const path=require('path');const files=fs.readdirSync('./images');let deleted=0;files.forEach(f=>{if(fs.statSync(path.join('./images',f)).isFile()&&f.match(/-thumb.*-gallery|-gallery.*-thumb|-hero.*-gallery|-gallery.*-hero|-thumb.*-hero|-hero.*-thumb/)){fs.unlinkSync(path.join('./images',f));deleted++;}});console.log('Deleted',deleted,'duplicate files');\"",
-        "test-postmark": "node backend/test-postmark.js"
+    "scripts": {
+        "start": "node backend/server.js",
+        "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
+        "dev:frontend": "python -m http.server 8000 --directory src/pages",
+        "dev:backend": "nodemon backend/server.js",
+        "build": "node build.js"
     },
     "keywords": [
         "construction",
@@ -40,22 +25,14 @@
         "express": "^4.18.2",
         "express-rate-limit": "^7.1.5",
         "express-validator": "^7.0.1",
-        "fs-extra": "^11.2.0",
+        "fs-extra": "^11.3.1",
         "helmet": "^7.1.0",
         "multer": "^2.0.2",
         "postmark": "^4.0.0"
     },
     "devDependencies": {
-        "chokidar": "^3.5.3",
         "concurrently": "^8.2.0",
-        "cross-env": "^10.0.0",
-        "debug": "^4.4.1",
-        "imagemin": "^8.0.1",
-        "imagemin-mozjpeg": "^10.0.0",
-        "imagemin-pngquant": "^9.0.2",
-        "imagemin-webp": "^8.0.0",
-        "nodemon": "^3.0.2",
-        "sharp": "^0.32.0"
+        "nodemon": "^3.0.2"
     },
     "engines": {
         "node": ">=14.0.0"

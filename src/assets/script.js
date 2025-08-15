@@ -274,7 +274,6 @@ function updateSlideshowWithRandomImages() {
 
     // Get random images from Previous Jobs
     const randomImages = getRandomInteriorImages(6);
-    console.log('Random images for slideshow:', randomImages);
 
     // Clear existing slides
     slidesContainer.innerHTML = '';
@@ -932,7 +931,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (window.location.pathname.endsWith('index.html') || window.location.pathname === '/' || window.location.pathname === '') {
         const slideshowContainer = document.querySelector('.hero-slideshow .slideshow-container');
         if (slideshowContainer) {
-            console.log('Slideshow container found, initializing...');
             updateSlideshowWithRandomImages();
             initSlideshow();
         }
