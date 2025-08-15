@@ -110,7 +110,7 @@ function setCurrentPageIndicator() {
             if (linkPage === currentPage) {
                 link.classList.add('current-page');
                 link.setAttribute('aria-current', 'page');
-                link.setAttribute('tabindex', '-1'); // Make it non-focusable
+                // Don't set tabindex to -1 as it can hide the link
             }
         });
     }
