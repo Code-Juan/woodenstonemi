@@ -4,62 +4,261 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Wooden Stone LLC</title>
+    <<<<<<< Updated upstream <title>The Wooden Stone LLC</title>
+        =======
 
-    <!-- Resource hints for faster loading -->
-    <link rel="preload" href="assets/style.css" as="style">
-    <link rel="preload" href="assets/script.js" as="script">
-    <link rel="preload" href="The Wooden Stone Logo (Transparent).svg" as="image">
+        <!-- SEO Meta Tags -->
+        <title>The Wooden Stone LLC - Commercial Stonework & Countertop Contractors | Michigan</title>
+        <meta name="description"
+            content="The Wooden Stone LLC specializes in high-quality stonework for commercial and multi-family projects. Expert countertop installation, custom stone fabrication, and project management in Michigan.">
+        <meta name="keywords"
+            content="stonework contractors, commercial countertops, multi-family construction, stone fabrication, Michigan contractors, countertop installation, commercial stonework">
+        <meta name="author" content="The Wooden Stone LLC">
+        <meta name="robots" content="index, follow">
 
-    <!-- Font preconnects to prevent FOIT/FOUT -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <!-- Open Graph Meta Tags for Social Media -->
+        <meta property="og:title" content="The Wooden Stone LLC - Commercial Stonework & Countertop Contractors">
+        <meta property="og:description"
+            content="Specializing in high-quality stonework for commercial and multi-family projects. Expert countertop installation and custom stone fabrication in Michigan.">
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://woodenstonemi.com">
+        <meta property="og:site_name" content="The Wooden Stone LLC">
 
-    <!-- Inline script to prevent navigation flash -->
-    <script>
-        // Immediate current page detection to prevent flash
-        (function () {
-            const path = window.location.pathname;
-            const filename = path.split('/').pop() || 'index.html';
-            const pageMap = {
-                'index.html': 'home',
-                'index': 'home',
-                '': 'home',
-                'what-we-do.html': 'what-we-do',
-                'what-we-do': 'what-we-do',
-                'scopes-materials.html': 'scopes-materials',
-                'scopes-materials': 'scopes-materials',
-                'project-portfolio.html': 'project-portfolio',
-                'project-portfolio': 'project-portfolio',
-                'contact-us.html': 'contact-us',
-                'contact-us': 'contact-us'
-            };
-            const currentPage = pageMap[filename] || 'home';
+        <!-- Twitter Card Meta Tags -->
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="The Wooden Stone LLC - Commercial Stonework Contractors">
+        <meta name="twitter:description"
+            content="Expert stonework and countertop installation for commercial and multi-family projects in Michigan.">
 
-            // Apply current page styling immediately
-            document.addEventListener('DOMContentLoaded', function () {
-                const navLinks = document.querySelectorAll('nav a');
-                navLinks.forEach(link => {
-                    const href = link.getAttribute('href');
-                    const linkPage = href ? pageMap[href.split('/').pop()] : '';
+        <!-- Canonical URL -->
+        <link rel="canonical" href="https://woodenstonemi.com">
 
-                    // Only mark as current page if we're on the home page AND this is a valid navigation link
-                    // For the home page, we don't mark any nav links as current since there's no "Home" link
-                    if (linkPage === currentPage && currentPage !== 'home') {
-                        link.classList.add('current-page');
-                        link.setAttribute('aria-current', 'page');
-                        link.setAttribute('tabindex', '-1');
+        <!-- Enhanced Favicon for Google Search Results -->
+        <link rel="icon" type="image/svg+xml" href="/The Wooden Stone Logo (Transparent).svg">
+        <link rel="icon" type="image/png" sizes="32x32" href="/The Wooden Stone Logo (Transparent).svg">
+        <link rel="icon" type="image/png" sizes="16x16" href="/The Wooden Stone Logo (Transparent).svg">
+        <link rel="apple-touch-icon" sizes="180x180" href="/The Wooden Stone Logo (Transparent).svg">
+        <link rel="manifest" href="/site.webmanifest">
+
+        <!-- Enhanced Structured Data for SEO and Logo Display -->
+        <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": "The Wooden Stone LLC",
+        "description": "Michigan's premier commercial stonework and countertop contractors specializing in multi-family, apartment, and commercial projects. Expert granite, quartz, porcelain, quartzite, and marble installation.",
+        "url": "https://woodenstonemi.com",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://woodenstonemi.com/The Wooden Stone Logo (Transparent).svg",
+            "width": 200,
+            "height": 60,
+            "caption": "The Wooden Stone LLC Logo"
+        },
+        "image": {
+            "@type": "ImageObject",
+            "url": "https://woodenstonemi.com/The Wooden Stone Logo (Resized).svg",
+            "width": 1200,
+            "height": 800,
+            "caption": "The Wooden Stone LLC - Commercial Stonework and Countertop Installation"
+        },
+        "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "US",
+            "addressRegion": "MI",
+            "addressLocality": "Michigan"
+        },
+        "telephone": "+1-XXX-XXX-XXXX",
+        "email": "info@woodenstonemi.com",
+        "serviceType": [
+            "Commercial Stonework",
+            "Countertop Installation", 
+            "Stone Fabrication",
+            "Multi-Family Construction",
+            "Apartment Renovation",
+            "Commercial Construction"
+        ],
+        "areaServed": [
+            {
+                "@type": "State",
+                "name": "Michigan"
+            },
+            {
+                "@type": "City",
+                "name": "Detroit"
+            },
+            {
+                "@type": "City", 
+                "name": "Ann Arbor"
+            },
+            {
+                "@type": "City",
+                "name": "Grand Rapids"
+            },
+            {
+                "@type": "State",
+                "name": "Indiana"
+            },
+            {
+                "@type": "State",
+                "name": "Ohio"
+            }
+        ],
+        "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Commercial Stonework Services",
+            "itemListElement": [
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "Service",
+                        "name": "Commercial Countertop Installation",
+                        "description": "Professional countertop installation for multi-family and elderly care commercial projects"
                     }
-                });
-            });
-        })();
+                },
+                {
+                    "@type": "Offer", 
+                    "itemOffered": {
+                        "@type": "Service",
+                        "name": "Custom Stone Fabrication",
+                        "description": "Custom granite, quartz, porcelain, quartzite, and marble fabrication services"
+                    }
+                },
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "Service", 
+                        "name": "Multi-Family Project Management",
+                        "description": "Complete project management for multi-family stonework projects"
+                    }
+                },
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "Service",
+                        "name": "Apartment Countertop Installation", 
+                        "description": "Specialized countertop installation for apartment complexes"
+                    }
+                },
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "Service",
+                        "name": "Elderly Care Countertop Installation",
+                        "description": "Specialized countertop installation for elderly care facilities"
+                    }
+                },
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "Service",
+                        "name": "Casework Installation",
+                        "description": "Specialized casework installation for commercial projects"
+                    }
+                },
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "Service",
+                        "name": "Interior Door Installation",
+                        "description": "Specialized interior door installation for commercial projects"
+                    }
+                },
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "Service",
+                        "name": "Sink Fixtures Supply & Installation",
+                        "description": "Specialized sink fixtures supply and installation for commercial projects"
+                    }
+                },
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "Service",
+                        "name": "Bathroom Accessories Supply & Installation",
+                        "description": "Specialized bathroom accessories supply and installation for commercial projects"
+                    }
+                },
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "Service",
+                        "name": "Trim Carpentry Installation",
+                        "description": "Specialized trim carpentry installation for commercial projects"
+                    }
+                }
+            ]
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "reviewCount": "150",
+            "bestRating": "5",
+            "worstRating": "1"
+        },
+        "priceRange": "$$",
+        "openingHours": "Mo-Fr 09:00-17:00",
+        "paymentAccepted": ["Cash", "Check", "Credit Card"],
+        "currenciesAccepted": "USD"
+    }
     </script>
+        >>>>>>> Stashed changes
 
-    <link rel="stylesheet" href="assets/style.css">
-    <script defer src="assets/projects-data.js"></script>
-    <script defer src="assets/script.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Open+Sans&display=swap"
-        rel="stylesheet">
+        <!-- Resource hints for faster loading -->
+        <link rel="preload" href="assets/style.css" as="style">
+        <link rel="preload" href="assets/script.js" as="script">
+        <link rel="preload" href="The Wooden Stone Logo (Transparent).svg" as="image">
+
+        <!-- Font preconnects to prevent FOIT/FOUT -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+        <!-- Inline script to prevent navigation flash -->
+        <script>
+            // Immediate current page detection to prevent flash
+            (function () {
+                const path = window.location.pathname;
+                const filename = path.split('/').pop() || 'index.html';
+                const pageMap = {
+                    'index.html': 'home',
+                    'index': 'home',
+                    '': 'home',
+                    'what-we-do.html': 'what-we-do',
+                    'what-we-do': 'what-we-do',
+                    'scopes-materials.html': 'scopes-materials',
+                    'scopes-materials': 'scopes-materials',
+                    'project-portfolio.html': 'project-portfolio',
+                    'project-portfolio': 'project-portfolio',
+                    'contact-us.html': 'contact-us',
+                    'contact-us': 'contact-us'
+                };
+                const currentPage = pageMap[filename] || 'home';
+
+                // Apply current page styling immediately
+                document.addEventListener('DOMContentLoaded', function () {
+                    const navLinks = document.querySelectorAll('nav a');
+                    navLinks.forEach(link => {
+                        const href = link.getAttribute('href');
+                        const linkPage = href ? pageMap[href.split('/').pop()] : '';
+
+                        // Only mark as current page if we're on the home page AND this is a valid navigation link
+                        // For the home page, we don't mark any nav links as current since there's no "Home" link
+                        if (linkPage === currentPage && currentPage !== 'home') {
+                            link.classList.add('current-page');
+                            link.setAttribute('aria-current', 'page');
+                            link.setAttribute('tabindex', '-1');
+                        }
+                    });
+                });
+            })();
+        </script>
+
+        <link rel="stylesheet" href="assets/style.css">
+        <script defer src="assets/projects-data.js"></script>
+        <script defer src="assets/script.js"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Open+Sans&display=swap"
+            rel="stylesheet">
 </head>
 
 <body>

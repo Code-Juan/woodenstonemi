@@ -24,6 +24,36 @@ async function build() {
             await fs.copy('CNAME', 'dist/CNAME');
         }
 
+        // Copy robots.txt if it exists
+        if (await fs.pathExists('robots.txt')) {
+            await fs.copy('robots.txt', 'dist/robots.txt');
+        }
+
+        // Copy site.webmanifest if it exists
+        if (await fs.pathExists('site.webmanifest')) {
+            await fs.copy('site.webmanifest', 'dist/site.webmanifest');
+        }
+
+        // Copy sitemap.xml if it exists
+        if (await fs.pathExists('sitemap.xml')) {
+            await fs.copy('sitemap.xml', 'dist/sitemap.xml');
+        }
+
+        // Remove duplicate .html files to avoid SEO conflicts
+        const duplicateFiles = [
+            'dist/what-we-do.html',
+            'dist/scopes-materials.html',
+            'dist/project-portfolio.html',
+            'dist/contact-us.html'
+        ];
+
+        for (const file of duplicateFiles) {
+            if (await fs.pathExists(file)) {
+                await fs.remove(file);
+                console.log(`Removed duplicate file: ${file}`);
+            }
+        }
+
     } catch (error) {
         console.error('Build failed:', error);
         process.exit(1);
