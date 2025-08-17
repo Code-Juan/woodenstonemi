@@ -24,12 +24,13 @@ document.addEventListener('DOMContentLoaded', function () {
         const navLinks = nav.querySelectorAll('a');
         navLinks.forEach(link => {
             link.addEventListener('click', function (e) {
-                // Don't close menu if clicking on current page link
+                // Only prevent default and return if clicking on current page link
                 if (link.classList.contains('current-page')) {
                     e.preventDefault();
                     return;
                 }
 
+                // For all other links, close the mobile menu and allow normal navigation
                 nav.classList.remove('active');
                 mobileMenuToggle.classList.remove('active');
                 mobileMenuToggle.setAttribute('aria-expanded', 'false');
@@ -110,7 +111,7 @@ function setCurrentPageIndicator() {
             if (linkPage === currentPage) {
                 link.classList.add('current-page');
                 link.setAttribute('aria-current', 'page');
-                link.setAttribute('tabindex', '-1'); // Make it non-focusable
+                // Don't set tabindex to -1 as it can hide the link
             }
         });
     }
@@ -121,74 +122,60 @@ function getCurrentPage() {
     const path = window.location.pathname;
 
     // Handle root page
-    if (path === '/' || path === '' || path === '/index.html') {
+    if (path === '/' || path === '') {
         return 'home';
     }
 
-    // Handle folder-based URLs
-    const pathSegments = path.split('/').filter(segment => segment !== '');
-    const lastSegment = pathSegments[pathSegments.length - 1];
+    // Remove trailing slash and get the last segment
+    const cleanPath = path.replace(/\/$/, '');
+    const segments = cleanPath.split('/');
+    const lastSegment = segments[segments.length - 1];
 
-    // If the last segment is empty or 'index.html', we're in a folder
-    if (!lastSegment || lastSegment === 'index.html') {
-        // Get the folder name (second to last segment)
-        const folderName = pathSegments[pathSegments.length - 2];
-        return getPageFromPath(folderName);
-    }
+    // Map path segments to page names
+    const pageMap = {
+        'what-we-do': 'what-we-do',
+        'scopes-materials': 'scopes-materials',
+        'project-portfolio': 'project-portfolio',
+        'contact-us': 'contact-us'
+    };
 
-    // Handle direct .html files (fallback)
-    if (lastSegment.includes('.html')) {
-        return getPageFromFilename(lastSegment);
-    }
-
-    // Handle folder names directly
-    return getPageFromPath(lastSegment);
+    return pageMap[lastSegment] || 'home';
 }
 
-// Helper function to get page name from filename (fallback for .html files)
+// Helper function to get page name from filename (for backward compatibility)
 function getPageFromFilename(filename) {
-    // Map filenames to page names
+    // Map filenames to page names (for any remaining .html references)
     const pageMap = {
         'index.html': 'home',
         'main.html': 'home',
         'what-we-do.html': 'what-we-do',
         'scopes-materials.html': 'scopes-materials',
         'project-portfolio.html': 'project-portfolio',
-        'contact-us.html': 'contact-us',
-        'commercial-countertop-installation-michigan.html': 'commercial-countertop-installation-michigan'
+        'contact-us.html': 'contact-us'
     };
 
     return pageMap[filename] || 'home';
-}
-
-// Helper function to get page name from path/folder
-function getPageFromPath(path) {
-    // Map folder names to page names
-    const pageMap = {
-        'what-we-do': 'what-we-do',
-        'scopes-materials': 'scopes-materials',
-        'project-portfolio': 'project-portfolio',
-        'contact-us': 'contact-us',
-        'commercial-countertop-installation-michigan': 'commercial-countertop-installation-michigan'
-    };
-
-    return pageMap[path] || 'home';
 }
 
 // Get page name from href
 function getPageFromHref(href) {
     if (!href) return '';
 
-    // Handle folder-based URLs
-    if (href.endsWith('/')) {
-        const pathSegments = href.split('/').filter(segment => segment !== '');
-        const folderName = pathSegments[pathSegments.length - 1];
-        return getPageFromPath(folderName);
-    }
+    // Turn it into a pathname (handles absolute/relative)
+    const pathname = href.includes('://') ? new URL(href, location.origin).pathname : href;
 
-    // Handle .html files (fallback)
-    const filename = href.split('/').pop();
-    return getPageFromFilename(filename);
+    // Get the last segment, strip trailing slash and .html/.htm, and any query/hash just in case
+    const last = pathname.replace(/[?#].*$/, '').replace(/\/$/, '').split('/').pop() || '';
+    const slug = last.replace(/\.html?$/i, ''); // support .html and .htm
+
+    const pageMap = {
+        'what-we-do': 'what-we-do',
+        'scopes-materials': 'scopes-materials',
+        'project-portfolio': 'project-portfolio',
+        'contact-us': 'contact-us'
+    };
+
+    return pageMap[slug] || '';
 }
 
 // Responsive image loading with intersection observer

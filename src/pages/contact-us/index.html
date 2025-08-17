@@ -4,50 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us - The Wooden Stone LLC</title>
+    <title>Contact Us - The Wooden Stone LLC - Commercial Contractors</title>
     <!-- Font preconnects to prevent FOIT/FOUT -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <!-- Inline script to prevent navigation flash -->
-    <script>
-        // Immediate current page detection to prevent flash
-        (function () {
-            const path = window.location.pathname;
-            const filename = path.split('/').pop() || 'index.html';
-            const pageMap = {
-                'index.html': 'home',
-                'index': 'home',
-                '': 'home',
-                'what-we-do.html': 'what-we-do',
-                'what-we-do': 'what-we-do',
-                'scopes-materials.html': 'scopes-materials',
-                'scopes-materials': 'scopes-materials',
-                'project-portfolio.html': 'project-portfolio',
-                'project-portfolio': 'project-portfolio',
-                'contact-us.html': 'contact-us',
-                'contact-us': 'contact-us'
-            };
-            const currentPage = pageMap[filename] || 'home';
+    <!-- Inline script removed - using single source of truth in script.js -->
 
-            // Apply current page styling immediately
-            document.addEventListener('DOMContentLoaded', function () {
-                const navLinks = document.querySelectorAll('nav a');
-                navLinks.forEach(link => {
-                    const href = link.getAttribute('href');
-                    const linkPage = href ? pageMap[href.split('/').pop()] : '';
-                    if (linkPage === currentPage) {
-                        link.classList.add('current-page');
-                        link.setAttribute('aria-current', 'page');
-                        link.setAttribute('tabindex', '-1');
-                    }
-                });
-            });
-        })();
-    </script>
-
-    <link rel="stylesheet" href="assets/style.css">
-    <script defer src="assets/script.js"></script>
+    <link rel="stylesheet" href="/assets/style.css">
+    <script defer src="/assets/script.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Open+Sans&display=swap"
         rel="stylesheet">
 </head>
@@ -56,8 +21,8 @@
     <!-- Header -->
     <header>
         <div class="logo">
-            <a href="index.html">
-                <img src="The Wooden Stone Logo (Transparent).svg" alt="The Wooden Stone LLC Logo">
+            <a href="/">
+                <img src="/The Wooden Stone Logo (Transparent).svg" alt="The Wooden Stone LLC Logo">
             </a>
         </div>
         <button class="mobile-menu-toggle" aria-label="Toggle navigation menu">
@@ -66,11 +31,10 @@
             <span></span>
         </button>
         <nav>
-            <a href="what-we-do/">What We Do</a>
-            <a href="scopes-materials/">Scopes & Materials</a>
-            <a href="project-portfolio/">Project Portfolio</a>
-            <a href="contact-us/">Contact Us</a>
-            <a href="commercial-countertop-installation-michigan/">Commercial Countertops</a>
+            <a href="/what-we-do/">What We Do</a>
+            <a href="/scopes-materials/">Scopes & Materials</a>
+            <a href="/project-portfolio/">Project Portfolio</a>
+            <a href="/contact-us/">Contact Us</a>
         </nav>
     </header>
 

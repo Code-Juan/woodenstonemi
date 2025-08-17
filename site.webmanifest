@@ -1,0 +1,17 @@
+{
+    "name": "The Wooden Stone LLC",
+    "short_name": "Wooden Stone",
+    "description": "Commercial stonework and countertop contractors specializing in multi-family and commercial projects",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#B87333",
+    "icons": [
+        {
+            "src": "/The Wooden Stone Logo (Transparent).svg",
+            "sizes": "any",
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
+        }
+    ]
+}

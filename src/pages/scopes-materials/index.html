@@ -9,45 +9,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <!-- Inline script to prevent navigation flash -->
-    <script>
-        // Immediate current page detection to prevent flash
-        (function () {
-            const path = window.location.pathname;
-            const filename = path.split('/').pop() || 'index.html';
-            const pageMap = {
-                'index.html': 'home',
-                'index': 'home',
-                '': 'home',
-                'what-we-do.html': 'what-we-do',
-                'what-we-do': 'what-we-do',
-                'scopes-materials.html': 'scopes-materials',
-                'scopes-materials': 'scopes-materials',
-                'project-portfolio.html': 'project-portfolio',
-                'project-portfolio': 'project-portfolio',
-                'contact-us.html': 'contact-us',
-                'contact-us': 'contact-us'
-            };
-            const currentPage = pageMap[filename] || 'home';
+    <!-- Inline script removed - using single source of truth in script.js -->
 
-            // Apply current page styling immediately
-            document.addEventListener('DOMContentLoaded', function () {
-                const navLinks = document.querySelectorAll('nav a');
-                navLinks.forEach(link => {
-                    const href = link.getAttribute('href');
-                    const linkPage = href ? pageMap[href.split('/').pop()] : '';
-                    if (linkPage === currentPage) {
-                        link.classList.add('current-page');
-                        link.setAttribute('aria-current', 'page');
-                        link.setAttribute('tabindex', '-1');
-                    }
-                });
-            });
-        })();
-    </script>
-
-    <link rel="stylesheet" href="assets/style.css">
-    <script defer src="assets/script.js"></script>
+    <link rel="stylesheet" href="/assets/style.css">
+    <script defer src="/assets/script.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Open+Sans&display=swap"
         rel="stylesheet">
 </head>
@@ -56,8 +21,8 @@
     <!-- Header -->
     <header>
         <div class="logo">
-            <a href="index.html">
-                <img src="The Wooden Stone Logo (Transparent).svg" alt="The Wooden Stone LLC Logo">
+            <a href="/">
+                <img src="/The Wooden Stone Logo (Transparent).svg" alt="The Wooden Stone LLC Logo">
             </a>
         </div>
         <button class="mobile-menu-toggle" aria-label="Toggle navigation menu">
@@ -66,11 +31,10 @@
             <span></span>
         </button>
         <nav>
-            <a href="what-we-do/">What We Do</a>
-            <a href="scopes-materials/">Scopes & Materials</a>
-            <a href="project-portfolio/">Project Portfolio</a>
-            <a href="contact-us/">Contact Us</a>
-            <a href="commercial-countertop-installation-michigan/">Commercial Countertops</a>
+            <a href="/what-we-do/">What We Do</a>
+            <a href="/scopes-materials/">Scopes & Materials</a>
+            <a href="/project-portfolio/">Project Portfolio</a>
+            <a href="/contact-us/">Contact Us</a>
         </nav>
     </header>
 
@@ -92,8 +56,8 @@
                 <div class="material-item">
                     <div class="material-image">
                         <div class="circular-image">
-                            <img src="images/Scopes%20%26%20Materials/countertops.jpg" alt="Countertops"
-                                srcset="images/Scopes%20%26%20Materials/countertops-thumb.jpg 400w, images/Scopes%20%26%20Materials/countertops-gallery.jpg 800w, images/Scopes%20%26%20Materials/countertops-hero.jpg 1200w, images/Scopes%20%26%20Materials/countertops.jpg 1600w"
+                            <img src="/images/Scopes%20%26%20Materials/countertops.jpg" alt="Countertops"
+                                srcset="/images/Scopes%20%26%20Materials/countertops-thumb.jpg 400w, /images/Scopes%20%26%20Materials/countertops-gallery.jpg 800w, /images/Scopes%20%26%20Materials/countertops-hero.jpg 1200w, /images/Scopes%20%26%20Materials/countertops.jpg 1600w"
                                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw">
                         </div>
                     </div>
@@ -116,8 +80,8 @@
                 <div class="material-item">
                     <div class="material-image">
                         <div class="circular-image">
-                            <img src="images/Scopes%20%26%20Materials/cabinets.jpg" alt="Cabinets"
-                                srcset="images/Scopes%20%26%20Materials/cabinets-thumb.jpg 400w, images/Scopes%20%26%20Materials/cabinets-gallery.jpg 800w, images/Scopes%20%26%20Materials/cabinets-hero.jpg 1200w, images/Scopes%20%26%20Materials/cabinets.jpg 1600w"
+                            <img src="/images/Scopes%20%26%20Materials/cabinets.jpg" alt="Cabinets"
+                                srcset="/images/Scopes%20%26%20Materials/cabinets-thumb.jpg 400w, /images/Scopes%20%26%20Materials/cabinets-gallery.jpg 800w, /images/Scopes%20%26%20Materials/cabinets-hero.jpg 1200w, /images/Scopes%20%26%20Materials/cabinets.jpg 1600w"
                                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw">
                         </div>
                     </div>
@@ -134,9 +98,9 @@
                 <div class="material-item">
                     <div class="material-image">
                         <div class="circular-image">
-                            <img src="images/Scopes%20%26%20Materials/casework%20and%20finish%20trim.jpg"
+                            <img src="/images/Scopes%20%26%20Materials/casework%20and%20finish%20trim.jpg"
                                 alt="Casework and Finish Trim"
-                                srcset="images/Scopes%20%26%20Materials/casework%20and%20finish%20trim-thumb.jpg 400w, images/Scopes%20%26%20Materials/casework%20and%20finish%20trim-gallery.jpg 800w, images/Scopes%20%26%20Materials/casework%20and%20finish%20trim-hero.jpg 1200w, images/Scopes%20%26%20Materials/casework%20and%20finish%20trim.jpg 1600w"
+                                srcset="/images/Scopes%20%26%20Materials/casework%20and%20finish%20trim-thumb.jpg 400w, /images/Scopes%20%26%20Materials/casework%20and%20finish%20trim-gallery.jpg 800w, /images/Scopes%20%26%20Materials/casework%20and%20finish%20trim-hero.jpg 1200w, /images/Scopes%20%26%20Materials/casework%20and%20finish%20trim.jpg 1600w"
                                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw">
                         </div>
                     </div>
@@ -153,8 +117,8 @@
                 <div class="material-item">
                     <div class="material-image">
                         <div class="circular-image">
-                            <img src="images/Scopes%20%26%20Materials/interior-door.jpg" alt="Interior Door"
-                                srcset="images/Scopes%20%26%20Materials/interior-door-thumb.jpg 400w, images/Scopes%20%26%20Materials/interior-door-gallery.jpg 800w, images/Scopes%20%26%20Materials/interior-door-hero.jpg 1200w, images/Scopes%20%26%20Materials/interior-door.jpg 1600w"
+                            <img src="/images/Scopes%20%26%20Materials/interior-door.jpg" alt="Interior Door"
+                                srcset="/images/Scopes%20%26%20Materials/interior-door-thumb.jpg 400w, /images/Scopes%20%26%20Materials/interior-door-gallery.jpg 800w, /images/Scopes%20%26%20Materials/interior-door-hero.jpg 1200w, /images/Scopes%20%26%20Materials/interior-door.jpg 1600w"
                                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw">
                         </div>
                     </div>
@@ -171,8 +135,8 @@
                 <div class="material-item">
                     <div class="material-image">
                         <div class="circular-image">
-                            <img src="images/Scopes%20%26%20Materials/sinks.jpg" alt="Sinks"
-                                srcset="images/Scopes%20%26%20Materials/sinks-thumb.jpg 400w, images/Scopes%20%26%20Materials/sinks-gallery.jpg 800w, images/Scopes%20%26%20Materials/sinks-hero.jpg 1200w, images/Scopes%20%26%20Materials/sinks.jpg 1600w"
+                            <img src="/images/Scopes%20%26%20Materials/sinks.jpg" alt="Sinks"
+                                srcset="/images/Scopes%20%26%20Materials/sinks-thumb.jpg 400w, /images/Scopes%20%26%20Materials/sinks-gallery.jpg 800w, /images/Scopes%20%26%20Materials/sinks-hero.jpg 1200w, /images/Scopes%20%26%20Materials/sinks.jpg 1600w"
                                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw">
                         </div>
                     </div>
@@ -189,8 +153,8 @@
                 <div class="material-item">
                     <div class="material-image">
                         <div class="circular-image">
-                            <img src="images/Scopes%20%26%20Materials/bath-accessories.jpg" alt="Bath Accessories"
-                                srcset="images/Scopes%20%26%20Materials/bath-accessories-thumb.jpg 400w, images/Scopes%20%26%20Materials/bath-accessories-gallery.jpg 800w, images/Scopes%20%26%20Materials/bath-accessories-hero.jpg 1200w, images/Scopes%20%26%20Materials/bath-accessories.jpg 1600w"
+                            <img src="/images/Scopes%20%26%20Materials/bath-accessories.jpg" alt="Bath Accessories"
+                                srcset="/images/Scopes%20%26%20Materials/bath-accessories-thumb.jpg 400w, /images/Scopes%20%26%20Materials/bath-accessories-gallery.jpg 800w, /images/Scopes%20%26%20Materials/bath-accessories-hero.jpg 1200w, /images/Scopes%20%26%20Materials/bath-accessories.jpg 1600w"
                                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw">
                         </div>
                     </div>

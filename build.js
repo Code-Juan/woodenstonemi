@@ -42,10 +42,9 @@ async function build() {
         // Remove duplicate .html files to avoid SEO conflicts
         const duplicateFiles = [
             'dist/what-we-do.html',
-            'dist/scopes-materials.html',
+            'dist/scopes-materials.html', 
             'dist/project-portfolio.html',
-            'dist/contact-us.html',
-            'dist/commercial-countertop-installation-michigan.html'
+            'dist/contact-us.html'
         ];
 
         for (const file of duplicateFiles) {
