@@ -44,7 +44,8 @@ async function build() {
             'dist/what-we-do.html',
             'dist/scopes-materials.html',
             'dist/project-portfolio.html',
-            'dist/contact-us.html'
+            'dist/contact-us.html',
+            'dist/commercial-countertop-installation-michigan.html'
         ];
 
         for (const file of duplicateFiles) {

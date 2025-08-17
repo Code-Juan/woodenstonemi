@@ -119,27 +119,33 @@ function setCurrentPageIndicator() {
 // Get current page name
 function getCurrentPage() {
     const path = window.location.pathname;
-    const filename = path.split('/').pop();
 
-    // Handle cases where pathname might be empty or just "/"
-    if (!filename || filename === '') {
-        // Check if we're on the root page
-        if (path === '/' || path === '') {
-            return 'home';
-        }
-        // Try to get from the full URL
-        const fullUrl = window.location.href;
-        const urlFilename = fullUrl.split('/').pop();
-        if (urlFilename && urlFilename.includes('.html')) {
-            return getPageFromFilename(urlFilename);
-        }
+    // Handle root page
+    if (path === '/' || path === '' || path === '/index.html') {
         return 'home';
     }
 
-    return getPageFromFilename(filename);
+    // Handle folder-based URLs
+    const pathSegments = path.split('/').filter(segment => segment !== '');
+    const lastSegment = pathSegments[pathSegments.length - 1];
+
+    // If the last segment is empty or 'index.html', we're in a folder
+    if (!lastSegment || lastSegment === 'index.html') {
+        // Get the folder name (second to last segment)
+        const folderName = pathSegments[pathSegments.length - 2];
+        return getPageFromPath(folderName);
+    }
+
+    // Handle direct .html files (fallback)
+    if (lastSegment.includes('.html')) {
+        return getPageFromFilename(lastSegment);
+    }
+
+    // Handle folder names directly
+    return getPageFromPath(lastSegment);
 }
 
-// Helper function to get page name from filename
+// Helper function to get page name from filename (fallback for .html files)
 function getPageFromFilename(filename) {
     // Map filenames to page names
     const pageMap = {
@@ -148,16 +154,39 @@ function getPageFromFilename(filename) {
         'what-we-do.html': 'what-we-do',
         'scopes-materials.html': 'scopes-materials',
         'project-portfolio.html': 'project-portfolio',
-        'contact-us.html': 'contact-us'
+        'contact-us.html': 'contact-us',
+        'commercial-countertop-installation-michigan.html': 'commercial-countertop-installation-michigan'
     };
 
     return pageMap[filename] || 'home';
+}
+
+// Helper function to get page name from path/folder
+function getPageFromPath(path) {
+    // Map folder names to page names
+    const pageMap = {
+        'what-we-do': 'what-we-do',
+        'scopes-materials': 'scopes-materials',
+        'project-portfolio': 'project-portfolio',
+        'contact-us': 'contact-us',
+        'commercial-countertop-installation-michigan': 'commercial-countertop-installation-michigan'
+    };
+
+    return pageMap[path] || 'home';
 }
 
 // Get page name from href
 function getPageFromHref(href) {
     if (!href) return '';
 
+    // Handle folder-based URLs
+    if (href.endsWith('/')) {
+        const pathSegments = href.split('/').filter(segment => segment !== '');
+        const folderName = pathSegments[pathSegments.length - 1];
+        return getPageFromPath(folderName);
+    }
+
+    // Handle .html files (fallback)
     const filename = href.split('/').pop();
     return getPageFromFilename(filename);
 }
