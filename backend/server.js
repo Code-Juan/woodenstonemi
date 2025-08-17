@@ -57,19 +57,19 @@ app.get('/', (req, res) => {
 });
 
 app.get('/contact-us', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'src', 'pages', 'contact-us.html'));
+    res.sendFile(path.join(__dirname, '..', 'src', 'pages', 'contact-us', 'index.html'));
 });
 
 app.get('/what-we-do', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'src', 'pages', 'what-we-do.html'));
+    res.sendFile(path.join(__dirname, '..', 'src', 'pages', 'what-we-do', 'index.html'));
 });
 
 app.get('/scopes-materials', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'src', 'pages', 'scopes-materials.html'));
+    res.sendFile(path.join(__dirname, '..', 'src', 'pages', 'scopes-materials', 'index.html'));
 });
 
 app.get('/project-portfolio', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'src', 'pages', 'project-portfolio.html'));
+    res.sendFile(path.join(__dirname, '..', 'src', 'pages', 'project-portfolio', 'index.html'));
 });
 
 // Error handling middleware
