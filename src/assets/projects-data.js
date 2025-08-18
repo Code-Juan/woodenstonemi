@@ -35,7 +35,18 @@ const projectsData = [
         materials: "Quartz Countertops, Sink Fixtures, Cabinetry",
         client: "Icon Development, Inc",
         dates: "Jan 2024 - Dec 2026",
-        images: ["placeholder", "placeholder", "placeholder"]
+        images: [
+            "images/Previous Jobs/23. Seaton Place Apartments/apartments-overview.jpg",
+            "images/Previous Jobs/23. Seaton Place Apartments/kitchen-view1.jpg",
+            "images/Previous Jobs/23. Seaton Place Apartments/kitchen-view2.jpg",
+            "images/Previous Jobs/23. Seaton Place Apartments/bedroom-view1.jpg",
+            "images/Previous Jobs/23. Seaton Place Apartments/bedroom-view2.jpg",
+            "images/Previous Jobs/23. Seaton Place Apartments/bathroom-view1.jpg",
+            "images/Previous Jobs/23. Seaton Place Apartments/bathroom-view2.jpg",
+            "images/Previous Jobs/23. Seaton Place Apartments/kitchen-dining-view.jpg",
+            "images/Previous Jobs/23. Seaton Place Apartments/dining-room-view1.jpg",
+            "images/Previous Jobs/23. Seaton Place Apartments/living-room-view1.jpg"
+        ]
     },
     {
         id: 3,
@@ -47,7 +58,12 @@ const projectsData = [
         materials: "Quartz Countertops, Sink Fixtures",
         client: "Sachse Construction",
         dates: "Jan 2026 - Nov 2026",
-        images: ["placeholder", "placeholder", "placeholder"]
+        images: [
+            "images/Previous Jobs/22. Plymouth Walk Apartments/optionA-rendering.jpg",
+            "images/Previous Jobs/22. Plymouth Walk Apartments/optionB-rendering.jpg",
+            "images/Previous Jobs/22. Plymouth Walk Apartments/unit-rendering.jpg",
+            "images/Previous Jobs/22. Plymouth Walk Apartments/clubhouse-rendering.jpg"
+        ]
     },
     {
         id: 4,
@@ -71,7 +87,11 @@ const projectsData = [
         materials: "Granite Countertops, Sink Fixtures",
         client: "Williams Distributing",
         dates: "March 2025 - July 2025",
-        images: ["placeholder", "placeholder", "placeholder"]
+        images: [
+            "images/Previous Jobs/8. Ironworks Apartments/exterior-overview1.avif",
+            "images/Previous Jobs/8. Ironworks Apartments/exterior-overview2.avif",
+            "images/Previous Jobs/8. Ironworks Apartments/exterior-overview3.jpeg"
+        ]
     },
     {
         id: 6,
