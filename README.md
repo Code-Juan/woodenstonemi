@@ -138,6 +138,7 @@ The contact form uses Postmark for reliable email delivery:
 ## Documentation
 
 - [Backend Setup](./backend/README.md) - Detailed backend configuration
-- [Email Setup](./EMAIL_SETUP.md) - Email configuration guide
+- [Email Setup](./POSTMARK_SETUP_GUIDE.md) - Current email configuration guide
 - [Security](./SECURITY.md) - Security considerations
 - [Setup Guide](./SETUP.md) - Complete setup instructions
+- [Deployment Strategy](./DEPLOYMENT_STRATEGY.md) - Deployment workflow and configuration

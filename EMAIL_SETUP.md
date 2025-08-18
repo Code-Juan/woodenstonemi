@@ -1,4 +1,10 @@
-# EmailJS Setup Guide for Contact Form
+# EmailJS Setup Guide for Contact Form (DEPRECATED)
+
+⚠️ **This guide is deprecated. The current email system uses Postmark.**
+
+Please refer to `POSTMARK_SETUP_GUIDE.md` for the current email setup instructions.
+
+---
 
 This guide will help you set up EmailJS to enable email functionality for the contact form on your website.
 

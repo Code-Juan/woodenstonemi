@@ -1,8 +1,8 @@
-# Security Protocol for EmailJS Credentials
+# Security Protocol for Email System Credentials
 
-## 🚨 IMPORTANT: Credentials are currently exposed in code
+## 🚨 IMPORTANT: Email System Security
 
-Your EmailJS credentials are currently hardcoded in `script.js`. This is a security risk if your repository is public.
+The current email system uses Postmark for secure email delivery. This document outlines security best practices for the email system.
 
 ## Immediate Actions Required:
 
@@ -10,9 +10,9 @@ Your EmailJS credentials are currently hardcoded in `script.js`. This is a secur
 Create a `.env` file in your project root (this file is already in .gitignore):
 
 ```bash
-EMAILJS_USER_ID=ghhELlW-s8HL820_1
-EMAILJS_SERVICE_ID=service_w7te4xp
-EMAILJS_TEMPLATE_ID=template_zwu0xh8
+POSTMARK_API_KEY=your_postmark_api_key_here
+FROM_EMAIL=noreply@woodenstonemi.com
+TO_EMAIL=info@woodenstonemi.com
 ```
 
 ### 2. For Static Site Hosting (GitHub Pages, Netlify, etc.)
@@ -26,21 +26,21 @@ Since this is a static site, you'll need to:
 - Create a simple backend service to handle email sending
 - Keep credentials on the server side
 
-**Option C: Use EmailJS Public Key Only (Current Setup)**
-- The current setup uses only the public key
-- This is relatively safe as it's designed to be public
-- However, consider rate limiting and monitoring
+**Option C: Use Postmark API (Current Setup)**
+- The current setup uses Postmark API for secure email delivery
+- API keys are stored securely in environment variables
+- Includes rate limiting and monitoring
 
 ## Current Risk Assessment:
 
-✅ **Low Risk**: EmailJS public keys are designed to be public
-⚠️ **Medium Risk**: Service and template IDs could be used to send emails through your account
-🚨 **High Risk**: If someone gets your SMTP password, they could send emails as you
+✅ **Low Risk**: Postmark API keys are stored securely in environment variables
+⚠️ **Medium Risk**: API keys should be rotated regularly
+🚨 **High Risk**: If API keys are exposed, they could be used to send emails through your account
 
 ## Recommended Security Measures:
 
-1. **Monitor EmailJS Dashboard** for unusual activity
-2. **Set up rate limiting** in EmailJS if available
+1. **Monitor Postmark Dashboard** for unusual activity
+2. **Set up rate limiting** in Postmark if available
 3. **Regularly rotate credentials** if possible
 4. **Use environment variables** for production deployments
 5. **Consider using a backend service** for sensitive applications
@@ -48,14 +48,14 @@ Since this is a static site, you'll need to:
 ## For Production Deployment:
 
 If deploying to a hosting service, set these environment variables:
-- `EMAILJS_USER_ID`
-- `EMAILJS_SERVICE_ID` 
-- `EMAILJS_TEMPLATE_ID`
+- `POSTMARK_API_KEY`
+- `FROM_EMAIL`
+- `TO_EMAIL`
 
 ## Emergency Actions:
 
 If credentials are compromised:
-1. **Immediately change your EmailJS password**
-2. **Regenerate your public key** in EmailJS dashboard
-3. **Update your SMTP password** in GoDaddy
-4. **Monitor for unauthorized email activity**
+1. **Immediately regenerate your Postmark API key**
+2. **Update environment variables** with new API key
+3. **Monitor Postmark dashboard** for unauthorized activity
+4. **Check email delivery logs** for suspicious activity
