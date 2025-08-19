@@ -19,14 +19,14 @@ async function build() {
         await fs.copy('The Wooden Stone Logo (Transparent).svg', 'dist/The Wooden Stone Logo (Transparent).svg');
         await fs.copy('Wooden Stone Logo.svg', 'dist/Wooden Stone Logo.svg');
 
-                // Generate favicon files from the icon
+        // Generate favicon files from the icon
         const { execSync } = require('child_process');
-        
+
         // Check if ImageMagick is available
         try {
             // Test if ImageMagick is available
             execSync('magick --version', { stdio: 'ignore' });
-            
+
             // Create favicon files using ImageMagick
             console.log('ImageMagick found - generating favicon files...');
             execSync('magick "The Wooden Stone Icon.jpg" -strip -quality 90 -resize 32x32^ -gravity center -extent 32x32 "dist/favicon-32x32.png"');
@@ -37,16 +37,16 @@ async function build() {
             console.log('Favicon files generated successfully!');
         } catch (error) {
             console.log('ImageMagick not available - copying existing favicon files or creating placeholder...');
-            
+
             // Try to copy existing favicon files if they exist
             const faviconFiles = [
                 'favicon-32x32.png',
-                'favicon-16x16.png', 
+                'favicon-16x16.png',
                 'apple-touch-icon.png',
                 'android-chrome-192x192.png',
                 'android-chrome-512x512.png'
             ];
-            
+
             for (const file of faviconFiles) {
                 if (await fs.pathExists(file)) {
                     await fs.copy(file, `dist/${file}`);
@@ -79,10 +79,7 @@ async function build() {
             await fs.copy('sitemap.xml', 'dist/sitemap.xml');
         }
 
-        // Copy Google verification file if it exists
-        if (await fs.pathExists('google-verification.html')) {
-            await fs.copy('google-verification.html', 'dist/google-verification.html');
-        }
+
 
         // Remove duplicate .html files to avoid SEO conflicts
         const duplicateFiles = [
