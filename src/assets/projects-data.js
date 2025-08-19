@@ -299,11 +299,11 @@ const projectsData = [
         client: "Icon Development, Inc",
         dates: "Sep 2024 - Jan 2025",
         images: [
-            "images/Previous Jobs/17. Team Wellness/reception-view1-hero.jpg",
-            "images/Previous Jobs/17. Team Wellness/reception-view2-hero.jpg",
             "images/Previous Jobs/17. Team Wellness/desk-view-hero.jpg",
-            "images/Previous Jobs/17. Team Wellness/trim-view-hero.jpg",
-            "images/Previous Jobs/17. Team Wellness/trim-view2-hero.jpg"
+            "images/Previous Jobs/17. Team Wellness/reception-view1-hero.jpg",
+            "images/Previous Jobs/17. Team Wellness/trim-view2-hero.jpg",
+            "images/Previous Jobs/17. Team Wellness/reception-view2-hero.jpg",
+            "images/Previous Jobs/17. Team Wellness/trim-view-hero.jpg"
         ]
     },
     {

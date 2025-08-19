@@ -79,6 +79,11 @@ async function build() {
             await fs.copy('sitemap.xml', 'dist/sitemap.xml');
         }
 
+        // Copy Google verification file if it exists
+        if (await fs.pathExists('google-verification.html')) {
+            await fs.copy('google-verification.html', 'dist/google-verification.html');
+        }
+
         // Remove duplicate .html files to avoid SEO conflicts
         const duplicateFiles = [
             'dist/what-we-do.html',
