@@ -160,6 +160,114 @@ This is an automated confirmation email. Please do not reply to this message.
     }
 }
 
+// Generate HTML email template
+function generateEmailHTML(data) {
+    const { name, email, phone, company, projectType, projectDescription, preferredContact, budget, timeline, additionalInfo, attachments } = data;
+    
+    const attachmentsList = attachments && attachments.length > 0 
+        ? attachments.map(file => `<li>${file.originalname} (${(file.size / 1024 / 1024).toFixed(2)} MB)</li>`).join('')
+        : '<li>No attachments</li>';
+
+    return `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <style>
+                body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; }
+                .header { background-color: #f8f9fa; padding: 20px; border-bottom: 3px solid #007bff; }
+                .content { padding: 20px; }
+                .section { margin-bottom: 20px; }
+                .label { font-weight: bold; color: #007bff; }
+                .footer { background-color: #f8f9fa; padding: 20px; text-align: center; font-size: 14px; }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <h2>New Contact Form Submission - The Wooden Stone LLC</h2>
+            </div>
+            <div class="content">
+                <div class="section">
+                    <h3>Contact Information</h3>
+                    <p><span class="label">Name:</span> ${name}</p>
+                    <p><span class="label">Email:</span> <a href="mailto:${email}">${email}</a></p>
+                    <p><span class="label">Phone:</span> ${phone || 'Not provided'}</p>
+                    <p><span class="label">Company:</span> ${company}</p>
+                    <p><span class="label">Preferred Contact:</span> ${preferredContact || 'Not specified'}</p>
+                </div>
+                
+                <div class="section">
+                    <h3>Project Details</h3>
+                    <p><span class="label">Project Type:</span> ${projectType}</p>
+                    <p><span class="label">Budget Range:</span> ${budget || 'Not specified'}</p>
+                    <p><span class="label">Timeline:</span> ${timeline || 'Not specified'}</p>
+                </div>
+                
+                <div class="section">
+                    <h3>Project Description</h3>
+                    <p>${projectDescription.replace(/\n/g, '<br>')}</p>
+                </div>
+                
+                ${additionalInfo ? `
+                <div class="section">
+                    <h3>Additional Information</h3>
+                    <p>${additionalInfo.replace(/\n/g, '<br>')}</p>
+                </div>
+                ` : ''}
+                
+                <div class="section">
+                    <h3>Attachments</h3>
+                    <ul>${attachmentsList}</ul>
+                </div>
+            </div>
+            <div class="footer">
+                <p>This message was sent from the contact form on your website.</p>
+                <p>Submitted on: ${new Date().toLocaleString()}</p>
+            </div>
+        </body>
+        </html>
+    `;
+}
+
+// Generate text email template
+function generateEmailText(data) {
+    const { name, email, phone, company, projectType, projectDescription, preferredContact, budget, timeline, additionalInfo, attachments } = data;
+    
+    const attachmentsList = attachments && attachments.length > 0 
+        ? attachments.map(file => `- ${file.originalname} (${(file.size / 1024 / 1024).toFixed(2)} MB)`).join('\n')
+        : '- No attachments';
+
+    return `
+New Contact Form Submission - The Wooden Stone LLC
+
+CONTACT INFORMATION:
+Name: ${name}
+Email: ${email}
+Phone: ${phone || 'Not provided'}
+Company: ${company}
+Preferred Contact: ${preferredContact || 'Not specified'}
+
+PROJECT DETAILS:
+Project Type: ${projectType}
+Budget Range: ${budget || 'Not specified'}
+Timeline: ${timeline || 'Not specified'}
+
+PROJECT DESCRIPTION:
+${projectDescription}
+
+${additionalInfo ? `
+ADDITIONAL INFORMATION:
+${additionalInfo}
+` : ''}
+
+ATTACHMENTS:
+${attachmentsList}
+
+---
+This message was sent from the contact form on your website.
+Submitted on: ${new Date().toLocaleString()}
+    `;
+}
+
 // Clean up uploaded files
 function cleanupFiles(files) {
     if (!files || !Array.isArray(files)) return;

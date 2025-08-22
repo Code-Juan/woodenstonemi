@@ -31,8 +31,31 @@ const limiter = rateLimit({
 app.use('/api/', limiter);
 
 // CORS configuration
+const allowedOrigins = [
+    'http://localhost:8000',
+    'http://localhost:3000',
+    'https://woodenstonemi.com',
+    'https://www.woodenstonemi.com',
+    'https://dev.woodenstonemi.com'
+];
+
+// Add custom origin from environment if provided
+if (process.env.FRONTEND_URL) {
+    allowedOrigins.push(process.env.FRONTEND_URL);
+}
+
 app.use(cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:8000',
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+
+        if (allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            console.log('CORS blocked origin:', origin);
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true
 }));
 
