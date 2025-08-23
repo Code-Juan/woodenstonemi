@@ -106,7 +106,11 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="email">Email *</label>
-                            <input type="email" id="email" name="email" required>
+                            <input type="email" id="email" name="email" required
+                                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                                title="Please enter a valid email address">
+                            <div id="email-error" class="error-message"
+                                style="display: none; color: #dc3545; font-size: 14px; margin-top: 5px;"></div>
                         </div>
                         <div class="form-group">
                             <label for="phone">Phone</label>
@@ -325,6 +329,37 @@
                     showMessage('Failed to send message. Please try again later or contact us directly.', 'error');
                 } finally {
                     setLoading(false);
+                }
+            });
+
+            // Email validation
+            const emailInput = document.getElementById('email');
+            const emailError = document.getElementById('email-error');
+
+            function validateEmail(email) {
+                const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                return emailRegex.test(email);
+            }
+
+            emailInput.addEventListener('blur', function () {
+                const email = this.value.trim();
+                if (email && !validateEmail(email)) {
+                    emailError.textContent = 'Please enter a valid email address';
+                    emailError.style.display = 'block';
+                    this.style.borderColor = '#dc3545';
+                } else {
+                    emailError.style.display = 'none';
+                    this.style.borderColor = '';
+                }
+            });
+
+            emailInput.addEventListener('input', function () {
+                if (emailError.style.display === 'block') {
+                    const email = this.value.trim();
+                    if (validateEmail(email)) {
+                        emailError.style.display = 'none';
+                        this.style.borderColor = '';
+                    }
                 }
             });
 

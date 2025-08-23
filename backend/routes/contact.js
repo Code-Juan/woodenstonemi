@@ -69,7 +69,21 @@ const validateContactForm = [
     body('email')
         .isEmail()
         .normalizeEmail()
-        .withMessage('Please provide a valid email address'),
+        .matches(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)
+        .withMessage('Please provide a valid email address')
+        .custom((value) => {
+            // Additional validation: check for common disposable email domains
+            const disposableDomains = [
+                '10minutemail.com', 'tempmail.org', 'guerrillamail.com',
+                'mailinator.com', 'throwaway.email', 'temp-mail.org',
+                'yopmail.com', 'getnada.com', 'sharklasers.com'
+            ];
+            const domain = value.split('@')[1];
+            if (disposableDomains.includes(domain)) {
+                throw new Error('Disposable email addresses are not allowed');
+            }
+            return true;
+        }),
     body('phone')
         .optional()
         .trim()
