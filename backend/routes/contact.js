@@ -101,6 +101,12 @@ const validateContactForm = [
 // Send confirmation email to user
 async function sendConfirmationEmail(userEmail, userName) {
     try {
+        // Validate email and name before sending
+        if (!userEmail || !userName) {
+            console.log('Skipping confirmation email: missing email or name', { userEmail, userName });
+            return;
+        }
+
         const confirmationEmail = {
             From: process.env.FROM_EMAIL,
             To: userEmail,
@@ -163,8 +169,8 @@ This is an automated confirmation email. Please do not reply to this message.
 // Generate HTML email template
 function generateEmailHTML(data) {
     const { name, email, phone, company, projectType, projectDescription, preferredContact, budget, timeline, additionalInfo, attachments } = data;
-    
-    const attachmentsList = attachments && attachments.length > 0 
+
+    const attachmentsList = attachments && attachments.length > 0
         ? attachments.map(file => `<li>${file.originalname} (${(file.size / 1024 / 1024).toFixed(2)} MB)</li>`).join('')
         : '<li>No attachments</li>';
 
@@ -231,8 +237,8 @@ function generateEmailHTML(data) {
 // Generate text email template
 function generateEmailText(data) {
     const { name, email, phone, company, projectType, projectDescription, preferredContact, budget, timeline, additionalInfo, attachments } = data;
-    
-    const attachmentsList = attachments && attachments.length > 0 
+
+    const attachmentsList = attachments && attachments.length > 0
         ? attachments.map(file => `- ${file.originalname} (${(file.size / 1024 / 1024).toFixed(2)} MB)`).join('\n')
         : '- No attachments';
 

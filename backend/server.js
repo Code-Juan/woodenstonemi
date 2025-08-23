@@ -8,6 +8,9 @@ require('dotenv').config({ path: path.join(__dirname, 'config', '.env') });
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Trust proxy for accurate rate limiting behind Render's proxy
+app.set('trust proxy', 1);
+
 // Security middleware
 app.use(helmet({
     contentSecurityPolicy: {
