@@ -296,10 +296,10 @@
 
                 try {
                     // Use the appropriate backend URL based on environment
-                    const apiUrl = window.location.hostname === 'localhost' 
-                        ? 'http://localhost:3000' 
+                    const apiUrl = window.location.hostname === 'localhost'
+                        ? 'http://localhost:3000'
                         : 'https://wooden-stone-backend.onrender.com';
-                    
+
                     const response = await fetch(`${apiUrl}/api/contact`, {
                         method: 'POST',
                         body: formData // Send as FormData to handle file uploads

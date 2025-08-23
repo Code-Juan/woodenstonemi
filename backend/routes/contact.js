@@ -204,13 +204,13 @@ function generateEmailHTML(data) {
                 
                 <div class="section">
                     <h3>Project Description</h3>
-                    <p>${projectDescription.replace(/\n/g, '<br>')}</p>
+                    <p>${(projectDescription || '').replace(/\n/g, '<br>')}</p>
                 </div>
                 
                 ${additionalInfo ? `
                 <div class="section">
                     <h3>Additional Information</h3>
-                    <p>${additionalInfo.replace(/\n/g, '<br>')}</p>
+                    <p>${(additionalInfo || '').replace(/\n/g, '<br>')}</p>
                 </div>
                 ` : ''}
                 
@@ -252,7 +252,7 @@ Budget Range: ${budget || 'Not specified'}
 Timeline: ${timeline || 'Not specified'}
 
 PROJECT DESCRIPTION:
-${projectDescription}
+${projectDescription || 'No description provided'}
 
 ${additionalInfo ? `
 ADDITIONAL INFORMATION:
