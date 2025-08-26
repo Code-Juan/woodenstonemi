@@ -98,6 +98,11 @@ app.get('/project-portfolio', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'src', 'pages', 'project-portfolio', 'index.html'));
 });
 
+// Email template preview route
+app.get('/email-preview', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'email-preview.html'));
+});
+
 // Error handling middleware
 app.use((err, req, res, next) => {
     console.error('Server error:', err.stack);

@@ -56,7 +56,7 @@ const upload = multer({
     fileFilter: fileFilter,
     limits: {
         fileSize: parseInt(process.env.MAX_FILE_SIZE) || 10485760, // 10MB default
-        files: parseInt(process.env.MAX_FILES_PER_REQUEST) || 5
+        files: parseInt(process.env.MAX_FILES_PER_REQUEST) || 10
     }
 });
 
@@ -182,66 +182,333 @@ This is an automated confirmation email. Please do not reply to this message.
 
 // Generate HTML email template
 function generateEmailHTML(data) {
-    const { name, email, phone, company, projectType, projectDescription, preferredContact, budget, timeline, additionalInfo, attachments } = data;
+    const { name, email, phone, company, projectType, projectDescription, interestedScopes, attachments } = data;
 
     const attachmentsList = attachments && attachments.length > 0
-        ? attachments.map(file => `<li>${file.originalname} (${(file.size / 1024 / 1024).toFixed(2)} MB)</li>`).join('')
-        : '<li>No attachments</li>';
+        ? attachments.map(file => `
+            <div class="attachment-item">
+                <div class="attachment-icon">📎</div>
+                <div class="attachment-details">
+                    <div class="attachment-name">${file.originalname}</div>
+                    <div class="attachment-size">${(file.size / 1024 / 1024).toFixed(2)} MB</div>
+                </div>
+            </div>`).join('')
+        : '<div class="no-attachments">No attachments provided</div>';
+
+    // Map project type values to display names
+    const projectTypeDisplayNames = {
+        'multi-family': 'Multi-Family',
+        'assisted-living': 'Assisted Living',
+        'commercial': 'Commercial',
+        'single-family': 'Single Family'
+    };
+
+    // Map scope values to display names
+    const scopeDisplayNames = {
+        'stone-countertops': 'Stone Countertops',
+        'casework-supply': 'Casework Supply',
+        'casework-installation': 'Casework Installation',
+        'casework-finish-trim': 'Finish Trim Installation',
+        'sink-fixture-supply': 'Sink Fixture Supply',
+        'bathroom-accessory-supply': 'Bathroom Accessory Supply'
+    };
+
+    const scopesList = interestedScopes && interestedScopes.length > 0
+        ? interestedScopes.map(scope => `<div class="scope-tag">${scopeDisplayNames[scope] || scope}</div>`).join('')
+        : '<div class="no-scopes">No specific scopes selected</div>';
 
     return `
         <!DOCTYPE html>
         <html>
         <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>New Contact Form Submission</title>
             <style>
-                body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; }
-                .header { background-color: #f8f9fa; padding: 20px; border-bottom: 3px solid #007bff; }
-                .content { padding: 20px; }
-                .section { margin-bottom: 20px; }
-                .label { font-weight: bold; color: #007bff; }
-                .footer { background-color: #f8f9fa; padding: 20px; text-align: center; font-size: 14px; }
+                * {
+                    margin: 0;
+                    padding: 0;
+                    box-sizing: border-box;
+                }
+                
+                body {
+                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+                    line-height: 1.6;
+                    color: #2d3748;
+                    background-color: #f7fafc;
+                    padding: 20px;
+                }
+                
+                .email-container {
+                    max-width: 600px;
+                    margin: 0 auto;
+                    background: white;
+                    border-radius: 12px;
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+                    overflow: hidden;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    color: white;
+                    padding: 40px 30px;
+                    text-align: center;
+                }
+                
+                .header h1 {
+                    font-size: 28px;
+                    font-weight: 700;
+                    margin-bottom: 8px;
+                }
+                
+                .header p {
+                    font-size: 16px;
+                    opacity: 0.9;
+                }
+                
+                .content {
+                    padding: 40px 30px;
+                }
+                
+                .section {
+                    margin-bottom: 32px;
+                }
+                
+                .section:last-child {
+                    margin-bottom: 0;
+                }
+                
+                .section-title {
+                    font-size: 20px;
+                    font-weight: 600;
+                    color: #2d3748;
+                    margin-bottom: 16px;
+                    padding-bottom: 8px;
+                    border-bottom: 2px solid #e2e8f0;
+                }
+                
+                .info-grid {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 16px;
+                }
+                
+                .info-item {
+                    background: #f7fafc;
+                    padding: 16px;
+                    border-radius: 8px;
+                    border-left: 4px solid #667eea;
+                }
+                
+                .info-label {
+                    font-size: 12px;
+                    font-weight: 600;
+                    color: #718096;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                    margin-bottom: 4px;
+                }
+                
+                .info-value {
+                    font-size: 16px;
+                    font-weight: 500;
+                    color: #2d3748;
+                }
+                
+                .info-value a {
+                    color: #667eea;
+                    text-decoration: none;
+                }
+                
+                .info-value a:hover {
+                    text-decoration: underline;
+                }
+                
+                .project-type {
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    color: white;
+                    padding: 12px 20px;
+                    border-radius: 8px;
+                    font-weight: 600;
+                    text-align: center;
+                    font-size: 16px;
+                }
+                
+                .scopes-container {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 8px;
+                }
+                
+                .scope-tag {
+                    background: #edf2f7;
+                    color: #4a5568;
+                    padding: 8px 16px;
+                    border-radius: 20px;
+                    font-size: 14px;
+                    font-weight: 500;
+                    border: 1px solid #e2e8f0;
+                }
+                
+                .no-scopes {
+                    color: #a0aec0;
+                    font-style: italic;
+                }
+                
+                .description {
+                    background: #f7fafc;
+                    padding: 20px;
+                    border-radius: 8px;
+                    border-left: 4px solid #48bb78;
+                    white-space: pre-line;
+                }
+                
+                .attachments-container {
+                    background: #f7fafc;
+                    padding: 20px;
+                    border-radius: 8px;
+                    border-left: 4px solid #ed8936;
+                }
+                
+                .attachment-item {
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    padding: 12px;
+                    background: white;
+                    border-radius: 6px;
+                    margin-bottom: 8px;
+                    border: 1px solid #e2e8f0;
+                }
+                
+                .attachment-item:last-child {
+                    margin-bottom: 0;
+                }
+                
+                .attachment-icon {
+                    font-size: 20px;
+                }
+                
+                .attachment-details {
+                    flex: 1;
+                }
+                
+                .attachment-name {
+                    font-weight: 500;
+                    color: #2d3748;
+                    margin-bottom: 2px;
+                }
+                
+                .attachment-size {
+                    font-size: 12px;
+                    color: #718096;
+                }
+                
+                .no-attachments {
+                    color: #a0aec0;
+                    font-style: italic;
+                    text-align: center;
+                    padding: 20px;
+                }
+                
+                .footer {
+                    background: #2d3748;
+                    color: white;
+                    padding: 30px;
+                    text-align: center;
+                }
+                
+                .footer p {
+                    margin-bottom: 8px;
+                    font-size: 14px;
+                    opacity: 0.8;
+                }
+                
+                .footer p:last-child {
+                    margin-bottom: 0;
+                }
+                
+                .timestamp {
+                    background: #4a5568;
+                    color: white;
+                    padding: 8px 16px;
+                    border-radius: 20px;
+                    font-size: 12px;
+                    display: inline-block;
+                    margin-top: 12px;
+                }
+                
+                @media (max-width: 600px) {
+                    .info-grid {
+                        grid-template-columns: 1fr;
+                    }
+                    
+                    .header, .content {
+                        padding: 20px;
+                    }
+                    
+                    .header h1 {
+                        font-size: 24px;
+                    }
+                }
             </style>
         </head>
         <body>
-            <div class="header">
-                <h2>New Contact Form Submission - The Wooden Stone LLC</h2>
-            </div>
-            <div class="content">
-                <div class="section">
-                    <h3>Contact Information</h3>
-                    <p><span class="label">Name:</span> ${name}</p>
-                    <p><span class="label">Email:</span> <a href="mailto:${email}">${email}</a></p>
-                    <p><span class="label">Phone:</span> ${phone || 'Not provided'}</p>
-                    <p><span class="label">Company:</span> ${company}</p>
-                    <p><span class="label">Preferred Contact:</span> ${preferredContact || 'Not specified'}</p>
+            <div class="email-container">
+                <div class="header">
+                    <h1>New Project Inquiry</h1>
+                    <p>The Wooden Stone LLC</p>
                 </div>
                 
-                <div class="section">
-                    <h3>Project Details</h3>
-                    <p><span class="label">Project Type:</span> ${projectType}</p>
-                    <p><span class="label">Budget Range:</span> ${budget || 'Not specified'}</p>
-                    <p><span class="label">Timeline:</span> ${timeline || 'Not specified'}</p>
+                <div class="content">
+                    <div class="section">
+                        <div class="section-title">Contact Information</div>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <div class="info-label">Name</div>
+                                <div class="info-value">${name}</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Email</div>
+                                <div class="info-value"><a href="mailto:${email}">${email}</a></div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Phone</div>
+                                <div class="info-value">${phone || 'Not provided'}</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Company</div>
+                                <div class="info-value">${company}</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">Project Type</div>
+                        <div class="project-type">${projectTypeDisplayNames[projectType] || projectType}</div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">Interested Scopes</div>
+                        <div class="scopes-container">${scopesList}</div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">Project Description</div>
+                        <div class="description">${projectDescription || 'No description provided'}</div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">Attachments</div>
+                        <div class="attachments-container">${attachmentsList}</div>
+                    </div>
                 </div>
                 
-                <div class="section">
-                    <h3>Project Description</h3>
-                    <p>${(projectDescription || '').replace(/\n/g, '<br>')}</p>
+                <div class="footer">
+                    <p>This message was sent from the contact form on woodenstonemi.com</p>
+                    <p>Please respond to this inquiry within 24-48 hours</p>
+                    <div class="timestamp">Submitted: ${new Date().toLocaleString()}</div>
                 </div>
-                
-                ${additionalInfo ? `
-                <div class="section">
-                    <h3>Additional Information</h3>
-                    <p>${(additionalInfo || '').replace(/\n/g, '<br>')}</p>
-                </div>
-                ` : ''}
-                
-                <div class="section">
-                    <h3>Attachments</h3>
-                    <ul>${attachmentsList}</ul>
-                </div>
-            </div>
-            <div class="footer">
-                <p>This message was sent from the contact form on your website.</p>
-                <p>Submitted on: ${new Date().toLocaleString()}</p>
             </div>
         </body>
         </html>
@@ -250,11 +517,33 @@ function generateEmailHTML(data) {
 
 // Generate text email template
 function generateEmailText(data) {
-    const { name, email, phone, company, projectType, projectDescription, preferredContact, budget, timeline, additionalInfo, attachments } = data;
+    const { name, email, phone, company, projectType, projectDescription, interestedScopes, attachments } = data;
 
     const attachmentsList = attachments && attachments.length > 0
         ? attachments.map(file => `- ${file.originalname} (${(file.size / 1024 / 1024).toFixed(2)} MB)`).join('\n')
         : '- No attachments';
+
+    // Map project type values to display names
+    const projectTypeDisplayNames = {
+        'multi-family': 'Multi-Family',
+        'assisted-living': 'Assisted Living',
+        'commercial': 'Commercial',
+        'single-family': 'Single Family'
+    };
+
+    // Map scope values to display names
+    const scopeDisplayNames = {
+        'stone-countertops': 'Stone Countertops',
+        'casework-supply': 'Casework Supply',
+        'casework-installation': 'Casework Installation',
+        'casework-finish-trim': 'Finish Trim Installation',
+        'sink-fixture-supply': 'Sink Fixture Supply',
+        'bathroom-accessory-supply': 'Bathroom Accessory Supply'
+    };
+
+    const scopesList = interestedScopes && interestedScopes.length > 0
+        ? interestedScopes.map(scope => `- ${scopeDisplayNames[scope] || scope}`).join('\n')
+        : '- No specific scopes selected';
 
     return `
 New Contact Form Submission - The Wooden Stone LLC
@@ -264,20 +553,15 @@ Name: ${name}
 Email: ${email}
 Phone: ${phone || 'Not provided'}
 Company: ${company}
-Preferred Contact: ${preferredContact || 'Not specified'}
 
 PROJECT DETAILS:
-Project Type: ${projectType}
-Budget Range: ${budget || 'Not specified'}
-Timeline: ${timeline || 'Not specified'}
+Project Type: ${projectTypeDisplayNames[projectType] || projectType}
+
+INTERESTED SCOPES:
+${scopesList}
 
 PROJECT DESCRIPTION:
 ${projectDescription || 'No description provided'}
-
-${additionalInfo ? `
-ADDITIONAL INFORMATION:
-${additionalInfo}
-` : ''}
 
 ATTACHMENTS:
 ${attachmentsList}
@@ -304,7 +588,7 @@ function cleanupFiles(files) {
 }
 
 // POST /api/contact - Handle contact form submission
-router.post('/', upload.array('attachments', parseInt(process.env.MAX_FILES_PER_REQUEST) || 5), async (req, res) => {
+router.post('/', upload.array('attachments', parseInt(process.env.MAX_FILES_PER_REQUEST) || 10), async (req, res) => {
     try {
         // Check for validation errors
         const errors = validationResult(req);
@@ -324,17 +608,26 @@ router.post('/', upload.array('attachments', parseInt(process.env.MAX_FILES_PER_
             company,
             projectType,
             projectDescription,
-            preferredContact,
-            budget,
-            timeline,
-            additionalInfo
+            interestedScopes
         } = req.body;
+
+        // Handle interested scopes (checkbox array)
+        const scopesArray = Array.isArray(interestedScopes) ? interestedScopes :
+            (interestedScopes ? [interestedScopes] : []);
+
+        // Map project type values to display names
+        const projectTypeDisplayNames = {
+            'multi-family': 'Multi-Family',
+            'assisted-living': 'Assisted Living',
+            'commercial': 'Commercial',
+            'single-family': 'Single Family'
+        };
 
         // Prepare email content
         const emailContent = {
             From: process.env.FROM_EMAIL,
             To: process.env.TO_EMAIL,
-            Subject: `New Contact Form Submission - ${projectType} Project`,
+            Subject: `New Contact Form Submission - ${projectTypeDisplayNames[projectType] || projectType} Project`,
             HtmlBody: generateEmailHTML({
                 name,
                 email,
@@ -342,10 +635,7 @@ router.post('/', upload.array('attachments', parseInt(process.env.MAX_FILES_PER_
                 company,
                 projectType,
                 projectDescription,
-                preferredContact,
-                budget,
-                timeline,
-                additionalInfo,
+                interestedScopes: scopesArray,
                 attachments: req.files
             }),
             TextBody: generateEmailText({
@@ -355,14 +645,20 @@ router.post('/', upload.array('attachments', parseInt(process.env.MAX_FILES_PER_
                 company,
                 projectType,
                 projectDescription,
-                preferredContact,
-                budget,
-                timeline,
-                additionalInfo,
+                interestedScopes: scopesArray,
                 attachments: req.files
             }),
             MessageStream: 'outbound'
         };
+
+        // Add file attachments if any
+        if (req.files && req.files.length > 0) {
+            emailContent.Attachments = req.files.map(file => ({
+                Name: file.originalname,
+                Content: fs.readFileSync(file.path).toString('base64'),
+                ContentType: file.mimetype
+            }));
+        }
 
         // Send email
         const response = await postmarkClient.sendEmail(emailContent);
@@ -390,6 +686,37 @@ router.post('/', upload.array('attachments', parseInt(process.env.MAX_FILES_PER_
             message: 'Sorry, there was an error sending your message. Please try again or contact us directly.'
         });
     }
+});
+
+// Preview email template endpoint
+router.get('/preview', (req, res) => {
+    // Sample data for preview
+    const sampleData = {
+        name: 'John Smith',
+        email: 'john.smith@example.com',
+        phone: '(555) 123-4567',
+        company: 'ABC Construction Company',
+        projectType: 'assisted-living',
+        projectDescription: 'We are looking to renovate the kitchen areas in our 50-unit assisted living facility. The project includes:\n\n- Replacing all countertops with granite\n- Installing new cabinets\n- Updating sink fixtures\n- Adding bathroom accessories\n\nWe would like to start the project within the next 3 months and are looking for a reliable contractor who can handle the entire scope of work.',
+        interestedScopes: ['stone-countertops', 'casework-supply', 'sink-fixture-supply', 'bathroom-accessory-supply'],
+        attachments: [
+            { originalname: 'Project_Specifications.pdf', size: 2048576 },
+            { originalname: 'Floor_Plan_DWG.dwg', size: 1048576 },
+            { originalname: 'Budget_Estimate.xlsx', size: 512000 }
+        ]
+    };
+
+    const htmlPreview = generateEmailHTML(sampleData);
+    const textPreview = generateEmailText(sampleData);
+
+    res.json({
+        success: true,
+        preview: {
+            html: htmlPreview,
+            text: textPreview,
+            sampleData: sampleData
+        }
+    });
 });
 
 // Health check endpoint

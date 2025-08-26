@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Template Preview - The Wooden Stone LLC</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: #007bff;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 16px;
+        }
+
+        .tab.active {
+            background: white;
+            border-bottom: 3px solid #007bff;
+            font-weight: bold;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .preview-frame {
+            width: 100%;
+            min-height: 600px;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+        }
+
+        .text-preview {
+            white-space: pre-wrap;
+            font-family: monospace;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 4px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .sample-data {
+            background: #e9ecef;
+            padding: 20px;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+
+        .sample-data h3 {
+            margin-top: 0;
+            color: #495057;
+        }
+
+        .sample-data pre {
+            background: white;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Email Template Preview</h1>
+            <p>The Wooden Stone LLC - Contact Form Email Template</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('html')">HTML Preview</button>
+            <button class="tab" onclick="showTab('text')">Text Preview</button>
+            <button class="tab" onclick="showTab('data')">Sample Data</button>
+        </div>
+
+        <div id="html-tab" class="tab-content active">
+            <div id="html-loading" class="loading">Loading HTML preview...</div>
+            <iframe id="html-preview" class="preview-frame" style="display: none;"></iframe>
+        </div>
+
+        <div id="text-tab" class="tab-content">
+            <div id="text-loading" class="loading">Loading text preview...</div>
+            <div id="text-preview" class="text-preview" style="display: none;"></div>
+        </div>
+
+        <div id="data-tab" class="tab-content">
+            <div id="data-loading" class="loading">Loading sample data...</div>
+            <div id="sample-data" class="sample-data" style="display: none;">
+                <h3>Sample Form Data Used for Preview</h3>
+                <pre id="data-content"></pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let previewData = null;
+
+        async function loadPreview() {
+            try {
+                // Use the full URL to the backend API
+                const apiUrl = window.location.origin + '/api/contact/preview';
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+
+                if (data.success) {
+                    previewData = data.preview;
+                    displayPreviews();
+                } else {
+                    showError('Failed to load preview data');
+                }
+            } catch (error) {
+                showError('Error loading preview: ' + error.message);
+            }
+        }
+
+        function displayPreviews() {
+            // Display HTML preview
+            const htmlFrame = document.getElementById('html-preview');
+            const htmlLoading = document.getElementById('html-loading');
+
+            htmlFrame.style.display = 'block';
+            htmlLoading.style.display = 'none';
+
+            const htmlDoc = htmlFrame.contentDocument || htmlFrame.contentWindow.document;
+            htmlDoc.open();
+            htmlDoc.write(previewData.html);
+            htmlDoc.close();
+
+            // Display text preview
+            const textPreview = document.getElementById('text-preview');
+            const textLoading = document.getElementById('text-loading');
+
+            textPreview.textContent = previewData.text;
+            textPreview.style.display = 'block';
+            textLoading.style.display = 'none';
+
+            // Display sample data
+            const dataContent = document.getElementById('data-content');
+            const dataLoading = document.getElementById('data-loading');
+            const sampleDataDiv = document.getElementById('sample-data');
+
+            dataContent.textContent = JSON.stringify(previewData.sampleData, null, 2);
+            sampleDataDiv.style.display = 'block';
+            dataLoading.style.display = 'none';
+        }
+
+        function showTab(tabName) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => content.classList.remove('active'));
+
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            // Show selected tab content
+            document.getElementById(tabName + '-tab').classList.add('active');
+
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+
+        function showError(message) {
+            const container = document.querySelector('.container');
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error';
+            errorDiv.textContent = message;
+            container.appendChild(errorDiv);
+        }
+
+        // Load preview when page loads
+        window.addEventListener('load', loadPreview);
+    </script>
+</body>
+
+</html>
