@@ -186,14 +186,14 @@ function generateEmailHTML(data) {
 
     const attachmentsList = attachments && attachments.length > 0
         ? attachments.map(file => `
-            <div class="attachment-item">
-                <div class="attachment-icon">📎</div>
-                <div class="attachment-details">
-                    <div class="attachment-name">${file.originalname}</div>
-                    <div class="attachment-size">${(file.size / 1024 / 1024).toFixed(2)} MB</div>
-                </div>
-            </div>`).join('')
-        : '<div class="no-attachments">No attachments provided</div>';
+            <tr>
+                <td style="padding: 8px 0; border-bottom: 1px solid #e2e8f0;">
+                    <span style="color: #667eea; font-size: 16px;">📎</span>
+                    <span style="margin-left: 8px; font-weight: 500; color: #2d3748;">${file.originalname}</span>
+                    <span style="margin-left: 8px; font-size: 12px; color: #718096;">(${(file.size / 1024 / 1024).toFixed(2)} MB)</span>
+                </td>
+            </tr>`).join('')
+        : '<tr><td style="padding: 8px 0; color: #a0aec0; font-style: italic;">No attachments provided</td></tr>';
 
     // Map project type values to display names
     const projectTypeDisplayNames = {
@@ -214,8 +214,8 @@ function generateEmailHTML(data) {
     };
 
     const scopesList = interestedScopes && interestedScopes.length > 0
-        ? interestedScopes.map(scope => `<div class="scope-tag">${scopeDisplayNames[scope] || scope}</div>`).join('')
-        : '<div class="no-scopes">No specific scopes selected</div>';
+        ? interestedScopes.map(scope => `<div style="background: #f7fafc; color: #2d3748; padding: 8px 12px; margin: 4px 0; border: 1px solid #e2e8f0; font-size: 14px; font-weight: 500;">• ${scopeDisplayNames[scope] || scope}</div>`).join('')
+        : '<div style="color: #a0aec0; font-style: italic; padding: 8px 0;">No specific scopes selected</div>';
 
     return `
         <!DOCTYPE html>
@@ -224,292 +224,128 @@ function generateEmailHTML(data) {
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>New Contact Form Submission</title>
-            <style>
-                * {
-                    margin: 0;
-                    padding: 0;
-                    box-sizing: border-box;
-                }
-                
-                body {
-                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-                    line-height: 1.6;
-                    color: #2d3748;
-                    background-color: #f7fafc;
-                    padding: 20px;
-                }
-                
-                .email-container {
-                    max-width: 600px;
-                    margin: 0 auto;
-                    background: white;
-                    border-radius: 12px;
-                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-                    overflow: hidden;
-                }
-                
-                .header {
-                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                    color: white;
-                    padding: 40px 30px;
-                    text-align: center;
-                }
-                
-                .header h1 {
-                    font-size: 28px;
-                    font-weight: 700;
-                    margin-bottom: 8px;
-                }
-                
-                .header p {
-                    font-size: 16px;
-                    opacity: 0.9;
-                }
-                
-                .content {
-                    padding: 40px 30px;
-                }
-                
-                .section {
-                    margin-bottom: 32px;
-                }
-                
-                .section:last-child {
-                    margin-bottom: 0;
-                }
-                
-                .section-title {
-                    font-size: 20px;
-                    font-weight: 600;
-                    color: #2d3748;
-                    margin-bottom: 16px;
-                    padding-bottom: 8px;
-                    border-bottom: 2px solid #e2e8f0;
-                }
-                
-                .info-grid {
-                    display: grid;
-                    grid-template-columns: 1fr 1fr;
-                    gap: 16px;
-                }
-                
-                .info-item {
-                    background: #f7fafc;
-                    padding: 16px;
-                    border-radius: 8px;
-                    border-left: 4px solid #667eea;
-                }
-                
-                .info-label {
-                    font-size: 12px;
-                    font-weight: 600;
-                    color: #718096;
-                    text-transform: uppercase;
-                    letter-spacing: 0.5px;
-                    margin-bottom: 4px;
-                }
-                
-                .info-value {
-                    font-size: 16px;
-                    font-weight: 500;
-                    color: #2d3748;
-                }
-                
-                .info-value a {
-                    color: #667eea;
-                    text-decoration: none;
-                }
-                
-                .info-value a:hover {
-                    text-decoration: underline;
-                }
-                
-                .project-type {
-                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                    color: white;
-                    padding: 12px 20px;
-                    border-radius: 8px;
-                    font-weight: 600;
-                    text-align: center;
-                    font-size: 16px;
-                }
-                
-                .scopes-container {
-                    display: flex;
-                    flex-wrap: wrap;
-                    gap: 8px;
-                }
-                
-                .scope-tag {
-                    background: #edf2f7;
-                    color: #4a5568;
-                    padding: 8px 16px;
-                    border-radius: 20px;
-                    font-size: 14px;
-                    font-weight: 500;
-                    border: 1px solid #e2e8f0;
-                }
-                
-                .no-scopes {
-                    color: #a0aec0;
-                    font-style: italic;
-                }
-                
-                .description {
-                    background: #f7fafc;
-                    padding: 20px;
-                    border-radius: 8px;
-                    border-left: 4px solid #48bb78;
-                    white-space: pre-line;
-                }
-                
-                .attachments-container {
-                    background: #f7fafc;
-                    padding: 20px;
-                    border-radius: 8px;
-                    border-left: 4px solid #ed8936;
-                }
-                
-                .attachment-item {
-                    display: flex;
-                    align-items: center;
-                    gap: 12px;
-                    padding: 12px;
-                    background: white;
-                    border-radius: 6px;
-                    margin-bottom: 8px;
-                    border: 1px solid #e2e8f0;
-                }
-                
-                .attachment-item:last-child {
-                    margin-bottom: 0;
-                }
-                
-                .attachment-icon {
-                    font-size: 20px;
-                }
-                
-                .attachment-details {
-                    flex: 1;
-                }
-                
-                .attachment-name {
-                    font-weight: 500;
-                    color: #2d3748;
-                    margin-bottom: 2px;
-                }
-                
-                .attachment-size {
-                    font-size: 12px;
-                    color: #718096;
-                }
-                
-                .no-attachments {
-                    color: #a0aec0;
-                    font-style: italic;
-                    text-align: center;
-                    padding: 20px;
-                }
-                
-                .footer {
-                    background: #2d3748;
-                    color: white;
-                    padding: 30px;
-                    text-align: center;
-                }
-                
-                .footer p {
-                    margin-bottom: 8px;
-                    font-size: 14px;
-                    opacity: 0.8;
-                }
-                
-                .footer p:last-child {
-                    margin-bottom: 0;
-                }
-                
-                .timestamp {
-                    background: #4a5568;
-                    color: white;
-                    padding: 8px 16px;
-                    border-radius: 20px;
-                    font-size: 12px;
-                    display: inline-block;
-                    margin-top: 12px;
-                }
-                
-                @media (max-width: 600px) {
-                    .info-grid {
-                        grid-template-columns: 1fr;
-                    }
-                    
-                    .header, .content {
-                        padding: 20px;
-                    }
-                    
-                    .header h1 {
-                        font-size: 24px;
-                    }
-                }
-            </style>
         </head>
-        <body>
-            <div class="email-container">
-                <div class="header">
-                    <h1>New Project Inquiry</h1>
-                    <p>The Wooden Stone LLC</p>
-                </div>
+        <body style="margin: 0; padding: 20px; font-family: Arial, sans-serif; line-height: 1.6; color: #2d3748; background-color: #f7fafc;">
+                         <table cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width: 600px; margin: 0 auto; background: white; border: 1px solid #e2e8f0;">
+                <!-- Header -->
+                <tr>
+                                         <td style="background: #667eea; color: white; padding: 30px; text-align: center;">
+                        <h1 style="margin: 0 0 8px 0; font-size: 24px; font-weight: bold;">New Project Inquiry</h1>
+                        <p style="margin: 0; font-size: 16px; opacity: 0.9;">The Wooden Stone LLC</p>
+                    </td>
+                </tr>
                 
-                <div class="content">
-                    <div class="section">
-                        <div class="section-title">Contact Information</div>
-                        <div class="info-grid">
-                            <div class="info-item">
-                                <div class="info-label">Name</div>
-                                <div class="info-value">${name}</div>
-                            </div>
-                            <div class="info-item">
-                                <div class="info-label">Email</div>
-                                <div class="info-value"><a href="mailto:${email}">${email}</a></div>
-                            </div>
-                            <div class="info-item">
-                                <div class="info-label">Phone</div>
-                                <div class="info-value">${phone || 'Not provided'}</div>
-                            </div>
-                            <div class="info-item">
-                                <div class="info-label">Company</div>
-                                <div class="info-value">${company}</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="section">
-                        <div class="section-title">Project Type</div>
-                        <div class="project-type">${projectTypeDisplayNames[projectType] || projectType}</div>
-                    </div>
-                    
-                    <div class="section">
-                        <div class="section-title">Interested Scopes</div>
-                        <div class="scopes-container">${scopesList}</div>
-                    </div>
-                    
-                    <div class="section">
-                        <div class="section-title">Project Description</div>
-                        <div class="description">${projectDescription || 'No description provided'}</div>
-                    </div>
-                    
-                    <div class="section">
-                        <div class="section-title">Attachments</div>
-                        <div class="attachments-container">${attachmentsList}</div>
-                    </div>
-                </div>
+                <!-- Content -->
+                <tr>
+                    <td style="padding: 30px;">
+                        <!-- Contact Information -->
+                        <table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-bottom: 25px;">
+                            <tr>
+                                <td style="padding-bottom: 8px; border-bottom: 2px solid #e2e8f0; margin-bottom: 16px;">
+                                    <h2 style="margin: 0; font-size: 18px; color: #2d3748;">Contact Information</h2>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding-top: 16px;">
+                                    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                                        <tr>
+                                            <td width="50%" style="padding: 8px; background: #f7fafc; border-left: 4px solid #667eea; margin-bottom: 8px;">
+                                                <div style="font-size: 11px; font-weight: bold; color: #718096; text-transform: uppercase; margin-bottom: 4px;">NAME</div>
+                                                <div style="font-size: 14px; font-weight: 500; color: #2d3748;">${name}</div>
+                                            </td>
+                                            <td width="50%" style="padding: 8px; background: #f7fafc; border-left: 4px solid #667eea; margin-bottom: 8px;">
+                                                <div style="font-size: 11px; font-weight: bold; color: #718096; text-transform: uppercase; margin-bottom: 4px;">EMAIL</div>
+                                                <div style="font-size: 14px; font-weight: 500; color: #2d3748;"><a href="mailto:${email}" style="color: #667eea; text-decoration: none;">${email}</a></div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="50%" style="padding: 8px; background: #f7fafc; border-left: 4px solid #667eea;">
+                                                <div style="font-size: 11px; font-weight: bold; color: #718096; text-transform: uppercase; margin-bottom: 4px;">PHONE</div>
+                                                <div style="font-size: 14px; font-weight: 500; color: #2d3748;">${phone || 'Not provided'}</div>
+                                            </td>
+                                            <td width="50%" style="padding: 8px; background: #f7fafc; border-left: 4px solid #667eea;">
+                                                <div style="font-size: 11px; font-weight: bold; color: #718096; text-transform: uppercase; margin-bottom: 4px;">COMPANY</div>
+                                                <div style="font-size: 14px; font-weight: 500; color: #2d3748;">${company}</div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                        
+                        <!-- Project Type -->
+                        <table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-bottom: 25px;">
+                            <tr>
+                                <td style="padding-bottom: 8px; border-bottom: 2px solid #e2e8f0;">
+                                    <h2 style="margin: 0; font-size: 18px; color: #2d3748;">Project Type</h2>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding-top: 16px;">
+                                                                         <div style="background: #667eea; color: white; padding: 12px 20px; text-align: center; font-weight: bold; font-size: 16px;">
+                                         ${projectTypeDisplayNames[projectType] || projectType}
+                                     </div>
+                                </td>
+                            </tr>
+                        </table>
+                        
+                        <!-- Interested Scopes -->
+                        <table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-bottom: 25px;">
+                            <tr>
+                                <td style="padding-bottom: 8px; border-bottom: 2px solid #e2e8f0;">
+                                    <h2 style="margin: 0; font-size: 18px; color: #2d3748;">Interested Scopes</h2>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding-top: 16px;">
+                                    ${scopesList}
+                                </td>
+                            </tr>
+                        </table>
+                        
+                        <!-- Project Description -->
+                        <table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-bottom: 25px;">
+                            <tr>
+                                <td style="padding-bottom: 8px; border-bottom: 2px solid #e2e8f0;">
+                                    <h2 style="margin: 0; font-size: 18px; color: #2d3748;">Project Description</h2>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding-top: 16px; background: #f7fafc; padding: 20px; border-left: 4px solid #48bb78;">
+                                    <div style="white-space: pre-line; color: #2d3748;">${projectDescription || 'No description provided'}</div>
+                                </td>
+                            </tr>
+                        </table>
+                        
+                        <!-- Attachments -->
+                        <table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-bottom: 25px;">
+                            <tr>
+                                <td style="padding-bottom: 8px; border-bottom: 2px solid #e2e8f0;">
+                                    <h2 style="margin: 0; font-size: 18px; color: #2d3748;">Attachments</h2>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding-top: 16px; background: #f7fafc; padding: 20px; border-left: 4px solid #ed8936;">
+                                    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                                        ${attachmentsList}
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
                 
-                <div class="footer">
-                    <p>This message was sent from the contact form on woodenstonemi.com</p>
-                    <p>Please respond to this inquiry within 24-48 hours</p>
-                    <div class="timestamp">Submitted: ${new Date().toLocaleString()}</div>
-                </div>
-            </div>
+                <!-- Footer -->
+                <tr>
+                                         <td style="background: #2d3748; color: white; padding: 25px; text-align: center;">
+                        <p style="margin: 0 0 8px 0; font-size: 14px; opacity: 0.8;">This message was sent from the contact form on woodenstonemi.com</p>
+                        <p style="margin: 0 0 12px 0; font-size: 14px; opacity: 0.8;">Please respond to this inquiry within 24-48 hours</p>
+                                                 <div style="background: #4a5568; color: white; padding: 8px 16px; font-size: 12px; margin-top: 8px;">
+                             Submitted: ${new Date().toLocaleString()}
+                         </div>
+                    </td>
+                </tr>
+            </table>
         </body>
         </html>
     `;
