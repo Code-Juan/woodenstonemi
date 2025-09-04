@@ -2789,3 +2789,25 @@ textarea:focus {
 .highlight-item .faq-item p {
     font-size: 0.95rem;
 }
+
+/* FAQ specific layout - horizontal cards */
+.faq-hero + .content-section .service-highlights {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: var(--grid-gap);
+    margin-top: var(--spacing-xl);
+}
+
+/* Responsive adjustments for FAQ cards */
+@media (max-width: 1200px) {
+    .faq-hero + .content-section .service-highlights {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .faq-hero + .content-section .service-highlights {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-lg);
+    }
+}
