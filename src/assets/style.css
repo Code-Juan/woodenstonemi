@@ -2743,3 +2743,49 @@ textarea:focus {
         transform: rotate(360deg);
     }
 }
+
+/* FAQ Styles */
+.faq-list {
+    text-align: left;
+    margin-top: var(--spacing-md);
+}
+
+.faq-item {
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--light-gray);
+}
+
+.faq-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.faq-item h4 {
+    font-family: 'Merriweather', serif;
+    color: var(--accent-color);
+    margin-bottom: var(--spacing-sm);
+    font-size: var(--font-size-h4);
+    font-weight: bold;
+}
+
+.faq-item p {
+    font-size: var(--font-size-body);
+    line-height: 1.6;
+    color: var(--text-color);
+    margin: 0;
+}
+
+/* Adjust highlight-item for FAQ content */
+.highlight-item .faq-list {
+    margin-top: var(--spacing-md);
+}
+
+.highlight-item .faq-item h4 {
+    font-size: 1.1rem;
+    margin-bottom: var(--spacing-xs);
+}
+
+.highlight-item .faq-item p {
+    font-size: 0.95rem;
+}
