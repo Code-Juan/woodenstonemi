@@ -187,7 +187,7 @@ nav {
 nav a {
     text-decoration: none;
     color: var(--text-color);
-    font-weight: bold;
+    font-weight: normal;
     transition: color 0.2s ease;
     position: relative;
     white-space: nowrap;
