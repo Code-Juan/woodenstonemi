@@ -136,6 +136,7 @@ function getCurrentPage() {
         'what-we-do': 'what-we-do',
         'scopes-materials': 'scopes-materials',
         'project-portfolio': 'project-portfolio',
+        'faq': 'faq',
         'contact-us': 'contact-us'
     };
 
@@ -151,6 +152,7 @@ function getPageFromFilename(filename) {
         'what-we-do.html': 'what-we-do',
         'scopes-materials.html': 'scopes-materials',
         'project-portfolio.html': 'project-portfolio',
+        'faq.html': 'faq',
         'contact-us.html': 'contact-us'
     };
 
@@ -172,6 +174,7 @@ function getPageFromHref(href) {
         'what-we-do': 'what-we-do',
         'scopes-materials': 'scopes-materials',
         'project-portfolio': 'project-portfolio',
+        'faq': 'faq',
         'contact-us': 'contact-us'
     };
 
