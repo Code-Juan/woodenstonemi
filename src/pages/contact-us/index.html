@@ -25,7 +25,7 @@
     <link rel="stylesheet" href="/assets/style.css">
     <script defer src="/assets/script.js"></script>
     <!-- reCAPTCHA v3 - Replace with your site key -->
-    <script src="https://www.google.com/recaptcha/api.js?render=6LcYOUR_SITE_KEY_HERE"></script>
+    <script src="https://www.google.com/recaptcha/api.js?render=6LcWPRksAAAAADQYiNXCM6rIM94lgFJvn-l769GR"></script>
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Open+Sans&display=swap"
         rel="stylesheet">
 </head>
@@ -282,7 +282,7 @@
 
             // Track form start time for spam detection
             const formStartTime = Date.now();
-            
+
             // Store form start time in a data attribute for backend
             form.setAttribute('data-start-time', formStartTime.toString());
 
@@ -317,7 +317,7 @@
                                 }
                             }
                         }
-                        
+
                         if (siteKey && siteKey !== '6LcYOUR_SITE_KEY_HERE') {
                             await new Promise((resolve) => {
                                 grecaptcha.ready(() => {
@@ -378,7 +378,7 @@
                         updateFileList();
                     } else {
                         let errorMessage = result.message || 'Please check your form and try again.';
-                        
+
                         // Handle specific error types with user-friendly messages
                         if (result.error === 'recaptcha_failed') {
                             errorMessage = 'Security verification failed. Please refresh the page and try again.';
@@ -391,7 +391,7 @@
                         } else if (result.errors && result.errors.length > 0) {
                             errorMessage = result.errors.map(error => error.msg).join(', ');
                         }
-                        
+
                         showMessage(errorMessage, 'error');
                     }
                 } catch (error) {

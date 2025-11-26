@@ -32,3 +32,7 @@ services:
         value: 5
       - key: HONEYPOT_FIELD_NAME
         value: website
+      - key: RECAPTCHA_SECRET_KEY
+        sync: false
+      - key: RECAPTCHA_SCORE_THRESHOLD
+        value: 0.5
