@@ -248,30 +248,45 @@
     </footer>
 
     <script>
+        // Debug helper: Check reCAPTCHA setup (available immediately)
+        function debugRecaptcha() {
+            console.log('=== reCAPTCHA Debug Info ===');
+            console.log('grecaptcha type:', typeof grecaptcha);
+            console.log('window.RECAPTCHA_SITE_KEY:', window.RECAPTCHA_SITE_KEY);
+
+            const recaptchaScript = document.querySelector('script[src*="recaptcha"]');
+            if (recaptchaScript) {
+                const match = recaptchaScript.src.match(/render=([^&]+)/);
+                console.log('Site key from script:', match ? match[1] : 'not found');
+                console.log('Script src:', recaptchaScript.src);
+            } else {
+                console.log('reCAPTCHA script tag not found');
+            }
+
+            // Try to get site key using the same logic as the form
+            let siteKey = window.RECAPTCHA_SITE_KEY;
+            if (!siteKey) {
+                const recaptchaScript = document.querySelector('script[src*="recaptcha"]');
+                if (recaptchaScript) {
+                    const match = recaptchaScript.src.match(/render=([^&]+)/);
+                    if (match && match[1]) {
+                        siteKey = match[1];
+                    }
+                }
+            }
+            console.log('Extracted site key:', siteKey);
+            console.log('Site key valid:', siteKey && siteKey !== '6LcYOUR_SITE_KEY_HERE' && siteKey.length > 20);
+            console.log('===========================');
+        }
+
+        // Make debug function available globally for console testing
+        window.debugRecaptcha = debugRecaptcha;
+
         document.addEventListener('DOMContentLoaded', function () {
             const form = document.getElementById('contactForm');
             const submitBtn = document.getElementById('submitBtn');
             const loadingSpinner = document.getElementById('loading-spinner');
             const formMessage = document.getElementById('form-message');
-
-            // Debug helper: Check reCAPTCHA setup
-            function debugRecaptcha() {
-                console.log('=== reCAPTCHA Debug Info ===');
-                console.log('grecaptcha type:', typeof grecaptcha);
-                console.log('window.RECAPTCHA_SITE_KEY:', window.RECAPTCHA_SITE_KEY);
-
-                const recaptchaScript = document.querySelector('script[src*="recaptcha"]');
-                if (recaptchaScript) {
-                    const match = recaptchaScript.src.match(/render=([^&]+)/);
-                    console.log('Site key from script:', match ? match[1] : 'not found');
-                } else {
-                    console.log('reCAPTCHA script tag not found');
-                }
-                console.log('===========================');
-            }
-
-            // Make debug function available globally for console testing
-            window.debugRecaptcha = debugRecaptcha;
 
             function showMessage(message, type = 'success') {
                 formMessage.textContent = message;
