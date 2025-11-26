@@ -465,7 +465,7 @@ function logSubmission(req, formData) {
 }
 
 // POST /api/contact - Handle contact form submission
-router.post('/', upload.array('attachments', parseInt(process.env.MAX_FILES_PER_REQUEST) || 10), async (req, res) => {
+router.post('/', upload.array('attachments', parseInt(process.env.MAX_FILES_PER_REQUEST) || 10), validateContactForm, async (req, res) => {
     try {
         // Check for validation errors
         const errors = validationResult(req);
