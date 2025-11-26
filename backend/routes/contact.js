@@ -423,6 +423,47 @@ function cleanupFiles(files) {
     });
 }
 
+// Logging function for form submissions
+function logSubmission(req, formData) {
+    try {
+        // Ensure logs directory exists
+        const logsDir = path.join(__dirname, '..', 'logs');
+        if (!fs.existsSync(logsDir)) {
+            fs.mkdirSync(logsDir, { recursive: true });
+        }
+
+        // Extract client IP (trust proxy is enabled in server.js)
+        const clientIP = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress || 'unknown';
+
+        // Prepare log entry
+        const logEntry = {
+            timestamp: new Date().toISOString(),
+            ip: clientIP,
+            userAgent: req.headers['user-agent'] || 'unknown',
+            email: formData.email,
+            name: formData.name,
+            company: formData.company,
+            projectType: formData.projectType,
+            projectDescription: formData.projectDescription ? formData.projectDescription.substring(0, 200) : '', // Truncate for log
+            phone: formData.phone || null,
+            hasAttachments: (req.files && req.files.length > 0),
+            attachmentCount: req.files ? req.files.length : 0,
+            headers: {
+                'accept': req.headers['accept'],
+                'accept-language': req.headers['accept-language'],
+                'referer': req.headers['referer']
+            }
+        };
+
+        // Write to log file (JSON lines format)
+        const logFile = path.join(logsDir, 'submissions.log');
+        fs.appendFileSync(logFile, JSON.stringify(logEntry) + '\n', 'utf8');
+    } catch (error) {
+        // Don't fail the request if logging fails
+        console.error('Error logging submission:', error.message);
+    }
+}
+
 // POST /api/contact - Handle contact form submission
 router.post('/', upload.array('attachments', parseInt(process.env.MAX_FILES_PER_REQUEST) || 10), async (req, res) => {
     try {
@@ -446,6 +487,16 @@ router.post('/', upload.array('attachments', parseInt(process.env.MAX_FILES_PER_
             projectDescription,
             interestedScopes
         } = req.body;
+
+        // Log the submission (automatic logging)
+        logSubmission(req, {
+            name,
+            email,
+            phone,
+            company,
+            projectType,
+            projectDescription
+        });
 
         // Handle interested scopes (checkbox array)
         const scopesArray = Array.isArray(interestedScopes) ? interestedScopes :
