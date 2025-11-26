@@ -25,13 +25,30 @@ app.use(helmet({
     }
 }));
 
-// Rate limiting
+// Rate limiting - Stricter limits for spam prevention
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // limit each IP to 100 requests per windowMs
-    message: 'Too many requests from this IP, please try again later.'
+    max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 10, // Reduced from 100 to 10 per 15 minutes
+    message: 'Too many requests from this IP, please try again later.',
+    standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+    legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+    skip: (req) => {
+        // Skip rate limiting for health checks
+        return req.path === '/health' || req.path === '/api/contact/health';
+    }
 });
+
+// Apply stricter rate limiting to contact endpoint
+const contactLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 5, // Even stricter: 5 submissions per 15 minutes per IP
+    message: 'Too many form submissions from this IP. Please wait before submitting again.',
+    standardHeaders: true,
+    legacyHeaders: false
+});
+
 app.use('/api/', limiter);
+app.use('/api/contact', contactLimiter);
 
 // CORS configuration
 const allowedOrigins = [

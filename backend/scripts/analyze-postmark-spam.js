@@ -40,23 +40,50 @@ function isRandomPattern(text) {
 
 // Extract email from Postmark message
 function extractEmailFromMessage(message) {
-    // Try to extract from To field
-    if (message.To) {
-        const match = message.To.match(/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/);
-        if (match) return match[1];
+    // The email we want is the SUBMITTER's email, not the recipient
+    // It should be in the email body, typically in a "EMAIL:" or "Email:" field
+
+    // Try to extract from TextBody or HtmlBody first (this is where form data is)
+    const body = (message.TextBody || message.HtmlBody || '').toString();
+
+    // Look for email patterns in the body - try to find the form submission email
+    // Pattern: "EMAIL:" or "Email:" followed by email address
+    const emailPatterns = [
+        /EMAIL[:\s]+([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/i,
+        /Email[:\s]+([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/i,
+        /<a[^>]*href=["']mailto:([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})["']/i,
+        /mailto:([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/i
+    ];
+
+    for (const pattern of emailPatterns) {
+        const match = body.match(pattern);
+        if (match && match[1]) {
+            // Skip common business emails
+            const email = match[1].toLowerCase();
+            if (!email.includes('woodenstonemi.com') && !email.includes('postmark')) {
+                return match[1];
+            }
+        }
     }
 
-    // Try to extract from TextBody or HtmlBody
-    const body = message.TextBody || message.HtmlBody || '';
-    const emailMatch = body.match(/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/);
-    if (emailMatch) return emailMatch[1];
+    // If no email found in body, try to get from message metadata (but this might be recipient)
+    // Only use this as last resort
+    if (message.Recipients) {
+        if (Array.isArray(message.Recipients) && message.Recipients.length > 0) {
+            const recipientEmail = (message.Recipients[0].Email || message.Recipients[0]).toLowerCase();
+            // Only return if it's not our business email
+            if (!recipientEmail.includes('woodenstonemi.com')) {
+                return message.Recipients[0].Email || message.Recipients[0];
+            }
+        }
+    }
 
     return null;
 }
 
 // Extract name from Postmark message
 function extractNameFromMessage(message) {
-    const body = message.TextBody || message.HtmlBody || '';
+    const body = (message.TextBody || message.HtmlBody || '').toString();
 
     // Look for "Name:" pattern
     const nameMatch = body.match(/NAME[:\s]+([^\n<]+)/i);
@@ -110,8 +137,8 @@ async function analyzePostmarkMessages() {
 
             analysis.total += messages.Messages.length;
 
-            // Filter for contact form submissions
-            messages.Messages.forEach(message => {
+            // Filter for contact form submissions and fetch full message details
+            for (const message of messages.Messages) {
                 const subject = message.Subject || '';
 
                 // Check if it's a contact form submission
@@ -119,15 +146,30 @@ async function analyzePostmarkMessages() {
                     subject.includes('Project Inquiry') ||
                     subject.includes('New Contact')) {
 
-                    const email = extractEmailFromMessage(message);
-                    const name = extractNameFromMessage(message);
+                    // Fetch full message details to get body content
+                    let fullMessage = message;
+                    try {
+                        if (message.MessageID) {
+                            const details = await postmarkClient.getOutboundMessageDetails(message.MessageID);
+                            if (details) {
+                                fullMessage = details;
+                            }
+                        }
+                    } catch (err) {
+                        // If fetching details fails, use the message we have
+                        console.warn(`Could not fetch details for message ${message.MessageID}: ${err.message}`);
+                    }
+
+                    // Extract email and name from full message
+                    const email = extractEmailFromMessage(fullMessage);
+                    const name = extractNameFromMessage(fullMessage);
                     const domain = email ? email.split('@')[1] : 'unknown';
 
                     analysis.contactFormSubmissions.push({
                         messageId: message.MessageID,
                         subject: subject,
-                        email: email,
-                        name: name,
+                        email: email || 'unknown',
+                        name: name || 'unknown',
                         domain: domain,
                         timestamp: message.ReceivedAt || message.SentAt,
                         status: message.Status
@@ -148,20 +190,20 @@ async function analyzePostmarkMessages() {
                     analysis.bySubject[subject]++;
 
                     // Detect spam patterns
-                    if (email && isRandomPattern(email.split('@')[0])) {
+                    if (email && email !== 'unknown' && isRandomPattern(email.split('@')[0])) {
                         analysis.spamIndicators.randomEmailPatterns++;
                     }
-                    if (name && isRandomPattern(name)) {
+                    if (name && name !== 'unknown' && isRandomPattern(name)) {
                         analysis.spamIndicators.randomNamePatterns++;
                     }
 
                     // Track time patterns
                     analysis.timePatterns.push({
                         timestamp: message.ReceivedAt || message.SentAt,
-                        email: email
+                        email: email || 'unknown'
                     });
                 }
-            });
+            }
 
             // Check if there are more messages
             if (messages.Messages.length < count) {
@@ -247,20 +289,54 @@ function generateReport(analysis) {
         console.log(`${index + 1}. ${domain}: ${count} submission(s)`);
     });
 
-    // Sample spam submissions
+    // Identify spam submissions
     const spamSubmissions = analysis.contactFormSubmissions.filter(sub => {
         const emailLocal = sub.email ? sub.email.split('@')[0] : '';
         return isRandomPattern(emailLocal) || (sub.name && isRandomPattern(sub.name));
     });
 
+    // Group by email to find repeat offenders
+    const emailGroups = {};
+    analysis.contactFormSubmissions.forEach(sub => {
+        if (sub.email && sub.email !== 'unknown') {
+            if (!emailGroups[sub.email]) {
+                emailGroups[sub.email] = [];
+            }
+            emailGroups[sub.email].push(sub);
+        }
+    });
+
+    // Find emails with multiple submissions
+    const repeatEmails = Object.entries(emailGroups)
+        .filter(([email, subs]) => subs.length > 1)
+        .sort((a, b) => b[1].length - a[1].length);
+
     if (spamSubmissions.length > 0) {
         console.log('\n' + '-'.repeat(80));
-        console.log('SAMPLE SPAM SUBMISSIONS (First 10)');
+        console.log('SPAM SUBMISSIONS IDENTIFIED');
         console.log('-'.repeat(80));
+        console.log(`Total Spam Submissions: ${spamSubmissions.length} out of ${analysis.contactFormSubmissions.length} (${(spamSubmissions.length / analysis.contactFormSubmissions.length * 100).toFixed(1)}%)`);
+        console.log('\nSample Spam Submissions (First 10):');
         spamSubmissions.slice(0, 10).forEach((sub, index) => {
             console.log(`${index + 1}. Email: ${sub.email || 'N/A'}, Name: ${sub.name || 'N/A'}`);
             console.log(`   Subject: ${sub.subject}`);
             console.log(`   Timestamp: ${sub.timestamp}`);
+        });
+    }
+
+    if (repeatEmails.length > 0) {
+        console.log('\n' + '-'.repeat(80));
+        console.log('REPEAT SUBMISSIONS (Same Email, Multiple Times)');
+        console.log('-'.repeat(80));
+        repeatEmails.slice(0, 10).forEach(([email, subs], index) => {
+            const isSpam = subs.some(s => {
+                const emailLocal = s.email ? s.email.split('@')[0] : '';
+                return isRandomPattern(emailLocal) || (s.name && isRandomPattern(s.name));
+            });
+            console.log(`${index + 1}. ${email}: ${subs.length} submission(s) ${isSpam ? '⚠️ SPAM' : ''}`);
+            subs.forEach((sub, i) => {
+                console.log(`   ${i + 1}. ${sub.name || 'N/A'} - ${sub.timestamp}`);
+            });
         });
     }
 
@@ -277,8 +353,11 @@ function generateReport(analysis) {
         console.log('⚠️  Rapid submissions detected. Consider implementing rate limiting.');
     }
 
-    const spamPercentage = (analysis.spamIndicators.randomEmailPatterns / analysis.contactFormSubmissions.length * 100).toFixed(1);
-    console.log(`\nEstimated Spam Percentage: ${spamPercentage}%`);
+    const spamCount = spamSubmissions.length;
+    const spamPercentage = analysis.contactFormSubmissions.length > 0
+        ? (spamCount / analysis.contactFormSubmissions.length * 100).toFixed(1)
+        : '0.0';
+    console.log(`\nEstimated Spam Percentage: ${spamPercentage}% (${spamCount} spam out of ${analysis.contactFormSubmissions.length} total)`);
 
     console.log('\n' + '='.repeat(80));
 }

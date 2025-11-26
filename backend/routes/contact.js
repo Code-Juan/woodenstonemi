@@ -423,6 +423,176 @@ function cleanupFiles(files) {
     });
 }
 
+// ============================================================================
+// SPAM DETECTION FUNCTIONS
+// ============================================================================
+
+// Detect random/gibberish character patterns in names
+function isRandomPattern(text) {
+    if (!text || text.length < 8) return false;
+    const cleaned = text.toLowerCase().trim();
+
+    // Check for excessive consecutive consonants (common in random strings)
+    const consecutiveConsonants = cleaned.match(/[bcdfghjklmnpqrstvwxyz]{5,}/g);
+    if (consecutiveConsonants && consecutiveConsonants.length > 0) {
+        return true;
+    }
+
+    // Check vowel-to-consonant ratio (random strings have low vowel ratio)
+    const vowels = (cleaned.match(/[aeiou]/g) || []).length;
+    const consonants = (cleaned.match(/[bcdfghjklmnpqrstvwxyz]/g) || []).length;
+    const totalLetters = vowels + consonants;
+
+    if (totalLetters === 0) return false;
+    const vowelRatio = vowels / totalLetters;
+
+    // Random patterns typically have low vowel ratio (< 0.2) and no spaces
+    // Also check for excessive length without spaces (common in spam)
+    if (vowelRatio < 0.2 && totalLetters >= 10 && !/\s/.test(text)) {
+        return true;
+    }
+
+    // Check for alternating case patterns (e.g., "AbCdEfGh")
+    const hasAlternatingCase = /([a-z][A-Z]){3,}/.test(text);
+    if (hasAlternatingCase && text.length > 12) {
+        return true;
+    }
+
+    return false;
+}
+
+// Check for duplicate submissions (same email within time window)
+const submissionHistory = new Map(); // email -> [{timestamp, ip}, ...]
+
+function checkDuplicateSubmission(email, ip, timeWindowMinutes = 5) {
+    const now = Date.now();
+    const windowMs = timeWindowMinutes * 60 * 1000;
+
+    if (!submissionHistory.has(email)) {
+        submissionHistory.set(email, []);
+    }
+
+    const history = submissionHistory.get(email);
+
+    // Clean old entries (older than time window)
+    const recentHistory = history.filter(entry => (now - entry.timestamp) < windowMs);
+    submissionHistory.set(email, recentHistory);
+
+    // Check if there are multiple submissions from same email
+    if (recentHistory.length >= 2) {
+        return {
+            isDuplicate: true,
+            count: recentHistory.length + 1,
+            lastSubmission: new Date(recentHistory[recentHistory.length - 1].timestamp)
+        };
+    }
+
+    // Add current submission to history
+    recentHistory.push({ timestamp: now, ip });
+    submissionHistory.set(email, recentHistory);
+
+    return { isDuplicate: false, count: recentHistory.length };
+}
+
+// Clean up old submission history periodically (prevent memory leak)
+setInterval(() => {
+    const now = Date.now();
+    const maxAge = 60 * 60 * 1000; // 1 hour
+
+    for (const [email, history] of submissionHistory.entries()) {
+        const recentHistory = history.filter(entry => (now - entry.timestamp) < maxAge);
+        if (recentHistory.length === 0) {
+            submissionHistory.delete(email);
+        } else {
+            submissionHistory.set(email, recentHistory);
+        }
+    }
+}, 15 * 60 * 1000); // Run every 15 minutes
+
+// Verify reCAPTCHA token
+async function verifyRecaptcha(token) {
+    if (!process.env.RECAPTCHA_SECRET_KEY) {
+        // If no secret key configured, skip verification (for development)
+        console.warn('RECAPTCHA_SECRET_KEY not configured, skipping verification');
+        return { success: true, score: 0.9 };
+    }
+
+    if (!token) {
+        return { success: false, error: 'reCAPTCHA token missing' };
+    }
+
+    try {
+        // Use Node.js built-in https module for compatibility
+        const https = require('https');
+        const querystring = require('querystring');
+
+        const postData = querystring.stringify({
+            secret: process.env.RECAPTCHA_SECRET_KEY,
+            response: token
+        });
+
+        const options = {
+            hostname: 'www.google.com',
+            path: '/recaptcha/api/siteverify',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Content-Length': Buffer.byteLength(postData)
+            }
+        };
+
+        return new Promise((resolve, reject) => {
+            const req = https.request(options, (res) => {
+                let data = '';
+
+                res.on('data', (chunk) => {
+                    data += chunk;
+                });
+
+                res.on('end', () => {
+                    try {
+                        const result = JSON.parse(data);
+
+                        if (result.success) {
+                            // reCAPTCHA v3 returns a score (0.0 to 1.0)
+                            // Lower scores indicate bot-like behavior
+                            const score = result.score || 0.5;
+                            const threshold = parseFloat(process.env.RECAPTCHA_SCORE_THRESHOLD || '0.5');
+
+                            resolve({
+                                success: score >= threshold,
+                                score: score,
+                                action: result.action
+                            });
+                        } else {
+                            resolve({
+                                success: false,
+                                error: result['error-codes']?.join(', ') || 'reCAPTCHA verification failed'
+                            });
+                        }
+                    } catch (error) {
+                        reject(error);
+                    }
+                });
+            });
+
+            req.on('error', (error) => {
+                reject(error);
+            });
+
+            req.write(postData);
+            req.end();
+        });
+    } catch (error) {
+        console.error('reCAPTCHA verification error:', error);
+        return { success: false, error: 'Failed to verify reCAPTCHA' };
+    }
+}
+
+// ============================================================================
+// LOGGING FUNCTION
+// ============================================================================
+
 // Logging function for form submissions
 function logSubmission(req, formData) {
     try {
@@ -485,8 +655,107 @@ router.post('/', upload.array('attachments', parseInt(process.env.MAX_FILES_PER_
             company,
             projectType,
             projectDescription,
-            interestedScopes
+            interestedScopes,
+            recaptchaToken
         } = req.body;
+
+        // Extract client IP for spam checks
+        const clientIP = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress || 'unknown';
+
+        // ====================================================================
+        // SPAM FILTERING CHECKS
+        // ====================================================================
+
+        // 1. Verify reCAPTCHA token (if provided)
+        if (recaptchaToken) {
+            const recaptchaResult = await verifyRecaptcha(recaptchaToken);
+            if (!recaptchaResult.success) {
+                console.log('Spam blocked: reCAPTCHA failed', { email, score: recaptchaResult.score });
+                // Log the blocked submission for analysis
+                logSubmission(req, {
+                    name,
+                    email,
+                    phone,
+                    company,
+                    projectType,
+                    projectDescription
+                });
+                return res.status(400).json({
+                    success: false,
+                    message: 'reCAPTCHA verification failed. Please try again.',
+                    error: 'recaptcha_failed'
+                });
+            }
+            // Log low scores for monitoring
+            if (recaptchaResult.score < 0.7) {
+                console.log('Low reCAPTCHA score detected', { email, score: recaptchaResult.score });
+            }
+        }
+
+        // 2. Check for gibberish/random name patterns
+        if (name && isRandomPattern(name)) {
+            console.log('Spam blocked: Random name pattern detected', { email, name });
+            logSubmission(req, {
+                name,
+                email,
+                phone,
+                company,
+                projectType,
+                projectDescription
+            });
+            return res.status(400).json({
+                success: false,
+                message: 'Invalid name format. Please provide a valid name.',
+                error: 'invalid_name'
+            });
+        }
+
+        // 3. Check for duplicate submissions (same email, rapid submissions)
+        const duplicateCheck = checkDuplicateSubmission(email, clientIP, 5); // 5 minute window
+        if (duplicateCheck.isDuplicate) {
+            console.log('Spam blocked: Duplicate submission detected', {
+                email,
+                count: duplicateCheck.count,
+                lastSubmission: duplicateCheck.lastSubmission
+            });
+            logSubmission(req, {
+                name,
+                email,
+                phone,
+                company,
+                projectType,
+                projectDescription
+            });
+            return res.status(429).json({
+                success: false,
+                message: 'You have already submitted a form recently. Please wait before submitting again.',
+                error: 'duplicate_submission',
+                retryAfter: 5
+            });
+        }
+
+        // 4. Check submission timing (too fast = likely bot)
+        const submissionStartTime = req.headers['x-submission-start-time'];
+        if (submissionStartTime) {
+            const timeSpent = Date.now() - parseInt(submissionStartTime);
+            // If form was filled and submitted in less than 3 seconds, likely a bot
+            if (timeSpent < 3000 && projectDescription && projectDescription.length > 50) {
+                console.log('Spam blocked: Submission too fast', { email, timeSpent });
+                logSubmission(req, {
+                    name,
+                    email,
+                    phone,
+                    company,
+                    projectType,
+                    projectDescription
+                });
+                return res.status(400).json({
+                    success: false,
+                    message: 'Form submission appears to be automated. Please take your time filling out the form.',
+                    error: 'submission_too_fast'
+                });
+            }
+        }
 
         // Log the submission (automatic logging)
         logSubmission(req, {

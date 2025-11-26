@@ -24,6 +24,8 @@
 
     <link rel="stylesheet" href="/assets/style.css">
     <script defer src="/assets/script.js"></script>
+    <!-- reCAPTCHA v3 - Replace with your site key -->
+    <script src="https://www.google.com/recaptcha/api.js?render=6LcYOUR_SITE_KEY_HERE"></script>
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Open+Sans&display=swap"
         rel="stylesheet">
 </head>
@@ -278,6 +280,12 @@
                 }
             }
 
+            // Track form start time for spam detection
+            const formStartTime = Date.now();
+            
+            // Store form start time in a data attribute for backend
+            form.setAttribute('data-start-time', formStartTime.toString());
+
             form.addEventListener('submit', async function (e) {
                 e.preventDefault();
 
@@ -286,6 +294,55 @@
 
                 // Collect form data
                 const formData = new FormData(form);
+
+                // Add submission timing for spam detection
+                const submissionTime = Date.now();
+                const timeSpent = submissionTime - formStartTime;
+                formData.append('submissionTime', submissionTime.toString());
+                formData.append('timeSpent', timeSpent.toString());
+
+                // Execute reCAPTCHA v3 (if available)
+                let recaptchaToken = null;
+                if (typeof grecaptcha !== 'undefined') {
+                    try {
+                        // Extract site key from script src or use window variable
+                        let siteKey = window.RECAPTCHA_SITE_KEY;
+                        if (!siteKey) {
+                            // Try to extract from script tag
+                            const recaptchaScript = document.querySelector('script[src*="recaptcha"]');
+                            if (recaptchaScript) {
+                                const match = recaptchaScript.src.match(/render=([^&]+)/);
+                                if (match && match[1] && match[1] !== '6LcYOUR_SITE_KEY_HERE') {
+                                    siteKey = match[1];
+                                }
+                            }
+                        }
+                        
+                        if (siteKey && siteKey !== '6LcYOUR_SITE_KEY_HERE') {
+                            await new Promise((resolve) => {
+                                grecaptcha.ready(() => {
+                                    grecaptcha.execute(siteKey, { action: 'submit_contact_form' })
+                                        .then((token) => {
+                                            recaptchaToken = token;
+                                            resolve();
+                                        })
+                                        .catch((error) => {
+                                            console.warn('reCAPTCHA execution error:', error);
+                                            resolve(); // Continue without token
+                                        });
+                                });
+                            });
+                        }
+                    } catch (error) {
+                        console.warn('reCAPTCHA error:', error);
+                        // Continue without reCAPTCHA if it fails
+                    }
+                }
+
+                // Add reCAPTCHA token to form data if available
+                if (recaptchaToken) {
+                    formData.append('recaptchaToken', recaptchaToken);
+                }
 
                 // Add interested scopes to form data
                 const interestedScopes = formData.getAll('interestedScopes');
@@ -305,6 +362,9 @@
 
                     const response = await fetch(`${apiUrl}/api/contact`, {
                         method: 'POST',
+                        headers: {
+                            'X-Submission-Start-Time': formStartTime.toString()
+                        },
                         body: formData // Send as FormData to handle file uploads
                     });
 
@@ -317,10 +377,21 @@
                         currentFiles = [];
                         updateFileList();
                     } else {
-                        let errorMessage = 'Please check your form and try again.';
-                        if (result.errors && result.errors.length > 0) {
+                        let errorMessage = result.message || 'Please check your form and try again.';
+                        
+                        // Handle specific error types with user-friendly messages
+                        if (result.error === 'recaptcha_failed') {
+                            errorMessage = 'Security verification failed. Please refresh the page and try again.';
+                        } else if (result.error === 'duplicate_submission') {
+                            errorMessage = 'You have already submitted a form recently. Please wait a few minutes before submitting again.';
+                        } else if (result.error === 'invalid_name') {
+                            errorMessage = 'Please provide a valid name (first and last name).';
+                        } else if (result.error === 'submission_too_fast') {
+                            errorMessage = 'Form submission appears automated. Please take your time filling out the form.';
+                        } else if (result.errors && result.errors.length > 0) {
                             errorMessage = result.errors.map(error => error.msg).join(', ');
                         }
+                        
                         showMessage(errorMessage, 'error');
                     }
                 } catch (error) {
