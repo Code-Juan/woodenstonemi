@@ -254,6 +254,25 @@
             const loadingSpinner = document.getElementById('loading-spinner');
             const formMessage = document.getElementById('form-message');
 
+            // Debug helper: Check reCAPTCHA setup
+            function debugRecaptcha() {
+                console.log('=== reCAPTCHA Debug Info ===');
+                console.log('grecaptcha type:', typeof grecaptcha);
+                console.log('window.RECAPTCHA_SITE_KEY:', window.RECAPTCHA_SITE_KEY);
+
+                const recaptchaScript = document.querySelector('script[src*="recaptcha"]');
+                if (recaptchaScript) {
+                    const match = recaptchaScript.src.match(/render=([^&]+)/);
+                    console.log('Site key from script:', match ? match[1] : 'not found');
+                } else {
+                    console.log('reCAPTCHA script tag not found');
+                }
+                console.log('===========================');
+            }
+
+            // Make debug function available globally for console testing
+            window.debugRecaptcha = debugRecaptcha;
+
             function showMessage(message, type = 'success') {
                 formMessage.textContent = message;
                 formMessage.className = `form-message ${type}`;
@@ -307,23 +326,27 @@
                     try {
                         // Extract site key from script src or use window variable
                         let siteKey = window.RECAPTCHA_SITE_KEY;
+
+                        // If not set in window, try to extract from script tag
                         if (!siteKey) {
-                            // Try to extract from script tag
                             const recaptchaScript = document.querySelector('script[src*="recaptcha"]');
                             if (recaptchaScript) {
                                 const match = recaptchaScript.src.match(/render=([^&]+)/);
-                                if (match && match[1] && match[1] !== '6LcYOUR_SITE_KEY_HERE') {
+                                if (match && match[1]) {
                                     siteKey = match[1];
                                 }
                             }
                         }
 
-                        if (siteKey && siteKey !== '6LcYOUR_SITE_KEY_HERE') {
+                        // Validate site key before using
+                        if (siteKey && siteKey !== '6LcYOUR_SITE_KEY_HERE' && siteKey.length > 20) {
                             await new Promise((resolve) => {
                                 grecaptcha.ready(() => {
                                     grecaptcha.execute(siteKey, { action: 'submit_contact_form' })
                                         .then((token) => {
-                                            recaptchaToken = token;
+                                            if (token && token.length > 0) {
+                                                recaptchaToken = token;
+                                            }
                                             resolve();
                                         })
                                         .catch((error) => {
@@ -332,11 +355,15 @@
                                         });
                                 });
                             });
+                        } else {
+                            console.warn('reCAPTCHA site key not found or invalid. Site key:', siteKey ? 'present but invalid' : 'undefined');
                         }
                     } catch (error) {
                         console.warn('reCAPTCHA error:', error);
                         // Continue without reCAPTCHA if it fails
                     }
+                } else {
+                    console.warn('reCAPTCHA not loaded. grecaptcha is undefined.');
                 }
 
                 // Add reCAPTCHA token to form data if available
