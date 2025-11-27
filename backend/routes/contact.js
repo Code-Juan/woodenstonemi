@@ -594,7 +594,7 @@ async function verifyRecaptcha(token) {
 // ============================================================================
 
 // Logging function for form submissions
-function logSubmission(req, formData) {
+function logSubmission(req, formData, recaptchaData = null) {
     try {
         // Ensure logs directory exists
         const logsDir = path.join(__dirname, '..', 'logs');
@@ -618,6 +618,19 @@ function logSubmission(req, formData) {
             phone: formData.phone || null,
             hasAttachments: (req.files && req.files.length > 0),
             attachmentCount: req.files ? req.files.length : 0,
+            recaptcha: recaptchaData ? {
+                tokenProvided: true,
+                verified: recaptchaData.success,
+                score: recaptchaData.score || null,
+                action: recaptchaData.action || null,
+                error: recaptchaData.error || null
+            } : {
+                tokenProvided: false,
+                verified: false,
+                score: null,
+                action: null,
+                error: 'No token provided'
+            },
             headers: {
                 'accept': req.headers['accept'],
                 'accept-language': req.headers['accept-language'],
@@ -667,8 +680,9 @@ router.post('/', upload.array('attachments', parseInt(process.env.MAX_FILES_PER_
         // ====================================================================
 
         // 1. Verify reCAPTCHA token (if provided)
+        let recaptchaResult = null;
         if (recaptchaToken) {
-            const recaptchaResult = await verifyRecaptcha(recaptchaToken);
+            recaptchaResult = await verifyRecaptcha(recaptchaToken);
             if (!recaptchaResult.success) {
                 console.log('Spam blocked: reCAPTCHA failed', { email, score: recaptchaResult.score });
                 // Log the blocked submission for analysis
@@ -679,7 +693,7 @@ router.post('/', upload.array('attachments', parseInt(process.env.MAX_FILES_PER_
                     company,
                     projectType,
                     projectDescription
-                });
+                }, recaptchaResult);
                 return res.status(400).json({
                     success: false,
                     message: 'reCAPTCHA verification failed. Please try again.',
@@ -690,6 +704,9 @@ router.post('/', upload.array('attachments', parseInt(process.env.MAX_FILES_PER_
             if (recaptchaResult.score < 0.7) {
                 console.log('Low reCAPTCHA score detected', { email, score: recaptchaResult.score });
             }
+        } else {
+            // Log that no token was provided
+            console.log('No reCAPTCHA token provided', { email });
         }
 
         // 2. Check for gibberish/random name patterns
@@ -702,7 +719,7 @@ router.post('/', upload.array('attachments', parseInt(process.env.MAX_FILES_PER_
                 company,
                 projectType,
                 projectDescription
-            });
+            }, recaptchaResult);
             return res.status(400).json({
                 success: false,
                 message: 'Invalid name format. Please provide a valid name.',
@@ -725,7 +742,7 @@ router.post('/', upload.array('attachments', parseInt(process.env.MAX_FILES_PER_
                 company,
                 projectType,
                 projectDescription
-            });
+            }, recaptchaResult);
             return res.status(429).json({
                 success: false,
                 message: 'You have already submitted a form recently. Please wait before submitting again.',
@@ -748,7 +765,7 @@ router.post('/', upload.array('attachments', parseInt(process.env.MAX_FILES_PER_
                     company,
                     projectType,
                     projectDescription
-                });
+                }, recaptchaResult);
                 return res.status(400).json({
                     success: false,
                     message: 'Form submission appears to be automated. Please take your time filling out the form.',
@@ -765,7 +782,7 @@ router.post('/', upload.array('attachments', parseInt(process.env.MAX_FILES_PER_
             company,
             projectType,
             projectDescription
-        });
+        }, recaptchaResult);
 
         // Handle interested scopes (checkbox array)
         const scopesArray = Array.isArray(interestedScopes) ? interestedScopes :
