@@ -1114,4 +1114,44 @@ router.get('/health', (req, res) => {
     });
 });
 
+// Download logs endpoint (protected by simple token check)
+// Usage: GET /api/contact/logs?token=YOUR_ADMIN_TOKEN
+router.get('/logs', (req, res) => {
+    try {
+        // Simple token-based protection (set ADMIN_TOKEN in .env)
+        const adminToken = process.env.ADMIN_TOKEN;
+        if (adminToken && req.query.token !== adminToken) {
+            return res.status(401).json({
+                success: false,
+                message: 'Unauthorized. Invalid token.'
+            });
+        }
+
+        const logFile = path.join(__dirname, '..', 'logs', 'submissions.log');
+
+        if (!fs.existsSync(logFile)) {
+            return res.status(404).json({
+                success: false,
+                message: 'Log file not found. No submissions logged yet.',
+                file: logFile
+            });
+        }
+
+        const stats = fs.statSync(logFile);
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader('Content-Disposition', `attachment; filename="submissions-${new Date().toISOString().split('T')[0]}.log"`);
+        res.setHeader('Content-Length', stats.size);
+
+        const fileStream = fs.createReadStream(logFile);
+        fileStream.pipe(res);
+    } catch (error) {
+        console.error('Error serving log file:', error.message);
+        res.status(500).json({
+            success: false,
+            message: 'Error reading log file',
+            error: error.message
+        });
+    }
+});
+
 module.exports = router;

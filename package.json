@@ -11,7 +11,10 @@
         "build": "node build.js",
         "analyze:logs": "node backend/scripts/analyze-submission-logs.js",
         "analyze:postmark": "node backend/scripts/analyze-postmark-spam.js",
-        "generate:report": "node backend/scripts/generate-spam-report.js"
+        "generate:report": "node backend/scripts/generate-spam-report.js",
+        "track:spammers": "node backend/scripts/track-spammers.js",
+        "download:logs": "node backend/scripts/download-and-analyze-logs.js",
+        "analyze": "node backend/scripts/download-and-analyze-logs.js"
     },
     "keywords": [
         "construction",
