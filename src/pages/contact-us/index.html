@@ -24,7 +24,7 @@
 
     <link rel="stylesheet" href="/assets/style.css">
     <script defer src="/assets/script.js"></script>
-    <!-- reCAPTCHA v3 - Replace with your site key -->
+    <!-- reCAPTCHA v3 - Site key from Google reCAPTCHA admin -->
     <script src="https://www.google.com/recaptcha/api.js?render=6LcWPRksAAAAADQYiNXCM6rIM94lgFJvn-l769GR"></script>
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Open+Sans&display=swap"
         rel="stylesheet">
@@ -275,7 +275,7 @@
                 }
             }
             console.log('Extracted site key:', siteKey);
-            console.log('Site key valid:', siteKey && siteKey !== '6LcYOUR_SITE_KEY_HERE' && siteKey.length > 20);
+            console.log('Site key valid:', siteKey && siteKey !== '6LcWPRksAAAAADQYiNXCM6rIM94lgFJvn-l769GR' && siteKey.length > 20);
             console.log('===========================');
         }
 
@@ -337,7 +337,7 @@
 
                 // Execute reCAPTCHA v3 (if available)
                 let recaptchaToken = null;
-                
+
                 // Check if grecaptcha is available
                 if (typeof grecaptcha === 'undefined') {
                     console.error('reCAPTCHA not loaded. grecaptcha is undefined. Make sure the reCAPTCHA script is loaded.');
@@ -350,17 +350,31 @@
                         if (!siteKey) {
                             const recaptchaScript = document.querySelector('script[src*="recaptcha"]');
                             if (recaptchaScript) {
-                                const match = recaptchaScript.src.match(/render=([^&]+)/);
+                                // Try both .src and getAttribute('src')
+                                const scriptSrc = recaptchaScript.src || recaptchaScript.getAttribute('src') || '';
+                                console.log('Found reCAPTCHA script, src:', scriptSrc);
+                                const match = scriptSrc.match(/render=([^&]+)/);
                                 if (match && match[1]) {
                                     siteKey = match[1];
+                                    console.log('Extracted site key from script tag');
+                                } else {
+                                    console.error('Failed to extract site key from script src. Match result:', match);
                                 }
+                            } else {
+                                console.error('reCAPTCHA script tag not found in DOM');
                             }
                         }
 
+                        // Fallback: hardcoded site key (from the script tag in the HTML)
+                        if (!siteKey) {
+                            siteKey = '6LcWPRksAAAAADQYiNXCM6rIM94lgFJvn-l769GR';
+                            console.warn('Using fallback hardcoded site key');
+                        }
+
                         // Validate site key before using
-                        if (siteKey && siteKey !== '6LcYOUR_SITE_KEY_HERE' && siteKey.length > 20) {
+                        if (siteKey && siteKey !== '6LcWPRksAAAAADQYiNXCM6rIM94lgFJvn-l769GR' && siteKey.length > 20) {
                             console.log('Attempting to generate reCAPTCHA token with site key:', siteKey.substring(0, 10) + '...');
-                            
+
                             await new Promise((resolve, reject) => {
                                 // Wait for grecaptcha to be ready
                                 grecaptcha.ready(() => {
@@ -380,7 +394,7 @@
                                             resolve(); // Continue without token
                                         });
                                 });
-                                
+
                                 // Timeout after 5 seconds if grecaptcha never becomes ready
                                 setTimeout(() => {
                                     if (!recaptchaToken) {
@@ -397,7 +411,7 @@
                         // Continue without reCAPTCHA if it fails
                     }
                 }
-                
+
                 // Log final token status
                 if (!recaptchaToken) {
                     console.warn('No reCAPTCHA token generated. Form will be submitted without reCAPTCHA verification.');
