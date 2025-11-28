@@ -160,9 +160,33 @@ async function analyzeWithIPTracking(submissions) {
     };
 
     // Get unique IPs first to minimize API calls
+    // Use real IP from IP chain or Cloudflare header if main IP is private
     const uniqueIPs = new Set();
     submissions.forEach(sub => {
-        const ip = sub.ip || 'unknown';
+        let ip = sub.ip || 'unknown';
+        
+        // If IP is private/local, try to get real IP from headers
+        if (ip.startsWith('127.') || ip.startsWith('192.168.') || ip.startsWith('10.') || ip.startsWith('172.') || ip === 'unknown') {
+            // Try Cloudflare connecting IP first
+            if (sub.headers && sub.headers['cf-connecting-ip']) {
+                ip = sub.headers['cf-connecting-ip'];
+            }
+            // Otherwise try first IP in IP chain
+            else if (sub.ipChain && Array.isArray(sub.ipChain) && sub.ipChain.length > 0) {
+                // Find first public IP in chain
+                const publicIP = sub.ipChain.find(chainIP => 
+                    chainIP && 
+                    !chainIP.startsWith('127.') && 
+                    !chainIP.startsWith('192.168.') && 
+                    !chainIP.startsWith('10.') && 
+                    !chainIP.startsWith('172.')
+                );
+                if (publicIP) {
+                    ip = publicIP;
+                }
+            }
+        }
+        
         if (ip !== 'unknown' && !ip.startsWith('127.') && !ip.startsWith('192.168.') && !ip.startsWith('10.') && !ip.startsWith('172.')) {
             uniqueIPs.add(ip);
         }
@@ -189,7 +213,30 @@ async function analyzeWithIPTracking(submissions) {
     // Process submissions with IP information
     for (let i = 0; i < submissions.length; i++) {
         const submission = submissions[i];
-        const ip = submission.ip || 'unknown';
+        let ip = submission.ip || 'unknown';
+        
+        // If IP is private/local, try to get real IP from headers
+        if (ip.startsWith('127.') || ip.startsWith('192.168.') || ip.startsWith('10.') || ip.startsWith('172.') || ip === 'unknown') {
+            // Try Cloudflare connecting IP first
+            if (submission.headers && submission.headers['cf-connecting-ip']) {
+                ip = submission.headers['cf-connecting-ip'];
+            }
+            // Otherwise try first IP in IP chain
+            else if (submission.ipChain && Array.isArray(submission.ipChain) && submission.ipChain.length > 0) {
+                // Find first public IP in chain
+                const publicIP = submission.ipChain.find(chainIP => 
+                    chainIP && 
+                    !chainIP.startsWith('127.') && 
+                    !chainIP.startsWith('192.168.') && 
+                    !chainIP.startsWith('10.') && 
+                    !chainIP.startsWith('172.')
+                );
+                if (publicIP) {
+                    ip = publicIP;
+                }
+            }
+        }
+        
         const ipInfo = ipInfoMap.get(ip) || {
             ip: ip,
             country: 'Unknown',
