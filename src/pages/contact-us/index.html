@@ -337,7 +337,11 @@
 
                 // Execute reCAPTCHA v3 (if available)
                 let recaptchaToken = null;
-                if (typeof grecaptcha !== 'undefined') {
+                
+                // Check if grecaptcha is available
+                if (typeof grecaptcha === 'undefined') {
+                    console.error('reCAPTCHA not loaded. grecaptcha is undefined. Make sure the reCAPTCHA script is loaded.');
+                } else {
                     try {
                         // Extract site key from script src or use window variable
                         let siteKey = window.RECAPTCHA_SITE_KEY;
@@ -355,30 +359,48 @@
 
                         // Validate site key before using
                         if (siteKey && siteKey !== '6LcYOUR_SITE_KEY_HERE' && siteKey.length > 20) {
-                            await new Promise((resolve) => {
+                            console.log('Attempting to generate reCAPTCHA token with site key:', siteKey.substring(0, 10) + '...');
+                            
+                            await new Promise((resolve, reject) => {
+                                // Wait for grecaptcha to be ready
                                 grecaptcha.ready(() => {
+                                    console.log('grecaptcha is ready, executing...');
                                     grecaptcha.execute(siteKey, { action: 'submit_contact_form' })
                                         .then((token) => {
                                             if (token && token.length > 0) {
                                                 recaptchaToken = token;
+                                                console.log('reCAPTCHA token generated successfully, length:', token.length);
+                                            } else {
+                                                console.error('reCAPTCHA returned empty token');
                                             }
                                             resolve();
                                         })
                                         .catch((error) => {
-                                            console.warn('reCAPTCHA execution error:', error);
+                                            console.error('reCAPTCHA execution error:', error);
                                             resolve(); // Continue without token
                                         });
                                 });
+                                
+                                // Timeout after 5 seconds if grecaptcha never becomes ready
+                                setTimeout(() => {
+                                    if (!recaptchaToken) {
+                                        console.error('reCAPTCHA ready() timeout - grecaptcha may not be fully loaded');
+                                        resolve();
+                                    }
+                                }, 5000);
                             });
                         } else {
-                            console.warn('reCAPTCHA site key not found or invalid. Site key:', siteKey ? 'present but invalid' : 'undefined');
+                            console.error('reCAPTCHA site key not found or invalid. Site key:', siteKey ? 'present but invalid (length: ' + siteKey.length + ')' : 'undefined');
                         }
                     } catch (error) {
-                        console.warn('reCAPTCHA error:', error);
+                        console.error('reCAPTCHA error:', error);
                         // Continue without reCAPTCHA if it fails
                     }
-                } else {
-                    console.warn('reCAPTCHA not loaded. grecaptcha is undefined.');
+                }
+                
+                // Log final token status
+                if (!recaptchaToken) {
+                    console.warn('No reCAPTCHA token generated. Form will be submitted without reCAPTCHA verification.');
                 }
 
                 // Add reCAPTCHA token to form data if available

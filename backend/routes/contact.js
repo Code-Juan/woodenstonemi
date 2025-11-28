@@ -672,6 +672,13 @@ router.post('/', upload.array('attachments', parseInt(process.env.MAX_FILES_PER_
             recaptchaToken
         } = req.body;
 
+        // Debug: Log if recaptchaToken is received
+        if (recaptchaToken) {
+            console.log('reCAPTCHA token received from frontend, length:', recaptchaToken.length);
+        } else {
+            console.log('No reCAPTCHA token in req.body. Available fields:', Object.keys(req.body));
+        }
+
         // Extract client IP for spam checks
         const clientIP = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress || 'unknown';
 
