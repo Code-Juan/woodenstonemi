@@ -473,8 +473,21 @@
                         } else if (result.error === 'submission_too_fast') {
                             errorMessage = 'Form submission appears automated. Please take your time filling out the form.';
                         } else if (result.errors && result.errors.length > 0) {
-                            errorMessage = result.errors.map(error => error.msg).join(', ');
+                            // Show validation errors
+                            const validationErrors = result.errors.map(error => {
+                                const field = error.param || error.field || '';
+                                return field ? `${field}: ${error.msg}` : error.msg;
+                            }).join(', ');
+                            errorMessage = `Validation error: ${validationErrors}`;
+                            console.error('Form validation errors:', result.errors);
                         }
+
+                        console.error('Form submission failed:', {
+                            status: response.status,
+                            error: result.error,
+                            message: result.message,
+                            errors: result.errors
+                        });
 
                         showMessage(errorMessage, 'error');
                     }

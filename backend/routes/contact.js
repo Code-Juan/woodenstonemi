@@ -674,6 +674,14 @@ router.post('/', upload.array('attachments', parseInt(process.env.MAX_FILES_PER_
         // Check for validation errors
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
+            console.log('❌ VALIDATION ERROR: Form validation failed', {
+                errors: errors.array(),
+                body: Object.keys(req.body),
+                email: req.body.email,
+                name: req.body.name,
+                company: req.body.company,
+                projectType: req.body.projectType
+            });
             return res.status(400).json({
                 success: false,
                 message: 'Validation failed',
