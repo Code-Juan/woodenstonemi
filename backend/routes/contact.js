@@ -513,14 +513,16 @@ setInterval(() => {
 async function verifyRecaptcha(token) {
     if (!process.env.RECAPTCHA_SECRET_KEY) {
         // If no secret key configured, skip verification (for development)
-        console.warn('RECAPTCHA_SECRET_KEY not configured, skipping verification');
+        console.warn('⚠️ reCAPTCHA CONFIG: RECAPTCHA_SECRET_KEY not configured, skipping verification');
         return { success: true, score: 0.9 };
     }
 
     if (!token) {
+        console.warn('⚠️ reCAPTCHA ERROR: Token is missing');
         return { success: false, error: 'reCAPTCHA token missing' };
     }
 
+    console.log('🔄 reCAPTCHA API: Sending verification request to Google...');
     try {
         // Use Node.js built-in https module for compatibility
         const https = require('https');
@@ -558,16 +560,32 @@ async function verifyRecaptcha(token) {
                             // Lower scores indicate bot-like behavior
                             const score = result.score || 0.5;
                             const threshold = parseFloat(process.env.RECAPTCHA_SCORE_THRESHOLD || '0.5');
+                            const passed = score >= threshold;
+
+                            console.log('📊 reCAPTCHA API RESPONSE:', {
+                                success: result.success,
+                                score: score,
+                                threshold: threshold,
+                                passed: passed,
+                                action: result.action,
+                                challengeTimestamp: result.challenge_ts,
+                                hostname: result.hostname
+                            });
 
                             resolve({
-                                success: score >= threshold,
+                                success: passed,
                                 score: score,
                                 action: result.action
                             });
                         } else {
+                            const errorCodes = result['error-codes']?.join(', ') || 'reCAPTCHA verification failed';
+                            console.log('❌ reCAPTCHA API ERROR:', {
+                                success: result.success,
+                                errorCodes: errorCodes
+                            });
                             resolve({
                                 success: false,
-                                error: result['error-codes']?.join(', ') || 'reCAPTCHA verification failed'
+                                error: errorCodes
                             });
                         }
                     } catch (error) {
@@ -584,7 +602,10 @@ async function verifyRecaptcha(token) {
             req.end();
         });
     } catch (error) {
-        console.error('reCAPTCHA verification error:', error);
+        console.error('❌ reCAPTCHA EXCEPTION: Verification request failed', {
+            error: error.message,
+            stack: error.stack
+        });
         return { success: false, error: 'Failed to verify reCAPTCHA' };
     }
 }
@@ -672,11 +693,18 @@ router.post('/', upload.array('attachments', parseInt(process.env.MAX_FILES_PER_
             recaptchaToken
         } = req.body;
 
-        // Debug: Log if recaptchaToken is received
+        // Log reCAPTCHA token status
         if (recaptchaToken) {
-            console.log('reCAPTCHA token received from frontend, length:', recaptchaToken.length);
+            console.log('✅ reCAPTCHA ACTIVATED: Token received from frontend', {
+                tokenLength: recaptchaToken.length,
+                tokenPreview: recaptchaToken.substring(0, 20) + '...',
+                email: email
+            });
         } else {
-            console.log('No reCAPTCHA token in req.body. Available fields:', Object.keys(req.body));
+            console.log('⚠️ reCAPTCHA NOT ACTIVATED: No token provided', {
+                email: email,
+                availableFields: Object.keys(req.body)
+            });
         }
 
         // Extract client IP for spam checks
@@ -689,9 +717,16 @@ router.post('/', upload.array('attachments', parseInt(process.env.MAX_FILES_PER_
         // 1. Verify reCAPTCHA token (if provided)
         let recaptchaResult = null;
         if (recaptchaToken) {
+            console.log('🔄 reCAPTCHA VERIFICATION: Starting verification...', { email });
             recaptchaResult = await verifyRecaptcha(recaptchaToken);
+            
             if (!recaptchaResult.success) {
-                console.log('Spam blocked: reCAPTCHA failed', { email, score: recaptchaResult.score });
+                console.log('❌ reCAPTCHA BLOCKED: Verification failed', {
+                    email: email,
+                    score: recaptchaResult.score,
+                    error: recaptchaResult.error,
+                    action: recaptchaResult.action
+                });
                 // Log the blocked submission for analysis
                 logSubmission(req, {
                     name,
@@ -707,13 +742,27 @@ router.post('/', upload.array('attachments', parseInt(process.env.MAX_FILES_PER_
                     error: 'recaptcha_failed'
                 });
             }
+            
+            // Log successful verification with details
+            console.log('✅ reCAPTCHA VERIFIED: Token verified successfully', {
+                email: email,
+                score: recaptchaResult.score,
+                action: recaptchaResult.action,
+                threshold: parseFloat(process.env.RECAPTCHA_SCORE_THRESHOLD || '0.5'),
+                status: recaptchaResult.score >= 0.7 ? 'HIGH_CONFIDENCE' : 'LOW_SCORE'
+            });
+            
             // Log low scores for monitoring
             if (recaptchaResult.score < 0.7) {
-                console.log('Low reCAPTCHA score detected', { email, score: recaptchaResult.score });
+                console.log('⚠️ reCAPTCHA WARNING: Low score detected (below 0.7)', {
+                    email: email,
+                    score: recaptchaResult.score,
+                    action: recaptchaResult.action
+                });
             }
         } else {
             // Log that no token was provided
-            console.log('No reCAPTCHA token provided', { email });
+            console.log('⚠️ reCAPTCHA SKIPPED: No token provided, proceeding without reCAPTCHA verification', { email });
         }
 
         // 2. Check for gibberish/random name patterns
