@@ -337,6 +337,38 @@
                 formData.append('submissionTime', submissionTime.toString());
                 formData.append('timeSpent', timeSpent.toString());
 
+                // Add browser fingerprinting data for spam detection
+                try {
+                    const fingerprintData = {
+                        screenResolution: `${screen.width}x${screen.height}`,
+                        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                        timezoneOffset: new Date().getTimezoneOffset(),
+                        language: navigator.language || navigator.userLanguage,
+                        platform: navigator.platform,
+                        cookieEnabled: navigator.cookieEnabled,
+                        doNotTrack: navigator.doNotTrack || 'unknown',
+                        hardwareConcurrency: navigator.hardwareConcurrency || 'unknown',
+                        deviceMemory: navigator.deviceMemory || 'unknown'
+                    };
+
+                    formData.append('screenResolution', fingerprintData.screenResolution);
+                    formData.append('timezone', fingerprintData.timezone);
+                    formData.append('timezoneOffset', fingerprintData.timezoneOffset.toString());
+                    formData.append('language', fingerprintData.language);
+                    formData.append('platform', fingerprintData.platform);
+                    formData.append('cookieEnabled', fingerprintData.cookieEnabled.toString());
+                    formData.append('doNotTrack', fingerprintData.doNotTrack);
+                    if (fingerprintData.hardwareConcurrency !== 'unknown') {
+                        formData.append('hardwareConcurrency', fingerprintData.hardwareConcurrency.toString());
+                    }
+                    if (fingerprintData.deviceMemory !== 'unknown') {
+                        formData.append('deviceMemory', fingerprintData.deviceMemory.toString());
+                    }
+                } catch (error) {
+                    // Silently fail if fingerprinting fails (some browsers may block certain properties)
+                    console.warn('Browser fingerprinting partially failed:', error.message);
+                }
+
                 // Execute reCAPTCHA v3 (if available)
                 let recaptchaToken = null;
 

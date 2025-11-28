@@ -25,6 +25,14 @@ app.use(helmet({
     }
 }));
 
+// IP blocking middleware (check blocked IPs before rate limiting)
+// Enable by setting ENABLE_IP_BLOCKING=true in .env (default: false)
+if (process.env.ENABLE_IP_BLOCKING === 'true') {
+    const ipBlocker = require('./middleware/ip-blocker');
+    app.use(ipBlocker.middleware);
+    console.log('IP blocking middleware enabled');
+}
+
 // Rate limiting - Stricter limits for spam prevention
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes

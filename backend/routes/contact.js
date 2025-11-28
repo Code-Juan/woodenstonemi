@@ -671,6 +671,27 @@ async function verifyRecaptcha(token) {
 // LOGGING FUNCTION
 // ============================================================================
 
+// Helper functions to extract browser/platform info
+function extractPlatform(userAgent) {
+    if (!userAgent) return 'unknown';
+    if (/windows/i.test(userAgent)) return 'Windows';
+    if (/macintosh|mac os x/i.test(userAgent)) return 'macOS';
+    if (/linux/i.test(userAgent)) return 'Linux';
+    if (/android/i.test(userAgent)) return 'Android';
+    if (/iphone|ipad|ipod/i.test(userAgent)) return 'iOS';
+    return 'unknown';
+}
+
+function extractBrowser(userAgent) {
+    if (!userAgent) return 'unknown';
+    if (/chrome/i.test(userAgent) && !/edge|edg/i.test(userAgent)) return 'Chrome';
+    if (/firefox/i.test(userAgent)) return 'Firefox';
+    if (/safari/i.test(userAgent) && !/chrome/i.test(userAgent)) return 'Safari';
+    if (/edge|edg/i.test(userAgent)) return 'Edge';
+    if (/opera|opr/i.test(userAgent)) return 'Opera';
+    return 'unknown';
+}
+
 // Logging function for form submissions
 function logSubmission(req, formData, recaptchaData = null) {
     try {
@@ -683,10 +704,16 @@ function logSubmission(req, formData, recaptchaData = null) {
         // Extract client IP (trust proxy is enabled in server.js)
         const clientIP = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress || 'unknown';
 
+        // Extract full IP chain (useful for detecting proxies)
+        const ipChain = req.headers['x-forwarded-for']
+            ? req.headers['x-forwarded-for'].split(',').map(ip => ip.trim())
+            : [clientIP];
+
         // Prepare log entry
         const logEntry = {
             timestamp: new Date().toISOString(),
             ip: clientIP,
+            ipChain: ipChain, // Full chain of IPs (for proxy detection)
             userAgent: req.headers['user-agent'] || 'unknown',
             email: formData.email,
             name: formData.name,
@@ -712,7 +739,32 @@ function logSubmission(req, formData, recaptchaData = null) {
             headers: {
                 'accept': req.headers['accept'],
                 'accept-language': req.headers['accept-language'],
-                'referer': req.headers['referer']
+                'accept-encoding': req.headers['accept-encoding'],
+                'referer': req.headers['referer'],
+                'origin': req.headers['origin'],
+                'cf-ray': req.headers['cf-ray'], // Cloudflare ray ID (if using Cloudflare)
+                'cf-connecting-ip': req.headers['cf-connecting-ip'], // Cloudflare real IP
+                'x-real-ip': req.headers['x-real-ip'],
+                'x-forwarded-for': req.headers['x-forwarded-for'],
+                'x-forwarded-proto': req.headers['x-forwarded-proto'],
+                'via': req.headers['via'], // Proxy chain
+                'connection': req.headers['connection']
+            },
+            // Browser fingerprinting data
+            fingerprint: {
+                screenResolution: req.body.screenResolution || null, // From frontend
+                timezone: req.body.timezone || null, // From frontend
+                language: req.headers['accept-language']?.split(',')[0] || null,
+                platform: extractPlatform(req.headers['user-agent']),
+                browser: extractBrowser(req.headers['user-agent'])
+            },
+            // Request metadata
+            requestMetadata: {
+                method: req.method,
+                path: req.path,
+                protocol: req.protocol,
+                secure: req.secure,
+                hostname: req.hostname
             }
         };
 
@@ -909,9 +961,12 @@ router.post('/', upload.array('attachments', parseInt(process.env.MAX_FILES_PER_
         }
 
         // 4. Check submission timing (too fast = likely bot)
+        // Check both header (legacy) and form data (preferred)
         const submissionStartTime = req.headers['x-submission-start-time'];
-        if (submissionStartTime) {
-            const timeSpent = Date.now() - parseInt(submissionStartTime);
+        const timeSpentFromForm = req.body.timeSpent ? parseInt(req.body.timeSpent) : null;
+        const timeSpent = timeSpentFromForm || (submissionStartTime ? Date.now() - parseInt(submissionStartTime) : null);
+
+        if (timeSpent !== null && timeSpent > 0) {
             // If form was filled and submitted in less than 3 seconds, likely a bot
             if (timeSpent < 3000 && projectDescription && projectDescription.length > 50) {
                 console.log('Spam blocked: Submission too fast', { email, timeSpent });
