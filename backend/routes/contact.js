@@ -434,10 +434,16 @@ function cleanupFiles(files) {
 // SPAM DETECTION FUNCTIONS
 // ============================================================================
 
-// Detect random/gibberish character patterns in names
+// Detect random/gibberish character patterns in text
 function isRandomPattern(text) {
-    if (!text || text.length < 8) return false;
+    if (!text || text.length < 6) return false;
     const cleaned = text.toLowerCase().trim();
+
+    // Check for repetitive character patterns (e.g., "iygiygigiygigoioo", "gyfgyigyigi")
+    const repetitivePattern = /(.{2,})\1{2,}/.test(cleaned);
+    if (repetitivePattern) {
+        return true;
+    }
 
     // Check for excessive consecutive consonants (common in random strings)
     const consecutiveConsonants = cleaned.match(/[bcdfghjklmnpqrstvwxyz]{5,}/g);
@@ -453,15 +459,59 @@ function isRandomPattern(text) {
     if (totalLetters === 0) return false;
     const vowelRatio = vowels / totalLetters;
 
-    // Random patterns typically have low vowel ratio (< 0.2) and no spaces
+    // Random patterns typically have low vowel ratio (< 0.25) and no spaces
     // Also check for excessive length without spaces (common in spam)
-    if (vowelRatio < 0.2 && totalLetters >= 10 && !/\s/.test(text)) {
+    if (vowelRatio < 0.25 && totalLetters >= 8 && !/\s/.test(text)) {
         return true;
     }
 
     // Check for alternating case patterns (e.g., "AbCdEfGh")
     const hasAlternatingCase = /([a-z][A-Z]){3,}/.test(text);
     if (hasAlternatingCase && text.length > 12) {
+        return true;
+    }
+
+    // Check for too many repeated characters (e.g., "aaaaabbbbb")
+    const charCounts = {};
+    for (const char of cleaned.replace(/\s/g, '')) {
+        charCounts[char] = (charCounts[char] || 0) + 1;
+    }
+    const maxCharCount = Math.max(...Object.values(charCounts));
+    if (maxCharCount > cleaned.length * 0.4 && cleaned.length > 10) {
+        return true;
+    }
+
+    // Check for patterns with very few unique characters (gibberish often repeats)
+    const uniqueChars = new Set(cleaned.replace(/\s/g, '')).size;
+    if (uniqueChars < 4 && cleaned.length > 12) {
+        return true;
+    }
+
+    return false;
+}
+
+// Check if project description is meaningful (not gibberish)
+function isMeaninglessDescription(text) {
+    if (!text || text.length < 10) return false;
+    const cleaned = text.toLowerCase().trim();
+
+    // Check for repetitive patterns
+    if (isRandomPattern(text)) {
+        return true;
+    }
+
+    // Check if it's just repeated words or characters
+    const words = cleaned.split(/\s+/);
+    if (words.length > 0) {
+        const uniqueWords = new Set(words);
+        // If more than 60% of words are the same, likely gibberish
+        if (uniqueWords.size < words.length * 0.4 && words.length > 3) {
+            return true;
+        }
+    }
+
+    // Check for very low word count with high character count (likely gibberish)
+    if (words.length < 3 && cleaned.length > 20) {
         return true;
     }
 
@@ -734,7 +784,7 @@ router.post('/', upload.array('attachments', parseInt(process.env.MAX_FILES_PER_
         if (recaptchaToken) {
             console.log('🔄 reCAPTCHA VERIFICATION: Starting verification...', { email });
             recaptchaResult = await verifyRecaptcha(recaptchaToken);
-            
+
             if (!recaptchaResult.success) {
                 console.log('❌ reCAPTCHA BLOCKED: Verification failed', {
                     email: email,
@@ -757,7 +807,7 @@ router.post('/', upload.array('attachments', parseInt(process.env.MAX_FILES_PER_
                     error: 'recaptcha_failed'
                 });
             }
-            
+
             // Log successful verification with details
             console.log('✅ reCAPTCHA VERIFIED: Token verified successfully', {
                 email: email,
@@ -766,7 +816,7 @@ router.post('/', upload.array('attachments', parseInt(process.env.MAX_FILES_PER_
                 threshold: parseFloat(process.env.RECAPTCHA_SCORE_THRESHOLD || '0.5'),
                 status: recaptchaResult.score >= 0.7 ? 'HIGH_CONFIDENCE' : 'LOW_SCORE'
             });
-            
+
             // Log low scores for monitoring
             if (recaptchaResult.score < 0.7) {
                 console.log('⚠️ reCAPTCHA WARNING: Low score detected (below 0.7)', {
@@ -782,7 +832,7 @@ router.post('/', upload.array('attachments', parseInt(process.env.MAX_FILES_PER_
 
         // 2. Check for gibberish/random name patterns
         if (name && isRandomPattern(name)) {
-            console.log('Spam blocked: Random name pattern detected', { email, name });
+            console.log('❌ SPAM BLOCKED: Random/gibberish name pattern detected', { email, name });
             logSubmission(req, {
                 name,
                 email,
@@ -795,6 +845,42 @@ router.post('/', upload.array('attachments', parseInt(process.env.MAX_FILES_PER_
                 success: false,
                 message: 'Invalid name format. Please provide a valid name.',
                 error: 'invalid_name'
+            });
+        }
+
+        // 2b. Check for gibberish/random company patterns
+        if (company && isRandomPattern(company)) {
+            console.log('❌ SPAM BLOCKED: Random/gibberish company name detected', { email, company });
+            logSubmission(req, {
+                name,
+                email,
+                phone,
+                company,
+                projectType,
+                projectDescription
+            }, recaptchaResult);
+            return res.status(400).json({
+                success: false,
+                message: 'Invalid company name format. Please provide a valid company name.',
+                error: 'invalid_company'
+            });
+        }
+
+        // 2c. Check for meaningless/gibberish project descriptions
+        if (projectDescription && isMeaninglessDescription(projectDescription)) {
+            console.log('❌ SPAM BLOCKED: Meaningless/gibberish project description detected', { email, descriptionLength: projectDescription.length });
+            logSubmission(req, {
+                name,
+                email,
+                phone,
+                company,
+                projectType,
+                projectDescription
+            }, recaptchaResult);
+            return res.status(400).json({
+                success: false,
+                message: 'Please provide a meaningful project description with details about your project.',
+                error: 'invalid_description'
             });
         }
 
