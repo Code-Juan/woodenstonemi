@@ -24,8 +24,9 @@
 
     <link rel="stylesheet" href="/assets/style.css">
     <script defer src="/assets/script.js"></script>
-    <!-- reCAPTCHA v3 - Site key from Google reCAPTCHA admin -->
-    <script src="https://www.google.com/recaptcha/api.js?render=6LcWPRksAAAAADQYiNXCM6rIM94lgFJvn-l769GR"></script>
+    <!-- reCAPTCHA Enterprise - Site key from Google reCAPTCHA admin -->
+    <script
+        src="https://www.google.com/recaptcha/enterprise.js?render=6LcWPRksAAAAADQYiNXCM6rIM94lgFJvn-l769GR"></script>
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Open+Sans&display=swap"
         rel="stylesheet">
 </head>
@@ -250,8 +251,9 @@
     <script>
         // Debug helper: Check reCAPTCHA setup (available immediately)
         function debugRecaptcha() {
-            console.log('=== reCAPTCHA Debug Info ===');
+            console.log('=== reCAPTCHA Enterprise Debug Info ===');
             console.log('grecaptcha type:', typeof grecaptcha);
+            console.log('grecaptcha.enterprise type:', typeof grecaptcha?.enterprise);
             console.log('window.RECAPTCHA_SITE_KEY:', window.RECAPTCHA_SITE_KEY);
 
             const recaptchaScript = document.querySelector('script[src*="recaptcha"]');
@@ -275,7 +277,7 @@
                 }
             }
             console.log('Extracted site key:', siteKey);
-            console.log('Site key valid:', siteKey && siteKey !== '6LcWPRksAAAAADQYiNXCM6rIM94lgFJvn-l769GR' && siteKey.length > 20);
+            console.log('Site key valid:', siteKey && siteKey !== '6LcYOUR_SITE_KEY_HERE' && siteKey.length > 20);
             console.log('===========================');
         }
 
@@ -338,9 +340,9 @@
                 // Execute reCAPTCHA v3 (if available)
                 let recaptchaToken = null;
 
-                // Check if grecaptcha is available
-                if (typeof grecaptcha === 'undefined') {
-                    console.error('reCAPTCHA not loaded. grecaptcha is undefined. Make sure the reCAPTCHA script is loaded.');
+                // Check if grecaptcha Enterprise is available
+                if (typeof grecaptcha === 'undefined' || typeof grecaptcha.enterprise === 'undefined') {
+                    console.error('reCAPTCHA Enterprise not loaded. grecaptcha.enterprise is undefined. Make sure the reCAPTCHA Enterprise script is loaded.');
                 } else {
                     try {
                         // Extract site key from script src or use window variable
@@ -372,14 +374,14 @@
                         }
 
                         // Validate site key before using
-                        if (siteKey && siteKey !== '6LcWPRksAAAAADQYiNXCM6rIM94lgFJvn-l769GR' && siteKey.length > 20) {
-                            console.log('Attempting to generate reCAPTCHA token with site key:', siteKey.substring(0, 10) + '...');
+                        if (siteKey && siteKey !== '6LcYOUR_SITE_KEY_HERE' && siteKey.length > 20) {
+                            console.log('Attempting to generate reCAPTCHA Enterprise token with site key:', siteKey.substring(0, 10) + '...');
 
                             await new Promise((resolve, reject) => {
-                                // Wait for grecaptcha to be ready
-                                grecaptcha.ready(() => {
-                                    console.log('grecaptcha is ready, executing...');
-                                    grecaptcha.execute(siteKey, { action: 'submit_contact_form' })
+                                // Wait for grecaptcha Enterprise to be ready
+                                grecaptcha.enterprise.ready(() => {
+                                    console.log('grecaptcha Enterprise is ready, executing...');
+                                    grecaptcha.enterprise.execute(siteKey, { action: 'submit_contact_form' })
                                         .then((token) => {
                                             if (token && token.length > 0) {
                                                 recaptchaToken = token;
