@@ -85,10 +85,17 @@ const validateContactForm = [
             return true;
         }),
     body('phone')
-        .optional()
+        .optional({ checkFalsy: true })
         .trim()
-        .isLength({ min: 10, max: 20 })
-        .withMessage('Phone number must be between 10 and 20 characters'),
+        .custom((value) => {
+            // If phone is provided, it must be between 10 and 20 characters
+            if (value && value.length > 0) {
+                if (value.length < 10 || value.length > 20) {
+                    throw new Error('Phone number must be between 10 and 20 characters');
+                }
+            }
+            return true;
+        }),
     body('company')
         .trim()
         .isLength({ min: 1, max: 100 })
