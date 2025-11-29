@@ -14,7 +14,8 @@
         "generate:report": "node backend/scripts/generate-spam-report.js",
         "track:spammers": "node backend/scripts/track-spammers.js",
         "download:logs": "node backend/scripts/download-and-analyze-logs.js",
-        "analyze": "node backend/scripts/download-and-analyze-logs.js"
+        "analyze": "node backend/scripts/download-and-analyze-logs.js",
+        "lookup:ip": "node backend/scripts/lookup-ip.js"
     },
     "keywords": [
         "construction",

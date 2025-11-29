@@ -838,11 +838,17 @@ router.post('/', upload.array('attachments', parseInt(process.env.MAX_FILES_PER_
             recaptchaResult = await verifyRecaptcha(recaptchaToken);
 
             if (!recaptchaResult.success) {
+                const clientIP = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress || 'unknown';
+                const realIP = req.headers['cf-connecting-ip'] || (req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'].split(',')[0].trim() : null) || clientIP;
                 console.log('❌ reCAPTCHA BLOCKED: Verification failed', {
                     email: email,
                     score: recaptchaResult.score,
                     error: recaptchaResult.error,
-                    action: recaptchaResult.action
+                    action: recaptchaResult.action,
+                    ip: clientIP,
+                    realIP: realIP,
+                    ipChain: req.headers['x-forwarded-for'],
+                    userAgent: req.headers['user-agent']
                 });
                 // Log the blocked submission for analysis
                 logSubmission(req, {
@@ -884,7 +890,15 @@ router.post('/', upload.array('attachments', parseInt(process.env.MAX_FILES_PER_
 
         // 2. Check for gibberish/random name patterns
         if (name && isRandomPattern(name)) {
-            console.log('❌ SPAM BLOCKED: Random/gibberish name pattern detected', { email, name });
+            const realIP = req.headers['cf-connecting-ip'] || (req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'].split(',')[0].trim() : null) || clientIP;
+            console.log('❌ SPAM BLOCKED: Random/gibberish name pattern detected', { 
+                email, 
+                name,
+                ip: clientIP,
+                realIP: realIP,
+                ipChain: req.headers['x-forwarded-for'],
+                userAgent: req.headers['user-agent']
+            });
             logSubmission(req, {
                 name,
                 email,
@@ -902,7 +916,15 @@ router.post('/', upload.array('attachments', parseInt(process.env.MAX_FILES_PER_
 
         // 2b. Check for gibberish/random company patterns
         if (company && isRandomPattern(company)) {
-            console.log('❌ SPAM BLOCKED: Random/gibberish company name detected', { email, company });
+            const realIP = req.headers['cf-connecting-ip'] || (req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'].split(',')[0].trim() : null) || clientIP;
+            console.log('❌ SPAM BLOCKED: Random/gibberish company name detected', { 
+                email, 
+                company,
+                ip: clientIP,
+                realIP: realIP,
+                ipChain: req.headers['x-forwarded-for'],
+                userAgent: req.headers['user-agent']
+            });
             logSubmission(req, {
                 name,
                 email,
@@ -920,7 +942,15 @@ router.post('/', upload.array('attachments', parseInt(process.env.MAX_FILES_PER_
 
         // 2c. Check for meaningless/gibberish project descriptions
         if (projectDescription && isMeaninglessDescription(projectDescription)) {
-            console.log('❌ SPAM BLOCKED: Meaningless/gibberish project description detected', { email, descriptionLength: projectDescription.length });
+            const realIP = req.headers['cf-connecting-ip'] || (req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'].split(',')[0].trim() : null) || clientIP;
+            console.log('❌ SPAM BLOCKED: Meaningless/gibberish project description detected', { 
+                email, 
+                descriptionLength: projectDescription.length,
+                ip: clientIP,
+                realIP: realIP,
+                ipChain: req.headers['x-forwarded-for'],
+                userAgent: req.headers['user-agent']
+            });
             logSubmission(req, {
                 name,
                 email,
