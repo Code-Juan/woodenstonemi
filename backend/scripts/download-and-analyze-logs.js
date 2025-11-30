@@ -71,7 +71,7 @@ function downloadLogs() {
             reject(error);
         });
 
-        req.setTimeout(30000, () => {
+        req.setTimeout(60000, () => {
             req.destroy();
             reject(new Error('Request timeout'));
         });
