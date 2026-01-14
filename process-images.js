@@ -65,11 +65,12 @@ function processImage(imagePath) {
 
         try {
             // ImageMagick command to resize and optimize
-            // -strip: remove metadata
+            // -auto-orient: automatically rotate based on EXIF orientation data
+            // -strip: remove metadata (after orientation is applied)
             // -quality: set JPEG quality
             // -resize: resize maintaining aspect ratio
             // -gravity center -extent: center and crop to exact dimensions
-            const command = `magick "${imagePath}" -strip -quality ${CONFIG.quality} -resize ${sizeConfig.width}x${sizeConfig.height}^ -gravity center -extent ${sizeConfig.width}x${sizeConfig.height} "${outputPath}"`;
+            const command = `magick "${imagePath}" -auto-orient -strip -quality ${CONFIG.quality} -resize ${sizeConfig.width}x${sizeConfig.height}^ -gravity center -extent ${sizeConfig.width}x${sizeConfig.height} "${outputPath}"`;
 
             execSync(command, { stdio: 'ignore' });
 
