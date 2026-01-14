@@ -355,6 +355,23 @@ const projectsData = [
             "images/Previous Jobs/16. 25 E. Palmer (Barlum Apartments)/the-barlum-detroit-mi-building-photo (1)-hero.jpg",
             "images/Previous Jobs/16. 25 E. Palmer (Barlum Apartments)/the-barlum-detroit-mi-building-photo (2)-hero.jpg"
         ]
+    },
+    {
+        id: 23,
+        name: "ALTA HQ",
+        location: "Livonia, MI",
+        type: "Office Renovation",
+        details: "Commercial Office Space",
+        scopes: "Granite Countertops, Casework & Finish Trim Carpentry Installation",
+        materials: "Granite Countertops, Cabinetry",
+        client: "Wolverine Building Group",
+        dates: "Aug 2025 - Dec 2025",
+        images: [
+            "images/Previous Jobs/24. Alta HQ/Bathroom_Grab_Bars-hero.jpeg",
+            "images/Previous Jobs/24. Alta HQ/Bathroom_Sink-hero.jpeg",
+            "images/Previous Jobs/24. Alta HQ/Hallway_Trim-hero.jpeg",
+            "images/Previous Jobs/24. Alta HQ/Smaller_Hallway_Trim-hero.jpeg"
+        ]
     }
 ];
 
