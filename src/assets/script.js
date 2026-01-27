@@ -1138,10 +1138,48 @@ function initExitIntentPopup() {
     }
 
     let exitIntentTriggered = false;
+    let userHasInteracted = false;
+    let exitIntentEnabled = false;
+    const MIN_TIME_ON_PAGE = 5000; // Wait 5 seconds before enabling exit-intent
+    const MIN_INTERACTION_TIME = 3000; // User must interact for at least 3 seconds
 
-    // Desktop: Detect mouse leaving viewport
+    // Track user interaction
+    let interactionStartTime = null;
+    const trackInteraction = () => {
+        if (!userHasInteracted) {
+            userHasInteracted = true;
+            interactionStartTime = Date.now();
+        }
+    };
+
+    // Listen for user interactions
+    document.addEventListener('mousemove', trackInteraction, { once: true });
+    document.addEventListener('scroll', trackInteraction, { once: true });
+    document.addEventListener('click', trackInteraction, { once: true });
+    document.addEventListener('touchstart', trackInteraction, { once: true });
+
+    // Enable exit-intent detection after minimum time and user interaction
+    setTimeout(() => {
+        const timeSinceInteraction = interactionStartTime ? Date.now() - interactionStartTime : 0;
+        if (userHasInteracted && timeSinceInteraction >= MIN_INTERACTION_TIME) {
+            exitIntentEnabled = true;
+        } else {
+            // If no interaction yet, wait a bit more
+            setTimeout(() => {
+                exitIntentEnabled = true;
+            }, 2000);
+        }
+    }, MIN_TIME_ON_PAGE);
+
+    // Desktop: Detect mouse leaving viewport (only after enabled)
     document.addEventListener('mouseout', function(e) {
-        if (!exitIntentTriggered && e.clientY < 10) {
+        if (!exitIntentEnabled || exitIntentTriggered) {
+            return;
+        }
+
+        // Check if mouse is actually leaving the viewport (not just moving within page)
+        // relatedTarget is null when leaving the document
+        if (e.relatedTarget === null && e.clientY < 10) {
             exitIntentTriggered = true;
             showExitIntentPopup();
         }
@@ -1149,7 +1187,7 @@ function initExitIntentPopup() {
 
     // Mobile: Show after 30 seconds or 50% scroll
     let mobileTimer = setTimeout(() => {
-        if (!exitIntentTriggered && window.innerWidth <= 768) {
+        if (!exitIntentTriggered && window.innerWidth <= 768 && exitIntentEnabled) {
             exitIntentTriggered = true;
             showExitIntentPopup();
         }
@@ -1158,7 +1196,7 @@ function initExitIntentPopup() {
     // Also trigger on scroll depth for mobile
     let maxScroll = 0;
     window.addEventListener('scroll', () => {
-        if (window.innerWidth <= 768 && !exitIntentTriggered) {
+        if (window.innerWidth <= 768 && !exitIntentTriggered && exitIntentEnabled) {
             const scrollPercent = Math.round(
                 ((window.scrollY + window.innerHeight) / document.documentElement.scrollHeight) * 100
             );
