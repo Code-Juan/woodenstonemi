@@ -743,13 +743,27 @@ nav a.current-page:hover {
 }
 
 /* Tawk.to Chat Widget Customization */
+/* Ensure container is positioned for absolute children */
+#tawkchat-container {
+    position: relative !important;
+}
+
+#tawkchat-container > iframe {
+    position: relative !important;
+}
+
 /* Custom tooltip text floating above chat bubble */
+#tawkchat-container .tawk-min-container,
+#tawkchat-container [class*="tawk-min"],
+#tawkchat-container [id*="tawk-min"] {
+    position: relative !important;
+}
+
 #tawkchat-container .tawk-min-container::before {
     content: "Get Instant Answers!" !important;
     position: absolute !important;
     right: 0 !important;
-    bottom: 100% !important;
-    margin-bottom: 12px !important;
+    bottom: calc(100% + 12px) !important;
     background-color: var(--slate) !important;
     color: var(--white) !important;
     padding: 10px 16px !important;
@@ -761,8 +775,12 @@ nav a.current-page:hover {
     z-index: 10000 !important;
     pointer-events: none !important;
     opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
     transform: translateX(50%) !important;
     animation: floatUp 3s ease-in-out infinite !important;
+    font-family: inherit !important;
+    line-height: 1.4 !important;
 }
 
 /* Tooltip arrow pointing down to chat bubble */
@@ -770,13 +788,14 @@ nav a.current-page:hover {
     content: "" !important;
     position: absolute !important;
     right: 0 !important;
-    bottom: 100% !important;
-    margin-bottom: 4px !important;
+    bottom: calc(100% + 4px) !important;
     border: 8px solid transparent !important;
     border-top-color: var(--slate) !important;
     z-index: 10001 !important;
     pointer-events: none !important;
     opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
     transform: translateX(50%) !important;
 }
 
@@ -795,6 +814,7 @@ nav a.current-page:hover {
     #tawkchat-container .tawk-min-container::before,
     #tawkchat-container .tawk-min-container::after {
         display: none !important;
+        visibility: hidden !important;
     }
 }
 

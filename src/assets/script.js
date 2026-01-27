@@ -1324,6 +1324,9 @@ function initTawkToAPI() {
         if (savedVisitorData && Object.keys(savedVisitorData).length > 0) {
             setTawkVisitorAttributes(savedVisitorData);
         }
+        
+        // Add floating tooltip text above chat bubble
+        addTawkTooltip();
     };
 
     // Track when chat starts
@@ -1575,6 +1578,112 @@ function getSavedVisitorData() {
 }
 
 /**
+ * Add floating tooltip text above Tawk.to chat bubble
+ */
+function addTawkTooltip() {
+    // Wait for the chat bubble container to be available
+    function tryAddTooltip() {
+        const tawkContainer = document.querySelector('#tawkchat-container');
+        const chatBubble = tawkContainer?.querySelector('.tawk-min-container') || 
+                          tawkContainer?.querySelector('[class*="tawk-min"]') ||
+                          tawkContainer?.querySelector('[id*="tawk-min"]');
+        
+        if (!chatBubble || chatBubble.querySelector('.tawk-tooltip-custom')) {
+            // If bubble not found or tooltip already exists, try again
+            if (!chatBubble) {
+                setTimeout(tryAddTooltip, 500);
+            }
+            return;
+        }
+
+        // Remove existing tooltip if any
+        const existingTooltip = document.querySelector('.tawk-tooltip-custom');
+        if (existingTooltip) {
+            existingTooltip.remove();
+        }
+
+        // Create tooltip container
+        const tooltipContainer = document.createElement('div');
+        tooltipContainer.className = 'tawk-tooltip-custom';
+        tooltipContainer.style.cssText = `
+            position: absolute;
+            right: 0;
+            bottom: calc(100% + 12px);
+            transform: translateX(50%);
+            z-index: 10000;
+            pointer-events: none;
+            animation: floatUp 3s ease-in-out infinite;
+        `;
+
+        // Create tooltip text
+        const tooltipText = document.createElement('div');
+        tooltipText.textContent = 'Get Instant Answers!';
+        tooltipText.style.cssText = `
+            background-color: var(--slate, #2c3e50);
+            color: var(--white, #ffffff);
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            font-family: inherit;
+            line-height: 1.4;
+        `;
+
+        // Create arrow
+        const arrow = document.createElement('div');
+        arrow.style.cssText = `
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 8px solid transparent;
+            border-top-color: var(--slate, #2c3e50);
+        `;
+
+        tooltipContainer.appendChild(tooltipText);
+        tooltipContainer.appendChild(arrow);
+        
+        // Ensure parent has position relative
+        const computedStyle = window.getComputedStyle(chatBubble);
+        if (computedStyle.position === 'static') {
+            chatBubble.style.position = 'relative';
+        }
+        
+        chatBubble.appendChild(tooltipContainer);
+
+        // Hide on mobile
+        const mediaQuery = window.matchMedia('(max-width: 768px)');
+        function handleMobileChange(e) {
+            if (e.matches) {
+                tooltipContainer.style.display = 'none';
+            } else {
+                tooltipContainer.style.display = 'block';
+            }
+        }
+        mediaQuery.addListener(handleMobileChange);
+        handleMobileChange(mediaQuery);
+    }
+
+    // Try immediately and also set up observer for when widget loads
+    tryAddTooltip();
+    
+    // Also watch for when the widget appears
+    const observer = new MutationObserver(function(mutations) {
+        tryAddTooltip();
+    });
+    
+    const tawkContainer = document.querySelector('#tawkchat-container');
+    if (tawkContainer) {
+        observer.observe(tawkContainer, {
+            childList: true,
+            subtree: true
+        });
+    }
+}
+
+/**
  * Clear saved visitor data from localStorage
  */
 function clearSavedVisitorData() {
@@ -1588,6 +1697,11 @@ function clearSavedVisitorData() {
 // Initialize Tawk.to API when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
     initTawkToAPI();
+    
+    // Also try to add tooltip after a delay in case widget loads later
+    setTimeout(function() {
+        addTawkTooltip();
+    }, 2000);
 });
 
 // Make functions available globally for use in other scripts
