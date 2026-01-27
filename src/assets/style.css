@@ -3164,53 +3164,104 @@ textarea:focus {
 }
 
 /* Service Area Badges */
-.service-area-badges {
+/* Recent Projects Section */
+.recent-projects-section {
     margin-top: var(--spacing-xl);
     padding-top: var(--spacing-lg);
     border-top: 2px solid var(--marble);
     text-align: center;
 }
 
-.service-area-label {
-    margin: 0 0 1rem 0;
-    font-weight: 600;
-    color: var(--slate);
-    font-size: 1rem;
+.recent-projects-title {
+    font-family: 'Merriweather', serif;
+    color: var(--accent-color);
+    font-size: var(--font-size-h2);
+    margin-bottom: var(--spacing-lg);
 }
 
-.area-badges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    justify-content: center;
-    align-items: center;
+.recent-projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-lg);
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--container-padding);
 }
 
-.area-badge {
-    display: inline-block;
-    padding: 0.5rem 1rem;
-    background-color: var(--copper);
+.recent-project-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: var(--white);
+}
+
+.recent-project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.recent-project-image {
+    position: relative;
+    width: 100%;
+    padding-top: 75%; /* 4:3 aspect ratio */
+    overflow: hidden;
+    background-color: var(--marble);
+}
+
+.recent-project-image img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.recent-project-card:hover .recent-project-image img {
+    transform: scale(1.05);
+}
+
+.recent-project-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    padding: 1.5rem 1rem 1rem;
     color: var(--white);
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    white-space: nowrap;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-align: left;
 }
 
-.area-badge:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+.recent-project-overlay h3 {
+    font-family: 'Merriweather', serif;
+    font-size: 1.1rem;
+    margin: 0 0 0.25rem 0;
+    color: var(--white);
+}
+
+.recent-project-overlay p {
+    font-size: 0.9rem;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.9);
 }
 
 @media (max-width: 768px) {
-    .area-badges {
-        gap: 0.5rem;
+    .recent-projects-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
     }
-
-    .area-badge {
-        font-size: 0.8rem;
-        padding: 0.4rem 0.8rem;
+    
+    .recent-project-overlay {
+        padding: 1rem 0.75rem 0.75rem;
+    }
+    
+    .recent-project-overlay h3 {
+        font-size: 1rem;
     }
 }
 

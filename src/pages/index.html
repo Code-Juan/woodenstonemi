@@ -429,7 +429,7 @@
                 <div class="trust-badge">
                     <div class="badge-icon">🏆</div>
                     <div class="badge-content">
-                        <h3>50+ Projects Completed</h3>
+                        <h3>30+ Projects Completed</h3>
                         <p>Proven track record of successful projects</p>
                     </div>
                 </div>
@@ -449,17 +449,11 @@
                 </div>
             </div>
             
-            <!-- Service Area Badges -->
-            <div class="service-area-badges">
-                <p class="service-area-label">Serving:</p>
-                <div class="area-badges">
-                    <span class="area-badge">Detroit, MI</span>
-                    <span class="area-badge">Ann Arbor, MI</span>
-                    <span class="area-badge">Grand Rapids, MI</span>
-                    <span class="area-badge">Cleveland, OH</span>
-                    <span class="area-badge">Columbus, OH</span>
-                    <span class="area-badge">Indianapolis, IN</span>
-                    <span class="area-badge">And More</span>
+            <!-- Recent Projects -->
+            <div class="recent-projects-section">
+                <h2 class="recent-projects-title">Recent Projects</h2>
+                <div class="recent-projects-grid" id="recent-projects-grid">
+                    <!-- Projects will be dynamically loaded here -->
                 </div>
             </div>
         </div>
@@ -526,6 +520,42 @@
     <footer>
         <p>&copy; <span id="year"></span> The Wooden Stone LLC. All rights reserved.</p>
     </footer>
+
+    <!-- Load Projects Data and Recent Projects -->
+    <script src="/assets/projects-data.js"></script>
+    <script>
+        // Load recent projects on homepage
+        document.addEventListener('DOMContentLoaded', function() {
+            const recentProjectsGrid = document.getElementById('recent-projects-grid');
+            if (recentProjectsGrid && typeof projectsData !== 'undefined') {
+                // Get first 3 projects (most recent)
+                const recentProjects = projectsData.slice(0, 3);
+                
+                recentProjects.forEach(project => {
+                    // Get first image that's not a placeholder
+                    const projectImage = project.images.find(img => img && img !== 'placeholder' && !img.includes('placeholder'));
+                    const imageSrc = projectImage || 'images/placeholder-project.jpg';
+                    
+                    const projectCard = document.createElement('a');
+                    projectCard.href = `/project-portfolio/#project-${project.id}`;
+                    projectCard.className = 'recent-project-card';
+                    projectCard.setAttribute('data-project-id', project.id);
+                    
+                    projectCard.innerHTML = `
+                        <div class="recent-project-image">
+                            <img src="${imageSrc}" alt="${project.name}" loading="lazy">
+                            <div class="recent-project-overlay">
+                                <h3>${project.name}</h3>
+                                <p>${project.location}</p>
+                            </div>
+                        </div>
+                    `;
+                    
+                    recentProjectsGrid.appendChild(projectCard);
+                });
+            }
+        });
+    </script>
 
     <!--Start of Tawk.to Script-->
     <script type="text/javascript">
