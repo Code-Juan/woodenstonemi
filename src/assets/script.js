@@ -1591,15 +1591,25 @@ function addTawkTooltip() {
     function updateTooltipPosition() {
         if (!tooltipElement) return;
 
-        // Try multiple selectors
-        const tawkContainer = document.querySelector('#tawkchat-container') ||
-                              document.querySelector('[id*="tawk"]') ||
-                              document.querySelector('[class*="tawk"]') ||
-                              document.querySelector('iframe[src*="tawk.to"]')?.parentElement;
+        // Try to find the actual tawk.to container (exclude our tooltip)
+        const allTawkElements = document.querySelectorAll('[id*="tawk"], [class*="tawk"]');
+        let tawkContainer = document.querySelector('#tawkchat-container');
         
+        // If not found, look for iframe or other tawk elements, but exclude our tooltip
         if (!tawkContainer) {
+            for (let el of allTawkElements) {
+                if (el !== tooltipElement && !el.classList.contains('tawk-tooltip-custom')) {
+                    // Check if it's an iframe or contains an iframe
+                    if (el.tagName === 'IFRAME' || el.querySelector('iframe[src*="tawk.to"]')) {
+                        tawkContainer = el.tagName === 'IFRAME' ? el.parentElement : el;
+                        break;
+                    }
+                }
+            }
+        }
+        
+        if (!tawkContainer || tawkContainer === tooltipElement) {
             // Fallback: position at typical chat bubble location (bottom-right)
-            // Most chat widgets are positioned at bottom-right corner
             tooltipElement.style.position = 'fixed';
             tooltipElement.style.right = '20px';
             tooltipElement.style.bottom = '90px';
@@ -1607,30 +1617,27 @@ function addTawkTooltip() {
             tooltipElement.style.display = 'block';
             tooltipElement.style.visibility = 'visible';
             tooltipElement.style.opacity = '1';
-            console.log('Tooltip positioned at fixed fallback location (bottom-right)');
             return;
         }
 
         const rect = tawkContainer.getBoundingClientRect();
-        console.log('Updating tooltip position. Container rect:', rect);
         
-        // Position tooltip above the container
-        // Chat bubble is typically 60-70px tall, so position tooltip 12px above it
+        // Position tooltip above the container, centered horizontally
+        // Chat bubble is typically 60-70px tall
         const bubbleHeight = 70;
         const offset = 12;
         
+        // Calculate position: tooltip should be above the bubble
+        const tooltipBottom = window.innerHeight - rect.top + bubbleHeight + offset;
+        const tooltipRight = window.innerWidth - rect.right - (rect.width / 2);
+        
         tooltipElement.style.position = 'fixed';
-        tooltipElement.style.right = (window.innerWidth - rect.right) + 'px';
-        tooltipElement.style.bottom = (window.innerHeight - rect.top + bubbleHeight + offset) + 'px';
-        tooltipElement.style.transform = 'translateX(0)';
+        tooltipElement.style.right = tooltipRight + 'px';
+        tooltipElement.style.bottom = tooltipBottom + 'px';
+        tooltipElement.style.transform = 'translateX(50%)';
         tooltipElement.style.display = 'block';
         tooltipElement.style.visibility = 'visible';
         tooltipElement.style.opacity = '1';
-        
-        console.log('Tooltip positioned relative to container:', {
-            right: tooltipElement.style.right,
-            bottom: tooltipElement.style.bottom
-        });
     }
 
     // Function to create the tooltip
@@ -1642,12 +1649,16 @@ function addTawkTooltip() {
         }
 
         // Try to find container, but don't require it
-        const tawkContainer = document.querySelector('#tawkchat-container') ||
-                              document.querySelector('[id*="tawk"]') ||
-                              document.querySelector('[class*="tawk"]') ||
-                              document.querySelector('iframe[src*="tawk.to"]')?.parentElement;
+        let tawkContainer = document.querySelector('#tawkchat-container');
+        
+        if (!tawkContainer) {
+            const iframe = document.querySelector('iframe[src*="tawk.to"]');
+            if (iframe && iframe.parentElement) {
+                tawkContainer = iframe.parentElement;
+            }
+        }
 
-        if (tawkContainer) {
+        if (tawkContainer && tawkContainer !== tooltipElement) {
             const rect = tawkContainer.getBoundingClientRect();
             console.log('Tawk container found:', {
                 element: tawkContainer,
@@ -1668,7 +1679,7 @@ function addTawkTooltip() {
         tooltipElement.setAttribute('data-tawk-tooltip', 'true');
         tooltipElement.id = 'tawk-custom-tooltip';
         
-        // Make sure it's visible for testing
+        // Set initial fixed position (will be updated if container found)
         tooltipElement.style.cssText = `
             position: fixed !important;
             z-index: 99999 !important;
@@ -1688,6 +1699,7 @@ function addTawkTooltip() {
             opacity: 1 !important;
             right: 20px !important;
             bottom: 90px !important;
+            transform: none !important;
         `;
         
         // Add arrow
@@ -1743,11 +1755,16 @@ function addTawkTooltip() {
 
     // Try to create tooltip
     function tryCreateTooltip(attempt = 0) {
-        // Try multiple selectors to find tawk.to widget
-        const tawkContainer = document.querySelector('#tawkchat-container') ||
-                              document.querySelector('[id*="tawk"]') ||
-                              document.querySelector('[class*="tawk"]') ||
-                              document.querySelector('iframe[src*="tawk.to"]')?.parentElement;
+        // Try to find the actual tawk.to container (not our tooltip)
+        let tawkContainer = document.querySelector('#tawkchat-container');
+        
+        if (!tawkContainer) {
+            // Look for iframe containing tawk.to
+            const iframe = document.querySelector('iframe[src*="tawk.to"]');
+            if (iframe && iframe.parentElement) {
+                tawkContainer = iframe.parentElement;
+            }
+        }
         
         if (!tawkContainer) {
             // If container not found after a few attempts, create tooltip anyway at fixed position
@@ -1760,6 +1777,19 @@ function addTawkTooltip() {
             }
             if (attempt < 10) {
                 setTimeout(() => tryCreateTooltip(attempt + 1), 500);
+            }
+            return;
+        }
+
+        // Make sure it's not our tooltip element
+        if (tawkContainer === tooltipElement || tawkContainer.classList.contains('tawk-tooltip-custom')) {
+            if (attempt < 10) {
+                setTimeout(() => tryCreateTooltip(attempt + 1), 500);
+            } else {
+                // Create anyway at fixed position
+                if (!tooltipElement) {
+                    createTooltip();
+                }
             }
             return;
         }
