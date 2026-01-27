@@ -1007,6 +1007,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     initImageModal();
+    
+    // Handle hash navigation to specific projects on portfolio page
+    initProjectHashNavigation();
 
     // Initialize contact form functionality
     initContactForm();
@@ -1099,6 +1102,64 @@ function trackEmailClick(email) {
         'event_label': email,
         'value': 1
     });
+}
+
+// Handle hash navigation to specific projects on portfolio page
+function initProjectHashNavigation() {
+    // Only run on portfolio page
+    const isPortfolioPage = window.location.pathname.includes('project-portfolio');
+    if (!isPortfolioPage) return;
+    
+    function scrollToProject() {
+        const hash = window.location.hash;
+        if (!hash || !hash.startsWith('#project-')) return;
+        
+        const projectId = hash.substring(1); // Remove the #
+        const projectElement = document.getElementById(projectId);
+        
+        if (projectElement) {
+            // Wait a bit for projects to render if they're still loading
+            setTimeout(() => {
+                const element = document.getElementById(projectId);
+                if (element) {
+                    // Scroll to element with offset for header
+                    const headerHeight = document.querySelector('header')?.offsetHeight || 80;
+                    const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+                    const offsetPosition = elementPosition - headerHeight - 20;
+                    
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Highlight the project briefly
+                    element.style.transition = 'box-shadow 0.3s ease';
+                    element.style.boxShadow = '0 0 20px rgba(184, 115, 51, 0.5)';
+                    setTimeout(() => {
+                        element.style.boxShadow = '';
+                    }, 2000);
+                }
+            }, 100);
+        }
+    }
+    
+    // Check hash on page load
+    if (window.location.hash) {
+        // Wait for projects to be rendered
+        const checkProjects = setInterval(() => {
+            const projectsContainer = document.getElementById('projects-container');
+            if (projectsContainer && projectsContainer.children.length > 0) {
+                clearInterval(checkProjects);
+                scrollToProject();
+            }
+        }, 100);
+        
+        // Stop checking after 5 seconds
+        setTimeout(() => clearInterval(checkProjects), 5000);
+    }
+    
+    // Listen for hash changes (when clicking links on the same page)
+    window.addEventListener('hashchange', scrollToProject);
 }
 
 // Initialize GA4 tracking

@@ -391,7 +391,7 @@ function generateProjectHTML(project) {
 
     return `
     <!-- Project ${project.id}: ${project.name} -->
-    <section class="project-spotlight">
+    <section class="project-spotlight" id="project-${project.id}">
         <div class="container">
             <div class="spotlight-box">
                 <h2>${project.name}</h2>
