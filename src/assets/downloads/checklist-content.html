@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,39 +14,47 @@
             padding: 40px 20px;
             color: #333;
         }
+
         .header {
             text-align: center;
             border-bottom: 3px solid #B87333;
             padding-bottom: 20px;
             margin-bottom: 30px;
         }
+
         .header h1 {
             color: #B87333;
             margin: 0;
             font-size: 28px;
         }
+
         .header p {
             color: #666;
             margin: 10px 0 0 0;
         }
+
         .section {
             margin-bottom: 30px;
         }
+
         .section h2 {
             color: #B87333;
             border-bottom: 2px solid #E5E3DF;
             padding-bottom: 10px;
             margin-top: 30px;
         }
+
         .checklist {
             list-style: none;
             padding: 0;
         }
+
         .checklist li {
             padding: 8px 0 8px 30px;
             position: relative;
             margin-bottom: 5px;
         }
+
         .checklist li:before {
             content: "☐";
             position: absolute;
@@ -53,23 +62,28 @@
             font-size: 18px;
             color: #B87333;
         }
+
         .sub-checklist {
             margin-left: 20px;
             margin-top: 10px;
         }
+
         .sub-checklist li {
             font-size: 0.9em;
             color: #555;
         }
+
         .tip {
             background-color: #E5E3DF;
             padding: 15px;
             border-left: 4px solid #B87333;
             margin: 15px 0;
         }
+
         .tip strong {
             color: #B87333;
         }
+
         .footer {
             margin-top: 40px;
             padding-top: 20px;
@@ -78,8 +92,85 @@
             font-size: 0.9em;
             color: #666;
         }
+
+        @media print {
+            @page {
+                size: letter;
+                margin: 0.75in;
+            }
+
+            * {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            body {
+                padding: 0;
+                max-width: 100%;
+                font-size: 11pt;
+                line-height: 1.5;
+            }
+
+            .header {
+                page-break-after: avoid;
+            }
+
+            .section {
+                page-break-inside: avoid;
+                page-break-after: auto;
+                margin-bottom: 30px;
+                orphans: 3;
+                widows: 3;
+            }
+
+            .material-selection-section {
+                page-break-before: always;
+            }
+
+            .section h2 {
+                page-break-after: avoid;
+                page-break-inside: avoid;
+                margin-top: 20px;
+            }
+
+            .checklist {
+                page-break-inside: avoid;
+            }
+
+            .checklist li {
+                page-break-inside: avoid;
+                margin-bottom: 6px;
+            }
+
+            .sub-checklist {
+                page-break-inside: avoid;
+                margin-top: 10px;
+            }
+
+            .sub-checklist li {
+                margin-bottom: 4px;
+            }
+
+            .tip {
+                page-break-inside: avoid;
+                page-break-after: avoid;
+                margin: 15px 0;
+            }
+
+            p {
+                orphans: 3;
+                widows: 3;
+                margin: 10px 0;
+            }
+
+            .footer {
+                page-break-inside: avoid;
+                margin-top: 30px;
+            }
+        }
     </style>
 </head>
+
 <body>
     <div class="header">
         <h1>Commercial Countertop Installation Planning Checklist</h1>
@@ -106,11 +197,12 @@
             <li>Confirm elevator or loading dock access if applicable</li>
         </ul>
         <div class="tip">
-            <strong>Tip:</strong> Field measurements should be scheduled immediately after casework installation to ensure optimal fit and minimize delays.
+            <strong>Tip:</strong> Field measurements should be scheduled immediately after casework installation to
+            ensure optimal fit and minimize delays.
         </div>
     </div>
 
-    <div class="section">
+    <div class="section material-selection-section">
         <h2>Material Selection</h2>
         <ul class="checklist">
             <li>Review material options (Granite, Quartz, Marble, Porcelain)</li>
@@ -134,7 +226,8 @@
             <li>Final: Quality inspection and walkthrough</li>
         </ul>
         <div class="tip">
-            <strong>Note:</strong> Actual timelines vary based on project size, material availability, and coordination with other trades. Always build in buffer time for unexpected delays.
+            <strong>Note:</strong> Actual timelines vary based on project size, material availability, and coordination
+            with other trades. Always build in buffer time for unexpected delays.
         </div>
     </div>
 
@@ -189,7 +282,9 @@
         <p>Phone: (586) 208-4628 | Email: atocco@woodenstonemi.com</p>
         <p>Website: www.woodenstonemi.com</p>
         <p>Serving Michigan, Ohio, and Indiana</p>
-        <p style="margin-top: 20px; font-size: 0.85em;">This checklist is provided as a general guide. Actual requirements may vary by project. Contact us for a detailed consultation.</p>
+        <p style="margin-top: 20px; font-size: 0.85em;">This checklist is provided as a general guide. Actual
+            requirements may vary by project. Contact us for a detailed consultation.</p>
     </div>
 </body>
+
 </html>

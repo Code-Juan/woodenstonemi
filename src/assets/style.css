@@ -398,6 +398,24 @@ nav a.current-page:hover {
     background-position: right 65%;
 }
 
+/* Resources Hero Section */
+.resources-hero {
+    background-image: url('../../images/free-resources-hero.jpg');
+    background-position: center;
+}
+
+@media (max-width: 1024px) {
+    .resources-hero {
+        background-image: url('../../images/free-resources-gallery.jpg');
+    }
+}
+
+@media (max-width: 768px) {
+    .resources-hero {
+        background-image: url('../../images/free-resources-thumb.jpg');
+    }
+}
+
 .page-hero::before {
     content: '';
     position: absolute;
@@ -3698,11 +3716,11 @@ textarea:focus {
         grid-template-columns: 1fr;
         gap: var(--spacing-lg);
     }
-    
+
     .resource-card {
         padding: var(--spacing-lg);
     }
-    
+
     .resource-modal .modal-content {
         padding: 1.5rem;
     }

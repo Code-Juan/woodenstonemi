@@ -13,17 +13,17 @@ const resources = {
     checklist: {
         name: 'Commercial Countertop Installation Planning Checklist',
         filename: 'commercial-countertop-installation-checklist.pdf',
-        downloadPath: path.join(__dirname, '..', '..', 'assets', 'downloads', 'checklist.pdf')
+        downloadPath: path.join(__dirname, '..', '..', 'src', 'assets', 'downloads', 'Commercial Countertop Installation Planning Checklist.pdf')
     },
     materials: {
         name: 'Countertop Material Selection Guide for Commercial Properties',
         filename: 'countertop-material-selection-guide.pdf',
-        downloadPath: path.join(__dirname, '..', '..', 'assets', 'downloads', 'materials.pdf')
+        downloadPath: path.join(__dirname, '..', '..', 'src', 'assets', 'downloads', 'Countertop Material Selection Guide for Commercial Properties.pdf')
     },
     brochure: {
         name: 'The Wooden Stone LLC Company Brochure',
         filename: 'wooden-stone-company-brochure.pdf',
-        downloadPath: path.join(__dirname, '..', '..', 'assets', 'downloads', 'brochure.pdf')
+        downloadPath: path.join(__dirname, '..', '..', 'src', 'assets', 'downloads', 'The Wooden Stone LLC - Company Brochure.pdf')
     }
 };
 

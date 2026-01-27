@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,26 +14,30 @@
             padding: 40px 20px;
             color: #333;
         }
+
         .cover {
             text-align: center;
             padding: 60px 20px;
             border: 3px solid #B87333;
             margin-bottom: 40px;
         }
+
         .cover h1 {
             color: #B87333;
             font-size: 36px;
             margin: 20px 0;
         }
+
         .cover .tagline {
             font-size: 18px;
             color: #666;
             margin: 10px 0;
         }
+
         .section {
             margin-bottom: 40px;
-            page-break-inside: avoid;
         }
+
         .section h2 {
             color: #B87333;
             border-bottom: 3px solid #B87333;
@@ -40,47 +45,56 @@
             margin-top: 30px;
             font-size: 24px;
         }
+
         .section h3 {
             color: #B87333;
             margin-top: 20px;
             font-size: 18px;
         }
+
         .two-column {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 30px;
             margin: 20px 0;
         }
+
         .highlight-box {
             background-color: #E5E3DF;
             padding: 20px;
             border-left: 4px solid #B87333;
             margin: 20px 0;
         }
+
         .services-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 20px;
             margin: 20px 0;
         }
+
         .service-item {
             padding: 15px;
             background-color: #f9f9f9;
             border-radius: 5px;
         }
+
         .service-item h4 {
             color: #B87333;
             margin-top: 0;
         }
+
         .contact-info {
             background-color: #f9f9f9;
             padding: 25px;
             border-radius: 5px;
             margin: 20px 0;
         }
+
         .contact-info h3 {
             margin-top: 0;
         }
+
         .stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -88,21 +102,25 @@
             margin: 30px 0;
             text-align: center;
         }
+
         .stat-item {
             padding: 20px;
             background-color: #E5E3DF;
             border-radius: 5px;
         }
+
         .stat-number {
             font-size: 32px;
             font-weight: bold;
             color: #B87333;
         }
+
         .stat-label {
             font-size: 14px;
             color: #666;
             margin-top: 5px;
         }
+
         .footer {
             margin-top: 40px;
             padding-top: 20px;
@@ -111,13 +129,179 @@
             font-size: 0.9em;
             color: #666;
         }
+
         @media print {
-            .two-column, .services-grid, .stats {
-                grid-template-columns: 1fr;
+            @page {
+                size: letter;
+                margin: 0.75in;
+            }
+
+            @page: first {
+                size: letter;
+                margin: 0.75in;
+            }
+
+            * {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            body {
+                padding: 0;
+                max-width: 100%;
+                font-size: 11pt;
+                line-height: 1.5;
+            }
+
+            .cover {
+                page-break-after: always;
+                border: 3px solid #B87333 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                width: calc(100% - 1.5in);
+                height: calc(100vh - 1.5in);
+                min-height: calc(11in - 1.5in);
+                max-width: none;
+                margin: 0 auto;
+                padding: 80px 40px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                box-sizing: border-box;
+            }
+
+            .cover h1 {
+                font-size: 25pt;
+                margin: 30px 0;
+            }
+
+            .cover .tagline {
+                font-size: 20pt;
+                margin: 15px 0;
+            }
+
+            .cover p {
+                font-size: 16pt;
+                margin: 10px 0;
+            }
+
+            .section {
+                page-break-inside: avoid;
+                page-break-after: auto;
+                margin-bottom: 30px;
+                orphans: 3;
+                widows: 3;
+            }
+
+            .section h2 {
+                page-break-after: avoid;
+                page-break-before: auto;
+                margin-top: 20px;
+                font-size: 18pt;
+                border-bottom: 3px solid #B87333;
+                padding-bottom: 8px;
+            }
+
+            .section h3 {
+                page-break-after: avoid;
+                font-size: 14pt;
+                margin-top: 15px;
+            }
+
+            .two-column {
+                display: block;
+                grid-template-columns: none;
+                gap: 0;
+            }
+
+            .two-column>div {
+                margin-bottom: 15px;
+            }
+
+            .services-grid {
+                display: block;
+                grid-template-columns: none;
+                gap: 0;
+            }
+
+            .service-item {
+                display: block;
+                page-break-inside: avoid;
+                margin-bottom: 15px;
+                padding: 12px;
+                background-color: #f9f9f9;
+            }
+
+            .stats {
+                display: flex !important;
+                flex-direction: row !important;
+                justify-content: space-around !important;
+                flex-wrap: nowrap !important;
+                gap: 15px !important;
+                page-break-inside: avoid;
+                margin: 20px 0;
+            }
+
+            .stat-item {
+                flex: 1 1 0 !important;
+                page-break-inside: avoid;
+                padding: 15px;
+                min-width: 0;
+                text-align: center;
+            }
+
+            .highlight-box {
+                page-break-inside: avoid;
+                margin: 15px 0;
+                padding: 15px;
+            }
+
+            .contact-info {
+                page-break-inside: avoid;
+                margin: 15px 0;
+            }
+
+            .contact-info .two-column {
+                display: block;
+            }
+
+            .contact-info .two-column>div {
+                margin-bottom: 15px;
+            }
+
+            ul,
+            ol {
+                page-break-inside: avoid;
+                margin: 10px 0;
+                padding-left: 25px;
+            }
+
+            li {
+                page-break-inside: avoid;
+                margin-bottom: 6px;
+                orphans: 2;
+                widows: 2;
+            }
+
+            ol li {
+                margin-bottom: 8px;
+            }
+
+            p {
+                orphans: 3;
+                widows: 3;
+                margin: 10px 0;
+            }
+
+            .footer {
+                page-break-inside: avoid;
+                margin-top: 30px;
             }
         }
     </style>
 </head>
+
 <body>
     <div class="cover">
         <h1>THE WOODEN STONE LLC</h1>
@@ -127,12 +311,19 @@
 
     <div class="section">
         <h2>About Us</h2>
-        <p>The Wooden Stone LLC is a top-rated commercial countertop fabricator and contractor specializing in custom stone fabrication, commercial countertop installation, casework, interior doors, sink fixtures, and bath accessories for commercial and multi-family projects.</p>
-        
+        <p>The Wooden Stone LLC is a top-rated commercial countertop fabricator and contractor specializing in custom
+            stone fabrication, commercial countertop installation, casework, interior doors, sink fixtures, and bath
+            accessories for commercial and multi-family projects.</p>
+
         <div class="highlight-box">
             <h3>Our Mission</h3>
-            <p>At The Wooden Stone, our mission is to support general contractors by delivering reliable, high-quality countertop and cabinetry solutions with industry-leading efficiency and professionalism. We specialize in commercial projects, streamlining the fabrication and installation process to help our partners stay on schedule and ahead of deadlines.</p>
-            <p>We are driven by a commitment to efficiency, teamwork, innovation, and safety—both on the jobsite and in our shop. Our goal is to build trust through consistent performance, while investing in the people who make it possible.</p>
+            <p>At The Wooden Stone, our mission is to support general contractors by delivering reliable, high-quality
+                countertop and cabinetry solutions with industry-leading efficiency and professionalism. We specialize
+                in commercial projects, streamlining the fabrication and installation process to help our partners stay
+                on schedule and ahead of deadlines.</p>
+            <p>We are driven by a commitment to efficiency, teamwork, innovation, and safety—both on the jobsite and in
+                our shop. Our goal is to build trust through consistent performance, while investing in the people who
+                make it possible.</p>
         </div>
 
         <div class="stats">
@@ -141,7 +332,7 @@
                 <div class="stat-label">Projects Completed</div>
             </div>
             <div class="stat-item">
-                <div class="stat-number">15+</div>
+                <div class="stat-number">10+</div>
                 <div class="stat-label">Years Experience</div>
             </div>
             <div class="stat-item">
@@ -156,19 +347,23 @@
         <div class="services-grid">
             <div class="service-item">
                 <h4>Custom Stone Fabrication</h4>
-                <p>Precision cutting and shaping of natural stone for your specific project requirements using advanced laser templating technology.</p>
+                <p>Precision cutting and shaping of natural stone for your specific project requirements using advanced
+                    laser templating technology.</p>
             </div>
             <div class="service-item">
                 <h4>Countertop Installation</h4>
-                <p>Professional installation services with attention to detail and quality craftsmanship for commercial and multi-family projects.</p>
+                <p>Professional installation services with attention to detail and quality craftsmanship for commercial
+                    and multi-family projects.</p>
             </div>
             <div class="service-item">
                 <h4>Casework & Hardware</h4>
-                <p>Supply and installation of premium cabinetry and hardware components, coordinated with project timelines.</p>
+                <p>Supply and installation of premium cabinetry and hardware components, coordinated with project
+                    timelines.</p>
             </div>
             <div class="service-item">
                 <h4>Finish Trim Carpentry</h4>
-                <p>Comprehensive finish trim carpentry installation including base trim, door casings, and bathroom accessories.</p>
+                <p>Comprehensive finish trim carpentry installation including base trim, door casings, and bathroom
+                    accessories.</p>
             </div>
         </div>
     </div>
@@ -177,12 +372,18 @@
         <h2>Our Full Package Service</h2>
         <p>We offer a complete turnkey solution for commercial countertop projects:</p>
         <ol>
-            <li><strong>Supply of Casework & Hardware</strong> - Coordinate and manage bulk deliveries of premium cabinetry and hardware components</li>
-            <li><strong>Casework & Hardware Installation</strong> - Strategic installation mobilization in accordance with construction schedules</li>
-            <li><strong>Countertop Field Measurements</strong> - Precise field measurements utilizing advanced laser templating technology</li>
-            <li><strong>Countertop Production</strong> - Efficient fabrication processes immediately upon completion of field measurements</li>
-            <li><strong>Finish Trim Carpentry Installation</strong> - Comprehensive finish trim installation during countertop production</li>
-            <li><strong>Countertop Installation</strong> - Complete installation of custom-fabricated countertops with superior finish quality</li>
+            <li><strong>Supply of Casework & Hardware</strong> - Coordinate and manage bulk deliveries of premium
+                cabinetry and hardware components</li>
+            <li><strong>Casework & Hardware Installation</strong> - Strategic installation mobilization in accordance
+                with construction schedules</li>
+            <li><strong>Countertop Field Measurements</strong> - Precise field measurements utilizing advanced laser
+                templating technology</li>
+            <li><strong>Countertop Production</strong> - Efficient fabrication processes immediately upon completion of
+                field measurements</li>
+            <li><strong>Finish Trim Carpentry Installation</strong> - Comprehensive finish trim installation during
+                countertop production</li>
+            <li><strong>Countertop Installation</strong> - Complete installation of custom-fabricated countertops with
+                superior finish quality</li>
         </ol>
     </div>
 
@@ -217,19 +418,23 @@
         <div class="two-column">
             <div>
                 <h3>1. Estimating</h3>
-                <p>Develop comprehensive project proposals utilizing detailed architectural plans and specifications to ensure precise alignment with project objectives and budgetary requirements.</p>
+                <p>Develop comprehensive project proposals utilizing detailed architectural plans and specifications to
+                    ensure precise alignment with project objectives and budgetary requirements.</p>
             </div>
             <div>
                 <h3>2. Pre-Construction</h3>
-                <p>Collaborate with project teams during pre-construction phases to optimize design, material selection, and installation sequencing.</p>
+                <p>Collaborate with project teams during pre-construction phases to optimize design, material selection,
+                    and installation sequencing.</p>
             </div>
             <div>
                 <h3>3. On-Time Installations</h3>
-                <p>Execute installations according to established project timelines, ensuring minimal disruption to ongoing construction activities.</p>
+                <p>Execute installations according to established project timelines, ensuring minimal disruption to
+                    ongoing construction activities.</p>
             </div>
             <div>
                 <h3>4. Quality & Integrity</h3>
-                <p>Maintain rigorous quality control standards throughout fabrication and installation processes, with comprehensive final inspections.</p>
+                <p>Maintain rigorous quality control standards throughout fabrication and installation processes, with
+                    comprehensive final inspections.</p>
             </div>
         </div>
     </div>
@@ -240,7 +445,6 @@
             <li><strong>Multi-Family Properties</strong> - Apartment complexes, condominiums, townhomes</li>
             <li><strong>Assisted Living Facilities</strong> - Senior living communities and care facilities</li>
             <li><strong>Commercial Buildings</strong> - Office buildings, retail spaces, restaurants</li>
-            <li><strong>Hotels & Hospitality</strong> - Hotel renovations and new construction</li>
             <li><strong>New Construction</strong> - Ground-up commercial projects</li>
             <li><strong>Renovations</strong> - Remodeling and renovation projects</li>
         </ul>
@@ -266,7 +470,8 @@
         </div>
         <div class="highlight-box">
             <h3>Full Project Management</h3>
-            <p>Complete project oversight from concept to completion, ensuring timelines and quality standards are met.</p>
+            <p>Complete project oversight from concept to completion, ensuring timelines and quality standards are met.
+            </p>
         </div>
     </div>
 
@@ -277,13 +482,14 @@
                 <div>
                     <h3>Location</h3>
                     <p>44720 Trinity Dr<br>
-                    Clinton Township, MI 48038</p>
+                        Clinton Township, MI 48038</p>
                 </div>
                 <div>
                     <h3>Contact Information</h3>
                     <p><strong>Phone:</strong> (586) 208-4628<br>
-                    <strong>Email:</strong> atocco@woodenstonemi.com<br>
-                    <strong>Website:</strong> www.woodenstonemi.com</p>
+                        <strong>Email:</strong> atocco@woodenstonemi.com<br>
+                        <strong>Website:</strong> www.woodenstonemi.com
+                    </p>
                 </div>
             </div>
             <div style="margin-top: 20px;">
@@ -292,7 +498,8 @@
             </div>
             <div style="margin-top: 20px;">
                 <h3>Service Areas</h3>
-                <p><strong>Michigan:</strong> Detroit, Ann Arbor, Grand Rapids, Lansing, Flint, Kalamazoo, and surrounding areas</p>
+                <p><strong>Michigan:</strong> Detroit, Ann Arbor, Grand Rapids, Lansing, Flint, Kalamazoo, and
+                    surrounding areas</p>
                 <p><strong>Ohio:</strong> Cleveland, Columbus, and surrounding areas</p>
                 <p><strong>Indiana:</strong> Indianapolis and surrounding areas</p>
             </div>
@@ -309,4 +516,5 @@
         <p style="margin-top: 20px; font-size: 0.85em;">© 2026 The Wooden Stone LLC. All rights reserved.</p>
     </div>
 </body>
+
 </html>
