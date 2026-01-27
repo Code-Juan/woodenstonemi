@@ -168,7 +168,7 @@ router.get('/download-file/:resourceType', async (req, res) => {
 });
 
 // Email template function
-function getEmailTemplate(resourceName, downloadUrl, recipientName) {
+function getEmailTemplate(resourceName, downloadUrl, recipientName, protocol, host) {
     return {
         html: `
             <!DOCTYPE html>
@@ -208,7 +208,7 @@ function getEmailTemplate(resourceName, downloadUrl, recipientName) {
                         <p>The Wooden Stone LLC<br>
                         44720 Trinity Dr, Clinton Township, MI 48038<br>
                         Serving Michigan, Ohio, and Indiana</p>
-                        <p><a href="${protocol}://${host}/resources">Unsubscribe</a></p>
+                        <p><a href="${protocol || 'https'}://${host || 'woodenstonemi.com'}/resources">Unsubscribe</a></p>
                     </div>
                 </div>
             </body>
