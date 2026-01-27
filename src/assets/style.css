@@ -1264,6 +1264,40 @@ nav a.current-page:hover {
     font-size: var(--font-size-body);
 }
 
+.contact-card a[href^="tel:"] {
+    display: inline-block;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.contact-card a[href^="tel:"]:hover {
+    color: var(--secondary-color);
+    text-decoration: underline;
+}
+
+/* Mobile click-to-call enhancement */
+@media (max-width: 768px) {
+    .contact-card a[href^="tel:"] {
+        font-size: 1.3rem;
+        padding: 0.5rem 1rem;
+        background-color: var(--primary-color);
+        color: white;
+        border-radius: 8px;
+        text-align: center;
+        display: block;
+        margin-top: 0.5rem;
+    }
+    
+    .contact-card a[href^="tel:"]:hover {
+        background-color: var(--secondary-color);
+        color: white;
+        text-decoration: none;
+    }
+}
+
 /* Contact Form Section */
 .contact-form-section {
     padding: var(--spacing-xl) 0;
