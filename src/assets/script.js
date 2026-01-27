@@ -1240,6 +1240,113 @@ function closeExitIntentPopup() {
     }
 }
 
+// Tawk.to Chat Widget Customization
+function customizeTawkChat() {
+    // Wait for Tawk.to to load
+    if (typeof Tawk_API === 'undefined') {
+        setTimeout(customizeTawkChat, 100);
+        return;
+    }
+
+    // Customize chat bubble after Tawk loads
+    Tawk_API.onLoad = function() {
+        // Hide the "We Are Here!" label
+        Tawk_API.setAttributes({
+            hideDefaultLauncher: false, // Set to true to completely hide default bubble
+            customLauncherSelector: null // Use custom selector if you want custom trigger
+        }, function(error) {
+            // Handle error if needed
+        });
+
+        // Hide "Powered by Tawk.to" footer via iframe manipulation
+        setTimeout(function() {
+            const tawkIframe = document.querySelector('#tawkchat-container iframe');
+            if (tawkIframe && tawkIframe.contentWindow) {
+                try {
+                    // Try to access iframe content (may be blocked by CORS)
+                    const iframeDoc = tawkIframe.contentDocument || tawkIframe.contentWindow.document;
+                    if (iframeDoc) {
+                        // Hide powered by footer
+                        const poweredElements = iframeDoc.querySelectorAll('[class*="powered"], [id*="powered"], [class*="footer"]');
+                        poweredElements.forEach(function(el) {
+                            if (el.textContent && el.textContent.toLowerCase().includes('tawk')) {
+                                el.style.display = 'none';
+                                el.style.visibility = 'hidden';
+                                el.style.height = '0';
+                                el.style.overflow = 'hidden';
+                            }
+                        });
+                    }
+                } catch (e) {
+                    // CORS may prevent access - use CSS instead (already added)
+                    console.log('Tawk.to iframe access restricted, using CSS fallback');
+                }
+            }
+        }, 2000); // Wait for iframe to fully load
+
+        // Add custom styling via JavaScript (if CSS doesn't work due to iframe)
+        const style = document.createElement('style');
+        style.textContent = `
+            /* Additional Tawk.to customizations */
+            #tawkchat-container .tawk-min-container {
+                background-color: var(--copper) !important;
+            }
+        `;
+        document.head.appendChild(style);
+    };
+
+    // Customize chat widget behavior
+    Tawk_API.onChatStarted = function() {
+        // Track chat start in GA4
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'chat_started', {
+                'event_category': 'engagement',
+                'event_label': 'tawk_to_chat'
+            });
+        }
+    };
+
+    Tawk_API.onChatEnded = function() {
+        // Track chat end in GA4
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'chat_ended', {
+                'event_category': 'engagement',
+                'event_label': 'tawk_to_chat'
+            });
+        }
+    };
+
+    // Hide "Powered by Tawk.to" using Tawk.to API if available
+    Tawk_API.onChatMaximized = function() {
+        setTimeout(function() {
+            const tawkIframe = document.querySelector('#tawkchat-container iframe');
+            if (tawkIframe) {
+                try {
+                    const iframeDoc = tawkIframe.contentDocument || tawkIframe.contentWindow.document;
+                    if (iframeDoc) {
+                        const poweredBy = iframeDoc.querySelectorAll('*');
+                        poweredBy.forEach(function(el) {
+                            if (el.textContent && el.textContent.toLowerCase().includes('powered by tawk')) {
+                                el.style.display = 'none';
+                                el.style.visibility = 'hidden';
+                                el.style.height = '0';
+                                el.style.overflow = 'hidden';
+                            }
+                        });
+                    }
+                } catch (e) {
+                    // CORS restriction - CSS will handle it
+                }
+            }
+        }, 500);
+    };
+}
+
+// Initialize Tawk.to customization when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+    customizeTawkChat();
+});
+
 // Contact Form Email Functionality - DISABLED (Using Postmark API instead)
 function initContactForm() {
     // This function is disabled because we're using the Postmark API
