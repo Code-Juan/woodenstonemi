@@ -742,6 +742,62 @@ nav a.current-page:hover {
     }
 }
 
+/* Tawk.to Chat Widget Customization */
+/* Custom tooltip text floating above chat bubble */
+#tawkchat-container .tawk-min-container::before {
+    content: "Get Instant Answers!" !important;
+    position: absolute !important;
+    right: 0 !important;
+    bottom: 100% !important;
+    margin-bottom: 12px !important;
+    background-color: var(--slate) !important;
+    color: var(--white) !important;
+    padding: 10px 16px !important;
+    border-radius: 8px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    white-space: nowrap !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
+    z-index: 10000 !important;
+    pointer-events: none !important;
+    opacity: 1 !important;
+    transform: translateX(50%) !important;
+    animation: floatUp 3s ease-in-out infinite !important;
+}
+
+/* Tooltip arrow pointing down to chat bubble */
+#tawkchat-container .tawk-min-container::after {
+    content: "" !important;
+    position: absolute !important;
+    right: 0 !important;
+    bottom: 100% !important;
+    margin-bottom: 4px !important;
+    border: 8px solid transparent !important;
+    border-top-color: var(--slate) !important;
+    z-index: 10001 !important;
+    pointer-events: none !important;
+    opacity: 1 !important;
+    transform: translateX(50%) !important;
+}
+
+/* Floating animation for the text */
+@keyframes floatUp {
+    0%, 100% {
+        transform: translateX(50%) translateY(0);
+    }
+    50% {
+        transform: translateX(50%) translateY(-5px);
+    }
+}
+
+/* Hide tooltip on mobile devices */
+@media (max-width: 768px) {
+    #tawkchat-container .tawk-min-container::before,
+    #tawkchat-container .tawk-min-container::after {
+        display: none !important;
+    }
+}
+
 /* Services Section */
 .services {
     display: flex;

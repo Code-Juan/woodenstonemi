@@ -562,6 +562,19 @@
                             });
                         }
                         
+                        // Set visitor attributes in Tawk.to for future chat sessions
+                        if (typeof window.TawkToAPI !== 'undefined' && window.TawkToAPI.setVisitorFromForm) {
+                            const formDataObj = {
+                                name: formData.get('name') || '',
+                                email: formData.get('email') || '',
+                                phone: formData.get('phone') || '',
+                                company: formData.get('company') || '',
+                                projectType: projectType,
+                                interestedScopes: interestedScopes
+                            };
+                            window.TawkToAPI.setVisitorFromForm(formDataObj);
+                        }
+                        
                         form.reset();
                         // Clear file list after successful submission
                         currentFiles = [];
