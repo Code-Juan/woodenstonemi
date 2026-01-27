@@ -1228,11 +1228,13 @@ nav a.current-page:hover {
 
 .contact-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: var(--grid-gap);
     padding: 0 var(--container-padding);
-    max-width: 900px;
-    margin: 0 auto;
+}
+
+.contact-card-full {
+    grid-column: 1 / -1;
 }
 
 .contact-card {
@@ -1738,6 +1740,10 @@ body.loading {
     .testimonials-grid,
     .contact-grid {
         grid-template-columns: 1fr;
+    }
+    
+    .contact-card-full {
+        grid-column: 1;
     }
 
     /* Mobile CTA Section */
