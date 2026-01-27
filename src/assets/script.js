@@ -1325,8 +1325,11 @@ function initTawkToAPI() {
             setTawkVisitorAttributes(savedVisitorData);
         }
         
-        // Add floating tooltip text above chat bubble
-        addTawkTooltip();
+        // Wait a bit for the widget to render, then add tooltip
+        setTimeout(() => {
+            console.log('Attempting to add tooltip after widget load');
+            addTawkTooltip();
+        }, 1000);
     };
 
     // Track when chat starts
@@ -1588,13 +1591,23 @@ function addTawkTooltip() {
     function updateTooltipPosition() {
         if (!tooltipElement) return;
 
-        const tawkContainer = document.querySelector('#tawkchat-container');
+        // Try multiple selectors
+        const tawkContainer = document.querySelector('#tawkchat-container') ||
+                              document.querySelector('[id*="tawk"]') ||
+                              document.querySelector('[class*="tawk"]') ||
+                              document.querySelector('iframe[src*="tawk.to"]')?.parentElement;
+        
         if (!tawkContainer) {
             // Fallback: position at typical chat bubble location (bottom-right)
+            // Most chat widgets are positioned at bottom-right corner
             tooltipElement.style.position = 'fixed';
             tooltipElement.style.right = '20px';
             tooltipElement.style.bottom = '90px';
             tooltipElement.style.transform = 'none';
+            tooltipElement.style.display = 'block';
+            tooltipElement.style.visibility = 'visible';
+            tooltipElement.style.opacity = '1';
+            console.log('Tooltip positioned at fixed fallback location (bottom-right)');
             return;
         }
 
@@ -1614,7 +1627,7 @@ function addTawkTooltip() {
         tooltipElement.style.visibility = 'visible';
         tooltipElement.style.opacity = '1';
         
-        console.log('Tooltip positioned at:', {
+        console.log('Tooltip positioned relative to container:', {
             right: tooltipElement.style.right,
             bottom: tooltipElement.style.bottom
         });
@@ -1628,20 +1641,25 @@ function addTawkTooltip() {
             existing.remove();
         }
 
-        const tawkContainer = document.querySelector('#tawkchat-container');
-        if (!tawkContainer) {
-            console.log('Tawk container not found');
-            return false;
-        }
+        // Try to find container, but don't require it
+        const tawkContainer = document.querySelector('#tawkchat-container') ||
+                              document.querySelector('[id*="tawk"]') ||
+                              document.querySelector('[class*="tawk"]') ||
+                              document.querySelector('iframe[src*="tawk.to"]')?.parentElement;
 
-        const rect = tawkContainer.getBoundingClientRect();
-        console.log('Tawk container found:', {
-            width: rect.width,
-            height: rect.height,
-            top: rect.top,
-            right: rect.right,
-            bottom: rect.bottom
-        });
+        if (tawkContainer) {
+            const rect = tawkContainer.getBoundingClientRect();
+            console.log('Tawk container found:', {
+                element: tawkContainer,
+                width: rect.width,
+                height: rect.height,
+                top: rect.top,
+                right: rect.right,
+                bottom: rect.bottom
+            });
+        } else {
+            console.log('Tawk container not found, will use fixed positioning');
+        }
 
         // Create tooltip
         tooltipElement = document.createElement('div');
@@ -1725,23 +1743,39 @@ function addTawkTooltip() {
 
     // Try to create tooltip
     function tryCreateTooltip(attempt = 0) {
-        const tawkContainer = document.querySelector('#tawkchat-container');
+        // Try multiple selectors to find tawk.to widget
+        const tawkContainer = document.querySelector('#tawkchat-container') ||
+                              document.querySelector('[id*="tawk"]') ||
+                              document.querySelector('[class*="tawk"]') ||
+                              document.querySelector('iframe[src*="tawk.to"]')?.parentElement;
         
         if (!tawkContainer) {
-            if (attempt < 20) { // Try for up to 10 seconds
+            // If container not found after a few attempts, create tooltip anyway at fixed position
+            if (attempt >= 3) {
+                console.log('Tawk container not found, creating tooltip at fixed position');
+                if (!tooltipElement) {
+                    createTooltip();
+                }
+                return;
+            }
+            if (attempt < 10) {
                 setTimeout(() => tryCreateTooltip(attempt + 1), 500);
-            } else {
-                console.log('Tawk container not found after multiple attempts');
             }
             return;
         }
 
         const rect = tawkContainer.getBoundingClientRect();
+        console.log('Found tawk container:', tawkContainer, 'Rect:', rect);
         
         // Wait for container to have dimensions
         if (rect.width === 0 && rect.height === 0) {
-            if (attempt < 20) {
+            if (attempt < 10) {
                 setTimeout(() => tryCreateTooltip(attempt + 1), 500);
+            } else {
+                // Create anyway at fixed position
+                if (!tooltipElement) {
+                    createTooltip();
+                }
             }
             return;
         }
@@ -1751,13 +1785,16 @@ function addTawkTooltip() {
         }
     }
 
-    // Start trying
+    // Start trying immediately - will create at fixed position if container not found
     tryCreateTooltip();
 
     // Watch for container appearance
     const observer = new MutationObserver(() => {
         if (!tooltipElement) {
             tryCreateTooltip();
+        } else {
+            // Update position if tooltip exists
+            updateTooltipPosition();
         }
     });
 
@@ -1766,10 +1803,20 @@ function addTawkTooltip() {
         subtree: true
     });
 
-    // Also try after delays
-    setTimeout(() => tryCreateTooltip(), 1000);
-    setTimeout(() => tryCreateTooltip(), 3000);
-    setTimeout(() => tryCreateTooltip(), 5000);
+    // Also try after delays - create tooltip even if container never found
+    setTimeout(() => {
+        if (!tooltipElement) {
+            console.log('Creating tooltip at fixed position (container not found)');
+            createTooltip();
+        }
+    }, 2000);
+    
+    setTimeout(() => {
+        if (!tooltipElement) {
+            console.log('Creating tooltip at fixed position (final attempt)');
+            createTooltip();
+        }
+    }, 5000);
 }
 
 /**
