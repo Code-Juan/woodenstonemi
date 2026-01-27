@@ -1618,7 +1618,7 @@ function addTawkTooltip() {
         if (!tawkContainer || tawkContainer === tooltipElement) {
             // Fallback: position at typical chat bubble location (bottom-right)
             tooltipElement.style.position = 'fixed';
-            tooltipElement.style.right = '20px';
+            tooltipElement.style.right = '35px';
             tooltipElement.style.bottom = '90px';
             tooltipElement.style.transform = 'none';
             tooltipElement.style.display = 'block';
@@ -1633,10 +1633,11 @@ function addTawkTooltip() {
         // Chat bubble is typically 60-70px tall
         const bubbleHeight = 70;
         const offset = 12;
+        const leftOffset = 15; // Move tooltip 15px to the left
         
         // Calculate position: tooltip should be above the bubble
         const tooltipBottom = window.innerHeight - rect.top + bubbleHeight + offset;
-        const tooltipRight = window.innerWidth - rect.right - (rect.width / 2);
+        const tooltipRight = window.innerWidth - rect.right - (rect.width / 2) + leftOffset;
         
         tooltipElement.style.position = 'fixed';
         tooltipElement.style.right = tooltipRight + 'px';
@@ -1714,7 +1715,7 @@ function addTawkTooltip() {
             display: block !important;
             visibility: visible !important;
             opacity: 1 !important;
-            right: 20px !important;
+            right: 35px !important;
             bottom: 90px !important;
             transform: none !important;
             min-width: max-content !important;
