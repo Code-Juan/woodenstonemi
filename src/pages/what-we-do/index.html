@@ -46,6 +46,19 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SSW2QFJYGW"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-SSW2QFJYGW', {
+            'page_title': document.title,
+            'page_location': window.location.href,
+            'page_path': window.location.pathname
+        });
+    </script>
+
     <!-- Inline script removed - using single source of truth in script.js -->
 
     <link rel="stylesheet" href="/assets/style.css">
@@ -201,10 +214,13 @@
 
     <!-- Call to Action -->
     <section class="cta-section">
-        <div class="container">
+        <div class="cta-container">
             <h2>Ready to Start Your Project?</h2>
             <p>Contact us today to discuss your stonework needs</p>
-            <a href="/contact-us/" class="btn">Get Started</a>
+            <div class="cta-buttons">
+                <a href="/contact-us/#request-quote" class="cta-button cta-primary">Get Free Quote</a>
+                <a href="/project-portfolio/" class="cta-button cta-secondary">View Our Work</a>
+            </div>
         </div>
     </section>
 
@@ -212,6 +228,20 @@
     <footer>
         <p>&copy; <span id="year"></span> The Wooden Stone LLC. All rights reserved.</p>
     </footer>
+
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/6978d91335a2d2198418d18e/1jg00vt28';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+    <!--End of Tawk.to Script-->
 </body>
 
 </html>

@@ -36,6 +36,19 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SSW2QFJYGW"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-SSW2QFJYGW', {
+            'page_title': document.title,
+            'page_location': window.location.href,
+            'page_path': window.location.pathname
+        });
+    </script>
+
     <!-- Inline script removed - using single source of truth in script.js -->
 
     <link rel="stylesheet" href="/assets/style.css">
@@ -105,6 +118,22 @@
             <div class="form-container">
                 <h2>Request a Quote</h2>
                 <p>Fill out the form below and we'll get back to you with a detailed quote for your project.</p>
+
+                <!-- Trust Indicators -->
+                <div class="trust-indicators">
+                    <div class="trust-item">
+                        <span class="trust-icon">✓</span>
+                        <span>We respond within 24 hours</span>
+                    </div>
+                    <div class="trust-item">
+                        <span class="trust-icon">🔒</span>
+                        <span>Secure & Confidential</span>
+                    </div>
+                    <div class="trust-item">
+                        <span class="trust-icon">✉️</span>
+                        <span>No spam, ever</span>
+                    </div>
+                </div>
 
                 <form class="contact-form" id="contactForm" action="#" method="POST" enctype="multipart/form-data">
                     <!-- Honeypot field for spam protection (hidden from users) -->
@@ -339,6 +368,20 @@
             // Store form start time in a data attribute for backend
             form.setAttribute('data-start-time', formStartTime.toString());
 
+            // Track form start in GA4
+            let formStartedTracked = false;
+            form.addEventListener('focusin', function() {
+                if (!formStartedTracked) {
+                    formStartedTracked = true;
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'form_start', {
+                            'event_category': 'form',
+                            'event_label': 'contact_form'
+                        });
+                    }
+                }
+            }, true);
+
             form.addEventListener('submit', async function (e) {
                 e.preventDefault();
 
@@ -505,6 +548,20 @@
 
                     if (result.success) {
                         showMessage(result.message, 'success');
+                        
+                        // Track successful form submission in GA4
+                        const projectType = formData.get('projectType') || '';
+                        const interestedScopes = formData.getAll('interestedScopes') || [];
+                        if (typeof gtag !== 'undefined') {
+                            gtag('event', 'form_submission', {
+                                'event_category': 'form',
+                                'event_label': 'contact_form',
+                                'project_type': projectType,
+                                'interested_scopes': interestedScopes.join(', '),
+                                'value': 1
+                            });
+                        }
+                        
                         form.reset();
                         // Clear file list after successful submission
                         currentFiles = [];
@@ -538,10 +595,35 @@
                             errors: result.errors
                         });
 
+                        // Track form submission error in GA4
+                        const projectType = formData.get('projectType') || '';
+                        const interestedScopes = formData.getAll('interestedScopes') || [];
+                        if (typeof gtag !== 'undefined') {
+                            gtag('event', 'form_submission_error', {
+                                'event_category': 'form',
+                                'event_label': 'contact_form',
+                                'project_type': projectType,
+                                'interested_scopes': interestedScopes.join(', '),
+                                'error_type': result.error || 'unknown',
+                                'value': 0
+                            });
+                        }
+
                         showMessage(errorMessage, 'error');
                     }
                 } catch (error) {
                     console.error('Form submission error:', error);
+                    
+                    // Track form submission error in GA4
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'form_submission_error', {
+                            'event_category': 'form',
+                            'event_label': 'contact_form',
+                            'error_type': 'network_error',
+                            'value': 0
+                        });
+                    }
+                    
                     showMessage('Failed to send message. Please try again later or contact us directly.', 'error');
                 } finally {
                     setLoading(false);
@@ -695,6 +777,20 @@
             document.getElementById('year').textContent = new Date().getFullYear();
         });
     </script>
+
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/6978d91335a2d2198418d18e/1jg00vt28';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+    <!--End of Tawk.to Script-->
 </body>
 
 </html>

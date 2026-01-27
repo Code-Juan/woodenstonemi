@@ -1010,9 +1010,235 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize contact form functionality
     initContactForm();
+
+    // Initialize GA4 tracking
+    initGA4Tracking();
+
+    // Initialize exit-intent popup
+    initExitIntentPopup();
 });
 
 
+
+// Google Analytics 4 Event Tracking Functions
+function trackGA4Event(eventName, eventParams = {}) {
+    if (typeof gtag !== 'undefined') {
+        gtag('event', eventName, eventParams);
+    }
+}
+
+// Track CTA button clicks
+function trackCTAClick(ctaText, location) {
+    trackGA4Event('cta_click', {
+        'cta_text': ctaText,
+        'cta_location': location,
+        'event_category': 'engagement',
+        'event_label': ctaText
+    });
+}
+
+// Track form interactions
+function trackFormStart() {
+    trackGA4Event('form_start', {
+        'event_category': 'form',
+        'event_label': 'contact_form'
+    });
+}
+
+function trackFormSubmission(success, projectType = '', interestedScopes = []) {
+    trackGA4Event(success ? 'form_submission' : 'form_submission_error', {
+        'event_category': 'form',
+        'event_label': 'contact_form',
+        'project_type': projectType,
+        'interested_scopes': interestedScopes.join(', '),
+        'value': success ? 1 : 0
+    });
+}
+
+// Track scroll depth
+function trackScrollDepth() {
+    let maxScroll = 0;
+    const thresholds = [25, 50, 75, 90, 100];
+    const tracked = new Set();
+
+    window.addEventListener('scroll', () => {
+        const scrollPercent = Math.round(
+            ((window.scrollY + window.innerHeight) / document.documentElement.scrollHeight) * 100
+        );
+
+        if (scrollPercent > maxScroll) {
+            maxScroll = scrollPercent;
+            
+            thresholds.forEach(threshold => {
+                if (scrollPercent >= threshold && !tracked.has(threshold)) {
+                    tracked.add(threshold);
+                    trackGA4Event('scroll_depth', {
+                        'event_category': 'engagement',
+                        'event_label': `${threshold}%`,
+                        'value': threshold
+                    });
+                }
+            });
+        }
+    }, { passive: true });
+}
+
+// Track phone number clicks
+function trackPhoneClick(phoneNumber) {
+    trackGA4Event('phone_click', {
+        'event_category': 'contact',
+        'event_label': phoneNumber,
+        'value': 1
+    });
+}
+
+// Track email link clicks
+function trackEmailClick(email) {
+    trackGA4Event('email_click', {
+        'event_category': 'contact',
+        'event_label': email,
+        'value': 1
+    });
+}
+
+// Initialize GA4 tracking
+function initGA4Tracking() {
+    // Track scroll depth
+    trackScrollDepth();
+
+    // Track CTA button clicks
+    document.querySelectorAll('.cta-button, .btn[href*="contact"], a[href*="contact-us"]').forEach(button => {
+        button.addEventListener('click', function() {
+            const ctaText = this.textContent.trim();
+            const location = this.closest('section')?.className || 'unknown';
+            trackCTAClick(ctaText, location);
+        });
+    });
+
+    // Track phone number clicks
+    document.querySelectorAll('a[href^="tel:"]').forEach(link => {
+        link.addEventListener('click', function() {
+            trackPhoneClick(this.getAttribute('href').replace('tel:', ''));
+        });
+    });
+
+    // Track email link clicks
+    document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
+        link.addEventListener('click', function() {
+            trackEmailClick(this.getAttribute('href').replace('mailto:', ''));
+        });
+    });
+}
+
+// Exit-Intent Popup Functionality
+function initExitIntentPopup() {
+    // Check if popup was already shown in this session
+    if (sessionStorage.getItem('exitIntentShown') === 'true') {
+        return;
+    }
+
+    let exitIntentTriggered = false;
+
+    // Desktop: Detect mouse leaving viewport
+    document.addEventListener('mouseout', function(e) {
+        if (!exitIntentTriggered && e.clientY < 10) {
+            exitIntentTriggered = true;
+            showExitIntentPopup();
+        }
+    });
+
+    // Mobile: Show after 30 seconds or 50% scroll
+    let mobileTimer = setTimeout(() => {
+        if (!exitIntentTriggered && window.innerWidth <= 768) {
+            exitIntentTriggered = true;
+            showExitIntentPopup();
+        }
+    }, 30000);
+
+    // Also trigger on scroll depth for mobile
+    let maxScroll = 0;
+    window.addEventListener('scroll', () => {
+        if (window.innerWidth <= 768 && !exitIntentTriggered) {
+            const scrollPercent = Math.round(
+                ((window.scrollY + window.innerHeight) / document.documentElement.scrollHeight) * 100
+            );
+            if (scrollPercent > maxScroll) {
+                maxScroll = scrollPercent;
+                if (scrollPercent >= 50) {
+                    exitIntentTriggered = true;
+                    clearTimeout(mobileTimer);
+                    showExitIntentPopup();
+                }
+            }
+        }
+    }, { passive: true });
+}
+
+function showExitIntentPopup() {
+    // Create popup HTML
+    const popup = document.createElement('div');
+    popup.id = 'exit-intent-popup';
+    popup.className = 'exit-intent-popup';
+    popup.innerHTML = `
+        <div class="exit-intent-popup-content">
+            <button class="exit-intent-close" aria-label="Close popup">&times;</button>
+            <h2>Wait! Before You Go...</h2>
+            <p>Get a free quote for your commercial countertop project</p>
+            <form id="exitIntentForm" class="exit-intent-form">
+                <input type="email" id="exitIntentEmail" placeholder="Enter your email" required>
+                <button type="submit" class="cta-button cta-primary">Get Free Quote</button>
+            </form>
+            <p class="exit-intent-privacy">We respect your privacy. No spam, ever.</p>
+        </div>
+        <div class="exit-intent-overlay"></div>
+    `;
+
+    document.body.appendChild(popup);
+    document.body.style.overflow = 'hidden';
+
+    // Close button
+    popup.querySelector('.exit-intent-close').addEventListener('click', closeExitIntentPopup);
+    popup.querySelector('.exit-intent-overlay').addEventListener('click', closeExitIntentPopup);
+
+    // Form submission
+    const form = popup.querySelector('#exitIntentForm');
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = document.getElementById('exitIntentEmail').value;
+        
+        // Track in GA4
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'exit_intent_form_submit', {
+                'event_category': 'lead_generation',
+                'event_label': 'exit_intent_popup',
+                'value': 1
+            });
+        }
+
+        // Redirect to contact form with email pre-filled
+        window.location.href = `/contact-us/#request-quote`;
+        sessionStorage.setItem('exitIntentShown', 'true');
+        closeExitIntentPopup();
+    });
+
+    // Track popup shown
+    if (typeof gtag !== 'undefined') {
+        gtag('event', 'exit_intent_popup_shown', {
+            'event_category': 'lead_generation',
+            'event_label': 'exit_intent_popup'
+        });
+    }
+
+    sessionStorage.setItem('exitIntentShown', 'true');
+}
+
+function closeExitIntentPopup() {
+    const popup = document.getElementById('exit-intent-popup');
+    if (popup) {
+        popup.remove();
+        document.body.style.overflow = '';
+    }
+}
 
 // Contact Form Email Functionality - DISABLED (Using Postmark API instead)
 function initContactForm() {
