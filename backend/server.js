@@ -8,6 +8,9 @@ require('dotenv').config({ path: path.join(__dirname, 'config', '.env') });
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Trust proxy for accurate rate limiting behind Render's proxy
+app.set('trust proxy', 1);
+
 // Security middleware
 app.use(helmet({
     contentSecurityPolicy: {
@@ -22,17 +25,65 @@ app.use(helmet({
     }
 }));
 
-// Rate limiting
+// IP blocking middleware (check blocked IPs before rate limiting)
+// Enable by setting ENABLE_IP_BLOCKING=true in .env (default: false)
+if (process.env.ENABLE_IP_BLOCKING === 'true') {
+    const ipBlocker = require('./middleware/ip-blocker');
+    app.use(ipBlocker.middleware);
+    console.log('IP blocking middleware enabled');
+}
+
+// Rate limiting - Stricter limits for spam prevention
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // limit each IP to 100 requests per windowMs
-    message: 'Too many requests from this IP, please try again later.'
+    max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 10, // Reduced from 100 to 10 per 15 minutes
+    message: 'Too many requests from this IP, please try again later.',
+    standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+    legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+    skip: (req) => {
+        // Skip rate limiting for health checks
+        return req.path === '/health' || req.path === '/api/contact/health';
+    }
 });
+
+// Apply stricter rate limiting to contact endpoint
+const contactLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 5, // Even stricter: 5 submissions per 15 minutes per IP
+    message: 'Too many form submissions from this IP. Please wait before submitting again.',
+    standardHeaders: true,
+    legacyHeaders: false
+});
+
 app.use('/api/', limiter);
+app.use('/api/contact', contactLimiter);
 
 // CORS configuration
+const allowedOrigins = [
+    'http://localhost:8000',
+    'http://localhost:3000',
+    'https://woodenstonemi.com',
+    'https://www.woodenstonemi.com',
+    'https://dev.woodenstonemi.com'
+];
+
+// Add custom origin from environment if provided
+if (process.env.FRONTEND_URL) {
+    allowedOrigins.push(process.env.FRONTEND_URL);
+}
+
 app.use(cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:8000',
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+
+        if (allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            console.log('CORS blocked origin:', origin);
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true
 }));
 
@@ -70,6 +121,11 @@ app.get('/scopes-materials', (req, res) => {
 
 app.get('/project-portfolio', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'src', 'pages', 'project-portfolio', 'index.html'));
+});
+
+// Email template preview route
+app.get('/email-preview', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'email-preview.html'));
 });
 
 // Error handling middleware

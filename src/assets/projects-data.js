@@ -11,18 +11,18 @@ const projectsData = [
         client: "Williams Distributing/Rohde Construction",
         dates: "Nov 2024 - March 2025",
         images: [
-            "images/Previous Jobs/1. Woodview Commons/(Kitchen 1) woodview-commons-ann-arbor-mi-building-photo.jpg",
-            "images/Previous Jobs/1. Woodview Commons/(Kitchen 2) woodview-commons-ann-arbor-mi-building-photo.jpg",
-            "images/Previous Jobs/1. Woodview Commons/(Kitchen 3) woodview-commons-ann-arbor-mi-building-photo.jpg",
-            "images/Previous Jobs/1. Woodview Commons/(Kitchen 4) woodview-commons-ann-arbor-mi-building-photo.jpg",
-            "images/Previous Jobs/1. Woodview Commons/(Bath 1) woodview-commons-ann-arbor-mi-building-photo.jpg",
-            "images/Previous Jobs/1. Woodview Commons/(Bath 2) woodview-commons-ann-arbor-mi-building-photo.jpg",
-            "images/Previous Jobs/1. Woodview Commons/f7a180_58b201d1f2524e57921183cc3bbd7fe2~mv2.avif",
-            "images/Previous Jobs/1. Woodview Commons/f7a180_c95f71bc1b22468dbebcea6aea1be972~mv2.avif",
-            "images/Previous Jobs/1. Woodview Commons/f7a180_da4f4164b25d435eadbfc9b81a97ca1d~mv2.avif",
-            "images/Previous Jobs/1. Woodview Commons/f7a180_0c74b0b201be419b8e7a823bf3dea9c8~mv2.avif",
-            "images/Previous Jobs/1. Woodview Commons/(Site Overview) woodview-commons-ann-arbor.jpg",
-            "images/Previous Jobs/1. Woodview Commons/(BLDG. Overview) woodview-commons-ann-arbor.jpg"
+            "images/Previous Jobs/1. Woodview Commons/(Kitchen 1) woodview-commons-ann-arbor-mi-building-photo-hero.jpg",
+            "images/Previous Jobs/1. Woodview Commons/(Kitchen 2) woodview-commons-ann-arbor-mi-building-photo-hero.jpg",
+            "images/Previous Jobs/1. Woodview Commons/(Kitchen 3) woodview-commons-ann-arbor-mi-building-photo-hero.jpg",
+            "images/Previous Jobs/1. Woodview Commons/(Kitchen 4) woodview-commons-ann-arbor-mi-building-photo-hero.jpg",
+            "images/Previous Jobs/1. Woodview Commons/(Bath 1) woodview-commons-ann-arbor-mi-building-photo-hero.jpg",
+            "images/Previous Jobs/1. Woodview Commons/(Bath 2) woodview-commons-ann-arbor-mi-building-photo-hero.jpg",
+            "images/Previous Jobs/1. Woodview Commons/f7a180_58b201d1f2524e57921183cc3bbd7fe2~mv2-hero.jpg",
+            "images/Previous Jobs/1. Woodview Commons/f7a180_c95f71bc1b22468dbebcea6aea1be972~mv2-hero.jpg",
+            "images/Previous Jobs/1. Woodview Commons/f7a180_da4f4164b25d435eadbfc9b81a97ca1d~mv2-hero.jpg",
+            "images/Previous Jobs/1. Woodview Commons/f7a180_0c74b0b201be419b8e7a823bf3dea9c8~mv2-hero.jpg",
+            "images/Previous Jobs/1. Woodview Commons/(Site Overview) woodview-commons-ann-arbor-hero.jpg",
+            "images/Previous Jobs/1. Woodview Commons/(BLDG. Overview) woodview-commons-ann-arbor-hero.jpg"
         ]
     },
     {
@@ -35,7 +35,18 @@ const projectsData = [
         materials: "Quartz Countertops, Sink Fixtures, Cabinetry",
         client: "Icon Development, Inc",
         dates: "Jan 2024 - Dec 2026",
-        images: ["placeholder", "placeholder", "placeholder"]
+        images: [
+            "images/Previous Jobs/23. Seaton Place Apartments/apartments-overview-hero.jpg",
+            "images/Previous Jobs/23. Seaton Place Apartments/kitchen-view1-hero.jpg",
+            "images/Previous Jobs/23. Seaton Place Apartments/kitchen-view2-hero.jpg",
+            "images/Previous Jobs/23. Seaton Place Apartments/bedroom-view1-hero.jpg",
+            "images/Previous Jobs/23. Seaton Place Apartments/bedroom-view2-hero.jpg",
+            "images/Previous Jobs/23. Seaton Place Apartments/bathroom-view1-hero.jpg",
+            "images/Previous Jobs/23. Seaton Place Apartments/bathroom-view2-hero.jpg",
+            "images/Previous Jobs/23. Seaton Place Apartments/kitchen-dining-view-hero.jpg",
+            "images/Previous Jobs/23. Seaton Place Apartments/dining-room-view1-hero.jpg",
+            "images/Previous Jobs/23. Seaton Place Apartments/living-room-view1-hero.jpg"
+        ]
     },
     {
         id: 3,
@@ -47,7 +58,12 @@ const projectsData = [
         materials: "Quartz Countertops, Sink Fixtures",
         client: "Sachse Construction",
         dates: "Jan 2026 - Nov 2026",
-        images: ["placeholder", "placeholder", "placeholder"]
+        images: [
+            "images/Previous Jobs/22. Plymouth Walk Apartments/optionA-rendering-hero.jpg",
+            "images/Previous Jobs/22. Plymouth Walk Apartments/optionB-rendering-hero.jpg",
+            "images/Previous Jobs/22. Plymouth Walk Apartments/unit-rendering-hero.jpg",
+            "images/Previous Jobs/22. Plymouth Walk Apartments/clubhouse-rendering-hero.jpg"
+        ]
     },
     {
         id: 4,
@@ -71,7 +87,11 @@ const projectsData = [
         materials: "Granite Countertops, Sink Fixtures",
         client: "Williams Distributing",
         dates: "March 2025 - July 2025",
-        images: ["placeholder", "placeholder", "placeholder"]
+        images: [
+            "images/Previous Jobs/8. Ironworks Apartments/exterior-overview1-hero.jpg",
+            "images/Previous Jobs/8. Ironworks Apartments/exterior-overview2-hero.jpg",
+            "images/Previous Jobs/8. Ironworks Apartments/exterior-overview3-hero.jpg"
+        ]
     },
     {
         id: 6,
@@ -83,7 +103,11 @@ const projectsData = [
         materials: "Quartz Countertops, Sink Fixtures",
         client: "Braun Construction Group",
         dates: "April 2025 - Sept 2025",
-        images: ["placeholder", "placeholder", "placeholder"]
+        images: [
+            "images/Previous Jobs/7. Brightdawn Apartments/exterior-overview-hero.jpg",
+            "images/Previous Jobs/7. Brightdawn Apartments/kitchen-view-hero.jpg",
+            "images/Previous Jobs/7. Brightdawn Apartments/floor-plan-view-hero.jpg"
+        ]
     },
     {
         id: 7,
@@ -95,7 +119,10 @@ const projectsData = [
         materials: "Quartz Countertops",
         client: "Sachse Construction",
         dates: "Apr 2025 - Aug 2025",
-        images: ["placeholder", "placeholder", "placeholder"]
+        images: [
+            "images/Previous Jobs/3. Preserve on Ash - Phase 1/Preserve-on-Ash-Phase-1_medium-hero.jpg",
+            "images/Previous Jobs/3. Preserve on Ash - Phase 1/Preserve-on-Ash-Phase-1.2_medium-hero.jpg"
+        ]
     },
     {
         id: 8,
@@ -120,7 +147,7 @@ const projectsData = [
         client: "Williams Distributing",
         dates: "May 2025 - Aug 2025",
         images: [
-            "images/Previous Jobs/10. Freewheel Apartments/freewheel-apartments-marquette-mi-primary-photo.png"
+            "images/Previous Jobs/10. Freewheel Apartments/freewheel-apartments-marquette-mi-primary-photo-hero.jpg"
         ]
     },
     {
@@ -133,7 +160,11 @@ const projectsData = [
         materials: "Quartz Countertops, Sink Fixtures",
         client: "Greatwater Opportunity Capital/Jonna Construction Company",
         dates: "Mar 2025 - May 2025",
-        images: ["placeholder", "placeholder", "placeholder"]
+        images: [
+            "images/Previous Jobs/5. 450 Amsterdam Apartments/exterior-overview-hero.jpg",
+            "images/Previous Jobs/5. 450 Amsterdam Apartments/exterior-overview2-hero.jpg",
+            "images/Previous Jobs/5. 450 Amsterdam Apartments/exterior-overview-real-hero.jpg"
+        ]
     },
     {
         id: 11,
@@ -145,7 +176,9 @@ const projectsData = [
         materials: "Quartz Countertops, Sink Fixtures",
         client: "Williams Distributing",
         dates: "April 2025 - May 2025",
-        images: ["placeholder", "placeholder", "placeholder"]
+        images: [
+            "images/Previous Jobs/9. State & Main Apartments/exterior-overview-hero.jpg"
+        ]
     },
     {
         id: 12,
@@ -158,9 +191,9 @@ const projectsData = [
         client: "Ronnisch Construction Group",
         dates: "Jan 2026 - May 2026",
         images: [
-            "images/Previous Jobs/19. Higgenbotham Garden Apartments/view-of-kitchen.png",
-            "images/Previous Jobs/19. Higgenbotham Garden Apartments/view-from-north-parking-lot.png",
-            "images/Previous Jobs/19. Higgenbotham Garden Apartments/view-from-indiana.png"
+            "images/Previous Jobs/19. Higgenbotham Garden Apartments/view-of-kitchen-hero.jpg",
+            "images/Previous Jobs/19. Higgenbotham Garden Apartments/view-from-north-parking-lot-hero.jpg",
+            "images/Previous Jobs/19. Higgenbotham Garden Apartments/view-from-indiana-hero.jpg"
         ]
     },
     {
@@ -174,10 +207,10 @@ const projectsData = [
         client: "Ronnisch Construction Group",
         dates: "Feb 2026 - June 2026",
         images: [
-            "images/Previous Jobs/20. Higgenbotham School Apartments/commons-render.png",
-            "images/Previous Jobs/20. Higgenbotham School Apartments/commons-render2.png",
-            "images/Previous Jobs/20. Higgenbotham School Apartments/1732052558818.webp",
-            "images/Previous Jobs/20. Higgenbotham School Apartments/Higginbotham rendering.jpg"
+            "images/Previous Jobs/20. Higgenbotham School Apartments/commons-render-hero.jpg",
+            "images/Previous Jobs/20. Higgenbotham School Apartments/commons-render2-hero.jpg",
+            "images/Previous Jobs/20. Higgenbotham School Apartments/1732052558818-hero.webp",
+            "images/Previous Jobs/20. Higgenbotham School Apartments/Higginbotham rendering-hero.jpg"
         ]
     },
     {
@@ -191,7 +224,7 @@ const projectsData = [
         client: "Greatwater Opportunity Capital/The Monahan Company",
         dates: "Jan 2025 - Feb 2025",
         images: [
-            "images/Previous Jobs/11. Lee Crest Apartments/Site View_LeeCrest.jpg"
+            "images/Previous Jobs/11. Lee Crest Apartments/Site View_LeeCrest-hero.jpg"
         ]
     },
     {
@@ -204,22 +237,13 @@ const projectsData = [
         materials: "Quartz Countertops, Sink Fixtures",
         client: "Greatwater Opportunity Capital/The Monahan Company",
         dates: "Mar 2025 - May 2025",
-        images: ["placeholder", "placeholder", "placeholder"]
+        images: [
+            "images/Previous Jobs/12. Chatham Apartments/exterior-overview-hero.jpg"
+        ]
     },
+
     {
         id: 16,
-        name: "DETROIT COMMERCIAL BUILDING",
-        location: "Detroit, MI",
-        type: "Commercial Building",
-        details: "Commercial Space",
-        scopes: "Casework & Finish Trim Carpentry Installation",
-        materials: "",
-        client: "Icon Development, Inc",
-        dates: "Sep 2024 - Oct 2024",
-        images: ["placeholder", "placeholder", "placeholder"]
-    },
-    {
-        id: 17,
         name: "TERRA STATION APARTMENTS",
         location: "Hudsonville, MI",
         type: "Multifamily Units & Amenities",
@@ -228,10 +252,13 @@ const projectsData = [
         materials: "Quartz Countertops, Sink Fixtures",
         client: "Williams Distributing",
         dates: "Aug 2025 - Dec 2025",
-        images: ["placeholder", "placeholder", "placeholder"]
+        images: [
+            "images/Previous Jobs/6. Terra Station Apartments/exterior-overview-hero.jpg",
+            "images/Previous Jobs/6. Terra Station Apartments/exterior-overview2-hero.jpg"
+        ]
     },
     {
-        id: 18,
+        id: 17,
         name: "BALDWIN WOODS APARTMENTS",
         location: "Grand Blanc, MI",
         type: "Multifamily Units & Amenities",
@@ -240,10 +267,13 @@ const projectsData = [
         materials: "Quartz Countertops, Sink Fixtures",
         client: "Sachse Construction",
         dates: "Jun 2025 - Nov 2025",
-        images: ["placeholder", "placeholder", "placeholder"]
+        images: [
+            "images/Previous Jobs/21. Baldwin Woods Apartments/exterior-overview-hero.jpg",
+            "images/Previous Jobs/21. Baldwin Woods Apartments/floor-plan-view-hero.jpg"
+        ]
     },
     {
-        id: 19,
+        id: 18,
         name: "3740 2ND AVE APARTMENTS",
         location: "Detroit, MI",
         type: "Multifamily Units & Amenities",
@@ -253,25 +283,31 @@ const projectsData = [
         client: "Greatwater Opportuniy Capital/The Monahan Company",
         dates: "Jan 2025 - Feb 2025",
         images: [
-            "images/Previous Jobs/4. 3740 2nd Ave Apartments/Kitchen1 VIEW_3740 Apartments.jpg",
-            "images/Previous Jobs/4. 3740 2nd Ave Apartments/bath1 VIEW_3740 Apartments.jpg",
-            "images/Previous Jobs/4. 3740 2nd Ave Apartments/SITE VIEW_3740 Apartments.jpg"
+            "images/Previous Jobs/4. 3740 2nd Ave Apartments/Kitchen1 VIEW_3740 Apartments-hero.jpg",
+            "images/Previous Jobs/4. 3740 2nd Ave Apartments/bath1 VIEW_3740 Apartments-hero.jpg",
+            "images/Previous Jobs/4. 3740 2nd Ave Apartments/SITE VIEW_3740 Apartments-hero.jpg"
         ]
     },
     {
-        id: 20,
+        id: 19,
         name: "TEAM WELLNESS",
         location: "Detroit, MI",
         type: "Commercial",
         details: "Healthcare Facility",
-        scopes: "Quartz Countertops",
+        scopes: "Quartz Countertops, Casework & Finish Trim Carpentry Installation",
         materials: "Quartz Countertops, Sink Fixtures",
         client: "Icon Development, Inc",
-        dates: "Dec 2024 - Jan 2025",
-        images: ["placeholder", "placeholder", "placeholder"]
+        dates: "Sep 2024 - Jan 2025",
+        images: [
+            "images/Previous Jobs/17. Team Wellness/desk-view-hero.jpg",
+            "images/Previous Jobs/17. Team Wellness/reception-view1-hero.jpg",
+            "images/Previous Jobs/17. Team Wellness/trim-view2-hero.jpg",
+            "images/Previous Jobs/17. Team Wellness/reception-view2-hero.jpg",
+            "images/Previous Jobs/17. Team Wellness/trim-view-hero.jpg"
+        ]
     },
     {
-        id: 21,
+        id: 20,
         name: "PALMS APARTMENTS",
         location: "Detroit, MI",
         type: "Multifamily Units & Amenities",
@@ -280,10 +316,15 @@ const projectsData = [
         materials: "Quartz Countertops, Sink Fixtures",
         client: "Greatwater Opportunity Capital",
         dates: "Dec 2024 - Feb 2025",
-        images: ["placeholder", "placeholder", "placeholder"]
+        images: [
+            "images/Previous Jobs/13. Palms Apartments/exterior-overview-hero.jpg",
+            "images/Previous Jobs/13. Palms Apartments/kitchen-view-hero.jpg",
+            "images/Previous Jobs/13. Palms Apartments/kitchen-view2-hero.jpg",
+            "images/Previous Jobs/13. Palms Apartments/bathroom-view-hero.jpg"
+        ]
     },
     {
-        id: 22,
+        id: 21,
         name: "2135 HUBBARD",
         location: "Detroit, MI",
         type: "Multifamily Units & Amenities",
@@ -293,13 +334,13 @@ const projectsData = [
         client: "Greatwater Opportunity Capital/Artisian Contractors",
         dates: "Aug 2024 - Oct 2024",
         images: [
-            "images/Previous Jobs/14. 2135 Hubbard/mavor-apartments-detroit-mi-building-photo.jpg",
-            "images/Previous Jobs/14. 2135 Hubbard/mavor-apartments-detroit-mi-building-photo (1).jpg",
-            "images/Previous Jobs/14. 2135 Hubbard/mavor-apartments-detroit-mi-building-photo (2).jpg"
+            "images/Previous Jobs/14. 2135 Hubbard/mavor-apartments-detroit-mi-building-photo-hero.jpg",
+            "images/Previous Jobs/14. 2135 Hubbard/mavor-apartments-detroit-mi-building-photo (1)-hero.jpg",
+            "images/Previous Jobs/14. 2135 Hubbard/mavor-apartments-detroit-mi-building-photo (2)-hero.jpg"
         ]
     },
     {
-        id: 23,
+        id: 22,
         name: "25 E. PALMER (BARLUM APARTMENTS)",
         location: "Detroit, MI",
         type: "Multifamily Units & Amenities",
@@ -309,10 +350,27 @@ const projectsData = [
         client: "Greatwater Opportunity Capital",
         dates: "Sep 2024 - Oct 2024",
         images: [
-            "images/Previous Jobs/16. 25 E. Palmer (Barlum Apartments)/the-barlum-detroit-mi-primary-photo.jpg",
-            "images/Previous Jobs/16. 25 E. Palmer (Barlum Apartments)/the-barlum-detroit-mi-building-photo.jpg",
-            "images/Previous Jobs/16. 25 E. Palmer (Barlum Apartments)/the-barlum-detroit-mi-building-photo (1).jpg",
-            "images/Previous Jobs/16. 25 E. Palmer (Barlum Apartments)/the-barlum-detroit-mi-building-photo (2).jpg"
+            "images/Previous Jobs/16. 25 E. Palmer (Barlum Apartments)/the-barlum-detroit-mi-primary-photo-hero.jpg",
+            "images/Previous Jobs/16. 25 E. Palmer (Barlum Apartments)/the-barlum-detroit-mi-building-photo-hero.jpg",
+            "images/Previous Jobs/16. 25 E. Palmer (Barlum Apartments)/the-barlum-detroit-mi-building-photo (1)-hero.jpg",
+            "images/Previous Jobs/16. 25 E. Palmer (Barlum Apartments)/the-barlum-detroit-mi-building-photo (2)-hero.jpg"
+        ]
+    },
+    {
+        id: 23,
+        name: "ALTA HQ",
+        location: "Livonia, MI",
+        type: "Office Renovation",
+        details: "Commercial Office Space",
+        scopes: "Granite Countertops, Casework & Finish Trim Carpentry Installation",
+        materials: "Granite Countertops, Cabinetry",
+        client: "Wolverine Building Group",
+        dates: "Aug 2025 - Dec 2025",
+        images: [
+            "images/Previous Jobs/24. Alta HQ/Bathroom_Grab_Bars-hero.jpeg",
+            "images/Previous Jobs/24. Alta HQ/Bathroom_Sink-hero.jpeg",
+            "images/Previous Jobs/24. Alta HQ/Hallway_Trim-hero.jpeg",
+            "images/Previous Jobs/24. Alta HQ/Smaller_Hallway_Trim-hero.jpeg"
         ]
     }
 ];

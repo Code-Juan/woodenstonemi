@@ -8,7 +8,15 @@
         "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
         "dev:frontend": "python -m http.server 8000 --directory src/pages",
         "dev:backend": "nodemon backend/server.js",
-        "build": "node build.js"
+        "build": "node build.js",
+        "analyze:logs": "node backend/scripts/analyze-submission-logs.js",
+        "analyze:postmark": "node backend/scripts/analyze-postmark-spam.js",
+        "generate:report": "node backend/scripts/generate-spam-report.js",
+        "track:spammers": "node backend/scripts/track-spammers.js",
+        "download:logs": "node backend/scripts/download-and-analyze-logs.js",
+        "analyze": "node backend/scripts/download-and-analyze-logs.js",
+        "lookup:ip": "node backend/scripts/lookup-ip.js",
+        "process:images": "node process-images.js"
     },
     "keywords": [
         "construction",

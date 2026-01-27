@@ -2,32 +2,29 @@
   publish = "dist"
   command = "npm run build"
 
+# Handle SPA routing - redirect all routes to index.html
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
 
+# Remove trailing slashes for consistency
 [[redirects]]
-  from = "/what-we-do"
-  to = "/what-we-do.html"
-  status = 200
+  from = "/what-we-do/"
+  to = "/what-we-do"
+  status = 301
 
 [[redirects]]
-  from = "/scopes-materials"
-  to = "/scopes-materials.html"
-  status = 200
+  from = "/scopes-materials/"
+  to = "/scopes-materials"
+  status = 301
 
 [[redirects]]
-  from = "/project-portfolio"
-  to = "/project-portfolio.html"
-  status = 200
+  from = "/project-portfolio/"
+  to = "/project-portfolio"
+  status = 301
 
 [[redirects]]
-  from = "/contact-us"
-  to = "/contact-us.html"
-  status = 200
-
-[[redirects]]
-  from = "/faq"
-  to = "/faq.html"
-  status = 200
+  from = "/contact-us/"
+  to = "/contact-us"
+  status = 301

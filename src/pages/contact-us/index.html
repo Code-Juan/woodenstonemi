@@ -4,7 +4,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us - The Wooden Stone LLC - Commercial Contractors</title>
+    <title>The Wooden Stone LLC - Contact Commercial Countertop Fabricator | MI, OH, IN</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description"
+        content="The Wooden Stone LLC - Contact us for commercial countertop fabrication and contractor services. Get quotes for custom stone fabrication, commercial countertop installation, and multi-family projects. Serving Michigan, Ohio, and Indiana.">
+    <meta name="keywords"
+        content="contact countertop fabricator, commercial countertop contractor contact, countertop fabricator quote, commercial countertop estimate, stone fabricator contact, countertop contractor Michigan, countertop fabricator Ohio, countertop contractor Indiana, commercial countertop bid">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+    <meta property="og:title" content="The Wooden Stone LLC - Contact Commercial Countertop Fabricator">
+    <meta property="og:description"
+        content="The Wooden Stone LLC - Contact us for commercial countertop fabrication and contractor services. Get quotes for custom stone fabrication and installation.">
+    <meta property="og:url" content="https://woodenstonemi.com/contact-us">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="The Wooden Stone LLC - Contact Commercial Countertop Fabricator">
+    <meta name="twitter:description"
+        content="The Wooden Stone LLC - Contact us for commercial countertop fabrication and contractor services. Get quotes for custom stone fabrication.">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://woodenstonemi.com/contact-us">
+
+    <!-- Enhanced Favicon for Google Search Results -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">
+
     <!-- Font preconnects to prevent FOIT/FOUT -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,6 +40,9 @@
 
     <link rel="stylesheet" href="/assets/style.css">
     <script defer src="/assets/script.js"></script>
+    <!-- reCAPTCHA Enterprise - Site key from Google reCAPTCHA admin -->
+    <script
+        src="https://www.google.com/recaptcha/enterprise.js?render=6LcWPRksAAAAADQYiNXCM6rIM94lgFJvn-l769GR"></script>
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Open+Sans&display=swap"
         rel="stylesheet">
 </head>
@@ -96,7 +126,10 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="email">Email *</label>
-                            <input type="email" id="email" name="email" required>
+                            <input type="email" id="email" name="email" required
+                                title="Please enter a valid email address">
+                            <div id="email-error" class="error-message"
+                                style="display: none; color: #dc3545; font-size: 14px; margin-top: 5px;"></div>
                         </div>
                         <div class="form-group">
                             <label for="phone">Phone</label>
@@ -233,6 +266,41 @@
     </footer>
 
     <script>
+        // Debug helper: Check reCAPTCHA setup (available immediately)
+        function debugRecaptcha() {
+            console.log('=== reCAPTCHA Enterprise Debug Info ===');
+            console.log('grecaptcha type:', typeof grecaptcha);
+            console.log('grecaptcha.enterprise type:', typeof grecaptcha?.enterprise);
+            console.log('window.RECAPTCHA_SITE_KEY:', window.RECAPTCHA_SITE_KEY);
+
+            const recaptchaScript = document.querySelector('script[src*="recaptcha"]');
+            if (recaptchaScript) {
+                const match = recaptchaScript.src.match(/render=([^&]+)/);
+                console.log('Site key from script:', match ? match[1] : 'not found');
+                console.log('Script src:', recaptchaScript.src);
+            } else {
+                console.log('reCAPTCHA script tag not found');
+            }
+
+            // Try to get site key using the same logic as the form
+            let siteKey = window.RECAPTCHA_SITE_KEY;
+            if (!siteKey) {
+                const recaptchaScript = document.querySelector('script[src*="recaptcha"]');
+                if (recaptchaScript) {
+                    const match = recaptchaScript.src.match(/render=([^&]+)/);
+                    if (match && match[1]) {
+                        siteKey = match[1];
+                    }
+                }
+            }
+            console.log('Extracted site key:', siteKey);
+            console.log('Site key valid:', siteKey && siteKey !== '6LcYOUR_SITE_KEY_HERE' && siteKey.length > 20);
+            console.log('===========================');
+        }
+
+        // Make debug function available globally for console testing
+        window.debugRecaptcha = debugRecaptcha;
+
         document.addEventListener('DOMContentLoaded', function () {
             const form = document.getElementById('contactForm');
             const submitBtn = document.getElementById('submitBtn');
@@ -265,6 +333,12 @@
                 }
             }
 
+            // Track form start time for spam detection
+            const formStartTime = Date.now();
+
+            // Store form start time in a data attribute for backend
+            form.setAttribute('data-start-time', formStartTime.toString());
+
             form.addEventListener('submit', async function (e) {
                 e.preventDefault();
 
@@ -273,6 +347,135 @@
 
                 // Collect form data
                 const formData = new FormData(form);
+
+                // Add submission timing for spam detection
+                const submissionTime = Date.now();
+                const timeSpent = submissionTime - formStartTime;
+                formData.append('submissionTime', submissionTime.toString());
+                formData.append('timeSpent', timeSpent.toString());
+
+                // Add browser fingerprinting data for spam detection
+                try {
+                    const fingerprintData = {
+                        screenResolution: `${screen.width}x${screen.height}`,
+                        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                        timezoneOffset: new Date().getTimezoneOffset(),
+                        language: navigator.language || navigator.userLanguage,
+                        platform: navigator.platform,
+                        cookieEnabled: navigator.cookieEnabled,
+                        doNotTrack: navigator.doNotTrack || 'unknown',
+                        hardwareConcurrency: navigator.hardwareConcurrency || 'unknown',
+                        deviceMemory: navigator.deviceMemory || 'unknown'
+                    };
+
+                    formData.append('screenResolution', fingerprintData.screenResolution);
+                    formData.append('timezone', fingerprintData.timezone);
+                    formData.append('timezoneOffset', fingerprintData.timezoneOffset.toString());
+                    formData.append('language', fingerprintData.language);
+                    formData.append('platform', fingerprintData.platform);
+                    formData.append('cookieEnabled', fingerprintData.cookieEnabled.toString());
+                    formData.append('doNotTrack', fingerprintData.doNotTrack);
+                    if (fingerprintData.hardwareConcurrency !== 'unknown') {
+                        formData.append('hardwareConcurrency', fingerprintData.hardwareConcurrency.toString());
+                    }
+                    if (fingerprintData.deviceMemory !== 'unknown') {
+                        formData.append('deviceMemory', fingerprintData.deviceMemory.toString());
+                    }
+                } catch (error) {
+                    // Silently fail if fingerprinting fails (some browsers may block certain properties)
+                    console.warn('Browser fingerprinting partially failed:', error.message);
+                }
+
+                // Execute reCAPTCHA v3 (if available)
+                let recaptchaToken = null;
+
+                // Check if grecaptcha Enterprise is available
+                if (typeof grecaptcha === 'undefined' || typeof grecaptcha.enterprise === 'undefined') {
+                    console.error('reCAPTCHA Enterprise not loaded. grecaptcha.enterprise is undefined. Make sure the reCAPTCHA Enterprise script is loaded.');
+                } else {
+                    try {
+                        // Extract site key from script src or use window variable
+                        let siteKey = window.RECAPTCHA_SITE_KEY;
+
+                        // If not set in window, try to extract from script tag
+                        if (!siteKey) {
+                            // Try to find script tag with render parameter (check all script tags)
+                            const allScripts = document.querySelectorAll('script[src*="recaptcha"]');
+                            for (const script of allScripts) {
+                                // Check both current src and original src attribute
+                                const scriptSrc = script.getAttribute('src') || script.src || '';
+                                // Look for the original enterprise.js URL with render parameter
+                                if (scriptSrc.includes('enterprise.js?render=') || scriptSrc.includes('api.js?render=')) {
+                                    const match = scriptSrc.match(/render=([^&]+)/);
+                                    if (match && match[1]) {
+                                        siteKey = match[1];
+                                        console.log('Extracted site key from script tag');
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if (!siteKey) {
+                                console.warn('Could not extract site key from script tags (this is OK, using fallback)');
+                            }
+                        }
+
+                        // Fallback: hardcoded site key (from the script tag in the HTML)
+                        if (!siteKey) {
+                            siteKey = '6LcWPRksAAAAADQYiNXCM6rIM94lgFJvn-l769GR';
+                            console.warn('Using fallback hardcoded site key');
+                        }
+
+                        // Validate site key before using
+                        if (siteKey && siteKey !== '6LcYOUR_SITE_KEY_HERE' && siteKey.length > 20) {
+                            console.log('Attempting to generate reCAPTCHA Enterprise token with site key:', siteKey.substring(0, 10) + '...');
+
+                            await new Promise((resolve, reject) => {
+                                // Wait for grecaptcha Enterprise to be ready
+                                grecaptcha.enterprise.ready(() => {
+                                    console.log('grecaptcha Enterprise is ready, executing...');
+                                    grecaptcha.enterprise.execute(siteKey, { action: 'submit_contact_form' })
+                                        .then((token) => {
+                                            if (token && token.length > 0) {
+                                                recaptchaToken = token;
+                                                console.log('reCAPTCHA token generated successfully, length:', token.length);
+                                            } else {
+                                                console.error('reCAPTCHA returned empty token');
+                                            }
+                                            resolve();
+                                        })
+                                        .catch((error) => {
+                                            console.error('reCAPTCHA execution error:', error);
+                                            resolve(); // Continue without token
+                                        });
+                                });
+
+                                // Timeout after 5 seconds if grecaptcha never becomes ready
+                                setTimeout(() => {
+                                    if (!recaptchaToken) {
+                                        console.error('reCAPTCHA ready() timeout - grecaptcha may not be fully loaded');
+                                        resolve();
+                                    }
+                                }, 5000);
+                            });
+                        } else {
+                            console.error('reCAPTCHA site key not found or invalid. Site key:', siteKey ? 'present but invalid (length: ' + siteKey.length + ')' : 'undefined');
+                        }
+                    } catch (error) {
+                        console.error('reCAPTCHA error:', error);
+                        // Continue without reCAPTCHA if it fails
+                    }
+                }
+
+                // Log final token status
+                if (!recaptchaToken) {
+                    console.warn('No reCAPTCHA token generated. Form will be submitted without reCAPTCHA verification.');
+                }
+
+                // Add reCAPTCHA token to form data if available
+                if (recaptchaToken) {
+                    formData.append('recaptchaToken', recaptchaToken);
+                }
 
                 // Add interested scopes to form data
                 const interestedScopes = formData.getAll('interestedScopes');
@@ -285,8 +488,16 @@
                 }
 
                 try {
-                    const response = await fetch('/api/contact/submit', {
+                    // Use the appropriate backend URL based on environment
+                    const apiUrl = window.location.hostname === 'localhost'
+                        ? 'http://localhost:3000'
+                        : 'https://wooden-stone-backend.onrender.com';
+
+                    const response = await fetch(`${apiUrl}/api/contact`, {
                         method: 'POST',
+                        headers: {
+                            'X-Submission-Start-Time': formStartTime.toString()
+                        },
                         body: formData // Send as FormData to handle file uploads
                     });
 
@@ -299,10 +510,34 @@
                         currentFiles = [];
                         updateFileList();
                     } else {
-                        let errorMessage = 'Please check your form and try again.';
-                        if (result.errors && result.errors.length > 0) {
-                            errorMessage = result.errors.map(error => error.msg).join(', ');
+                        let errorMessage = result.message || 'Please check your form and try again.';
+
+                        // Handle specific error types with user-friendly messages
+                        if (result.error === 'recaptcha_failed') {
+                            errorMessage = 'Security verification failed. Please refresh the page and try again.';
+                        } else if (result.error === 'duplicate_submission') {
+                            errorMessage = 'You have already submitted a form recently. Please wait a few minutes before submitting again.';
+                        } else if (result.error === 'invalid_name') {
+                            errorMessage = 'Please provide a valid name (first and last name).';
+                        } else if (result.error === 'submission_too_fast') {
+                            errorMessage = 'Form submission appears automated. Please take your time filling out the form.';
+                        } else if (result.errors && result.errors.length > 0) {
+                            // Show validation errors
+                            const validationErrors = result.errors.map(error => {
+                                const field = error.param || error.field || '';
+                                return field ? `${field}: ${error.msg}` : error.msg;
+                            }).join(', ');
+                            errorMessage = `Validation error: ${validationErrors}`;
+                            console.error('Form validation errors:', result.errors);
                         }
+
+                        console.error('Form submission failed:', {
+                            status: response.status,
+                            error: result.error,
+                            message: result.message,
+                            errors: result.errors
+                        });
+
                         showMessage(errorMessage, 'error');
                     }
                 } catch (error) {
@@ -310,6 +545,37 @@
                     showMessage('Failed to send message. Please try again later or contact us directly.', 'error');
                 } finally {
                     setLoading(false);
+                }
+            });
+
+            // Email validation
+            const emailInput = document.getElementById('email');
+            const emailError = document.getElementById('email-error');
+
+            function validateEmail(email) {
+                const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                return emailRegex.test(email);
+            }
+
+            emailInput.addEventListener('blur', function () {
+                const email = this.value.trim();
+                if (email && !validateEmail(email)) {
+                    emailError.textContent = 'Please enter a valid email address';
+                    emailError.style.display = 'block';
+                    this.style.borderColor = '#dc3545';
+                } else {
+                    emailError.style.display = 'none';
+                    this.style.borderColor = '';
+                }
+            });
+
+            emailInput.addEventListener('input', function () {
+                if (emailError.style.display === 'block') {
+                    const email = this.value.trim();
+                    if (validateEmail(email)) {
+                        emailError.style.display = 'none';
+                        this.style.borderColor = '';
+                    }
                 }
             });
 
