@@ -416,6 +416,24 @@ nav a.current-page:hover {
     }
 }
 
+/* FAQ Hero Section */
+.faq-hero {
+    background-image: url('../../images/frequently-asked-questions-hero.jpg');
+    background-position: center;
+}
+
+@media (max-width: 1024px) {
+    .faq-hero {
+        background-image: url('../../images/frequently-asked-questions-gallery.jpg');
+    }
+}
+
+@media (max-width: 768px) {
+    .faq-hero {
+        background-image: url('../../images/frequently-asked-questions-thumb.jpg');
+    }
+}
+
 .page-hero::before {
     content: '';
     position: absolute;
