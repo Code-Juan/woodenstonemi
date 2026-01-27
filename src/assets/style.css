@@ -1284,28 +1284,41 @@ nav a.current-page:hover {
 
 /* Mobile click-to-call enhancement */
 @media (max-width: 768px) {
-    .contact-card a[href^="tel:"] {
-        font-size: 1.3rem;
-        padding: 0.5rem 1rem;
+    .contact-card a[href^="tel:"],
+    .contact-card p a[href^="tel:"] {
+        font-size: 1.3rem !important;
+        padding: 0.75rem 1.5rem !important;
+        background-color: #8B4513 !important; /* Fallback brown color */
         background-color: var(--primary-color) !important;
+        color: #FFFFFF !important; /* Explicit white fallback */
         color: white !important;
         border-radius: 8px;
         text-align: center;
         display: block;
-        margin-top: 0.5rem;
-        font-weight: 600;
+        margin: 0.5rem auto 0 !important;
+        font-weight: 600 !important;
+        text-decoration: none !important;
+        width: fit-content;
+        min-width: 200px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
     
     .contact-card a[href^="tel:"]:hover,
     .contact-card a[href^="tel:"]:active,
-    .contact-card a[href^="tel:"]:focus {
+    .contact-card a[href^="tel:"]:focus,
+    .contact-card p a[href^="tel:"]:hover,
+    .contact-card p a[href^="tel:"]:active,
+    .contact-card p a[href^="tel:"]:focus {
+        background-color: #A0522D !important; /* Fallback darker brown */
         background-color: var(--secondary-color) !important;
+        color: #FFFFFF !important;
         color: white !important;
-        text-decoration: none;
+        text-decoration: none !important;
     }
     
-    /* Ensure parent p tag doesn't override link color */
-    .contact-card p a[href^="tel:"] {
+    /* Override any parent p styles that might affect the link */
+    .contact-card p:first-of-type a[href^="tel:"] {
+        color: #FFFFFF !important;
         color: white !important;
     }
 }
