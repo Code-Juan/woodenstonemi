@@ -769,7 +769,7 @@ nav a.current-page:hover {
 
 /* Custom tooltip that appears on hover (replacement for label) */
 #tawkchat-container .tawk-min-container::after {
-    content: "Chat with us!" !important;
+    content: "Get Instant Answers" !important;
     position: absolute !important;
     right: 80px !important;
     top: 50% !important;
@@ -812,11 +812,7 @@ nav a.current-page:hover {
     opacity: 1 !important;
 }
 
-/* Hover effect on chat bubble */
-#tawkchat-container .tawk-min-container:hover {
-    transform: scale(1.1) !important;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4) !important;
-}
+/* Hover effect is now handled below with animation removal */
 
 /* Customize the chat bubble icon/logo */
 #tawkchat-container .tawk-min-container .tawk-min-chat-icon {
@@ -845,9 +841,12 @@ nav a.current-page:hover {
     animation: pulse 2s ease-in-out infinite;
 }
 
-/* Remove pulse animation on hover */
+/* Hover effect - ensure it works with pulse animation */
 #tawkchat-container .tawk-min-container:hover {
     animation: none !important;
+    transform: scale(1.1) !important;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4) !important;
+    transition: all 0.3s ease !important;
 }
 
 /* Hide "Powered by Tawk.to" footer */
@@ -865,7 +864,7 @@ nav a.current-page:hover {
 
 /* Hide Tawk.to branding in chat window */
 #tawkchat-container iframe {
-    /* This targets the iframe - the actual hiding happens via JavaScript */
+    /* JavaScript handles hiding "Powered by" inside iframe */
 }
 
 /* Customize the chat window when opened */

@@ -1259,30 +1259,68 @@ function customizeTawkChat() {
         });
 
         // Hide "Powered by Tawk.to" footer via iframe manipulation
-        setTimeout(function() {
+        function hidePoweredByTawk() {
             const tawkIframe = document.querySelector('#tawkchat-container iframe');
-            if (tawkIframe && tawkIframe.contentWindow) {
+            if (tawkIframe) {
                 try {
-                    // Try to access iframe content (may be blocked by CORS)
                     const iframeDoc = tawkIframe.contentDocument || tawkIframe.contentWindow.document;
                     if (iframeDoc) {
-                        // Hide powered by footer
-                        const poweredElements = iframeDoc.querySelectorAll('[class*="powered"], [id*="powered"], [class*="footer"]');
-                        poweredElements.forEach(function(el) {
-                            if (el.textContent && el.textContent.toLowerCase().includes('tawk')) {
+                        // Inject CSS to hide powered by footer
+                        const style = iframeDoc.createElement('style');
+                        style.textContent = `
+                            [class*="powered"], [id*="powered"], [class*="footer"],
+                            div:has-text("Powered by"), div:has-text("powered by"),
+                            a[href*="tawk.to"], span:contains("tawk"),
+                            *[class*="tawk-footer"], *[id*="tawk-footer"] {
+                                display: none !important;
+                                visibility: hidden !important;
+                                height: 0 !important;
+                                opacity: 0 !important;
+                                overflow: hidden !important;
+                            }
+                        `;
+                        iframeDoc.head.appendChild(style);
+
+                        // Also try to find and hide elements directly
+                        const allElements = iframeDoc.querySelectorAll('*');
+                        allElements.forEach(function(el) {
+                            const text = el.textContent || el.innerText || '';
+                            if (text.toLowerCase().includes('powered by tawk') || 
+                                text.toLowerCase().includes('powered by tawk.to')) {
                                 el.style.display = 'none';
                                 el.style.visibility = 'hidden';
                                 el.style.height = '0';
+                                el.style.opacity = '0';
                                 el.style.overflow = 'hidden';
+                                el.style.padding = '0';
+                                el.style.margin = '0';
                             }
                         });
                     }
                 } catch (e) {
-                    // CORS may prevent access - use CSS instead (already added)
-                    console.log('Tawk.to iframe access restricted, using CSS fallback');
+                    // CORS restriction - will try again
                 }
             }
-        }, 2000); // Wait for iframe to fully load
+        }
+
+        // Try multiple times to catch the iframe when it loads
+        setTimeout(hidePoweredByTawk, 1000);
+        setTimeout(hidePoweredByTawk, 2000);
+        setTimeout(hidePoweredByTawk, 3000);
+        setTimeout(hidePoweredByTawk, 5000);
+
+        // Use MutationObserver to watch for iframe content changes
+        const observer = new MutationObserver(function(mutations) {
+            hidePoweredByTawk();
+        });
+
+        const tawkContainer = document.querySelector('#tawkchat-container');
+        if (tawkContainer) {
+            observer.observe(tawkContainer, {
+                childList: true,
+                subtree: true
+            });
+        }
 
         // Add custom styling via JavaScript (if CSS doesn't work due to iframe)
         const style = document.createElement('style');
@@ -1316,29 +1354,49 @@ function customizeTawkChat() {
         }
     };
 
-    // Hide "Powered by Tawk.to" using Tawk.to API if available
+    // Hide "Powered by Tawk.to" when chat is maximized
     Tawk_API.onChatMaximized = function() {
-        setTimeout(function() {
+        function hidePoweredBy() {
             const tawkIframe = document.querySelector('#tawkchat-container iframe');
             if (tawkIframe) {
                 try {
                     const iframeDoc = tawkIframe.contentDocument || tawkIframe.contentWindow.document;
                     if (iframeDoc) {
-                        const poweredBy = iframeDoc.querySelectorAll('*');
-                        poweredBy.forEach(function(el) {
-                            if (el.textContent && el.textContent.toLowerCase().includes('powered by tawk')) {
-                                el.style.display = 'none';
-                                el.style.visibility = 'hidden';
-                                el.style.height = '0';
-                                el.style.overflow = 'hidden';
+                        // Inject CSS
+                        let style = iframeDoc.querySelector('style[data-tawk-hide]');
+                        if (!style) {
+                            style = iframeDoc.createElement('style');
+                            style.setAttribute('data-tawk-hide', 'true');
+                            style.textContent = `
+                                [class*="powered"], [id*="powered"], [class*="footer"],
+                                a[href*="tawk.to"], *[class*="tawk-footer"] {
+                                    display: none !important;
+                                    visibility: hidden !important;
+                                    height: 0 !important;
+                                    opacity: 0 !important;
+                                }
+                            `;
+                            iframeDoc.head.appendChild(style);
+                        }
+
+                        // Hide elements with text
+                        const allElements = iframeDoc.querySelectorAll('*');
+                        allElements.forEach(function(el) {
+                            const text = (el.textContent || el.innerText || '').toLowerCase();
+                            if (text.includes('powered by tawk') || text.includes('powered by tawk.to')) {
+                                el.style.cssText = 'display: none !important; visibility: hidden !important; height: 0 !important; opacity: 0 !important;';
                             }
                         });
                     }
                 } catch (e) {
-                    // CORS restriction - CSS will handle it
+                    // CORS restriction
                 }
             }
-        }, 500);
+        }
+        
+        setTimeout(hidePoweredBy, 100);
+        setTimeout(hidePoweredBy, 500);
+        setTimeout(hidePoweredBy, 1000);
     };
 }
 
