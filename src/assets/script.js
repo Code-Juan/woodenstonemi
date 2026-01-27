@@ -1150,11 +1150,6 @@ function initExitIntentPopup() {
         sessionStorage.setItem('sessionStartTime', Date.now().toString());
     }
     
-    // Calculate time since session started
-    const timeSinceSessionStart = sessionStartTime 
-        ? Date.now() - parseInt(sessionStartTime) 
-        : 0;
-    
     const MIN_TIME_ON_FIRST_PAGE = 5000; // Wait 5 seconds on first page only
     const MIN_INTERACTION_TIME = 3000; // User must interact for at least 3 seconds
 
@@ -1164,8 +1159,21 @@ function initExitIntentPopup() {
         if (!userHasInteracted) {
             userHasInteracted = true;
             interactionStartTime = Date.now();
+            // Store interaction time in sessionStorage so it persists across tab switches
+            sessionStorage.setItem('interactionStartTime', interactionStartTime.toString());
+            // Check if we can enable exit-intent after interaction
+            setTimeout(() => {
+                checkAndEnableExitIntent();
+            }, 100);
         }
     };
+
+    // Restore interaction time if it exists (user switched tabs)
+    const storedInteractionTime = sessionStorage.getItem('interactionStartTime');
+    if (storedInteractionTime) {
+        userHasInteracted = true;
+        interactionStartTime = parseInt(storedInteractionTime);
+    }
 
     // Listen for user interactions
     document.addEventListener('mousemove', trackInteraction, { once: true });
@@ -1173,46 +1181,57 @@ function initExitIntentPopup() {
     document.addEventListener('click', trackInteraction, { once: true });
     document.addEventListener('touchstart', trackInteraction, { once: true });
 
-    // Enable exit-intent detection
-    // On first page: wait for minimum time + interaction
-    // On subsequent pages: enable immediately after interaction
-    const enableExitIntent = () => {
-        const timeSinceInteraction = interactionStartTime ? Date.now() - interactionStartTime : 0;
-        if (userHasInteracted && timeSinceInteraction >= MIN_INTERACTION_TIME) {
-            exitIntentEnabled = true;
-        } else if (userHasInteracted) {
-            // If interacted but not enough time, wait for remaining time
-            const remainingTime = MIN_INTERACTION_TIME - timeSinceInteraction;
-            setTimeout(() => {
+    // Function to check and enable exit-intent based on elapsed time (timestamp-based)
+    const checkAndEnableExitIntent = () => {
+        if (exitIntentEnabled || exitIntentTriggered) {
+            return;
+        }
+
+        const now = Date.now();
+        const sessionStart = parseInt(sessionStorage.getItem('sessionStartTime'));
+        const timeSinceSessionStart = now - sessionStart;
+        
+        // Calculate time since interaction
+        const timeSinceInteraction = interactionStartTime ? now - interactionStartTime : 0;
+        
+        // Check if enough time has passed since session start
+        if (timeSinceSessionStart >= MIN_TIME_ON_FIRST_PAGE) {
+            // Enough time has passed since session start
+            if (userHasInteracted && timeSinceInteraction >= MIN_INTERACTION_TIME) {
+                // User has interacted and enough time has passed - enable immediately
                 exitIntentEnabled = true;
-            }, Math.max(0, remainingTime));
+            } else if (userHasInteracted) {
+                // User has interacted but not enough interaction time yet
+                const remainingInteractionTime = MIN_INTERACTION_TIME - timeSinceInteraction;
+                if (remainingInteractionTime > 0) {
+                    setTimeout(() => {
+                        exitIntentEnabled = true;
+                    }, remainingInteractionTime);
+                } else {
+                    exitIntentEnabled = true;
+                }
+            }
+            // If no interaction yet, wait for it (trackInteraction will handle enabling)
         } else {
-            // If no interaction yet, wait a bit more
+            // Not enough time since session start yet - check again when it should be ready
+            const remainingSessionTime = MIN_TIME_ON_FIRST_PAGE - timeSinceSessionStart;
             setTimeout(() => {
-                exitIntentEnabled = true;
-            }, 2000);
+                checkAndEnableExitIntent();
+            }, remainingSessionTime);
         }
     };
 
-    if (isFirstPageLoad) {
-        // First page: wait for minimum time before enabling
-        setTimeout(() => {
-            enableExitIntent();
-        }, MIN_TIME_ON_FIRST_PAGE);
-    } else {
-        // Subsequent pages: check if enough time has passed since session start
-        if (timeSinceSessionStart >= MIN_TIME_ON_FIRST_PAGE) {
-            // Enough time has passed since session start, enable after user interaction
-            // Still need to wait for user interaction, but no additional delay
-            enableExitIntent();
-        } else {
-            // Not enough time yet since session start, wait for remaining time
-            const remainingTime = MIN_TIME_ON_FIRST_PAGE - timeSinceSessionStart;
-            setTimeout(() => {
-                enableExitIntent();
-            }, remainingTime);
+
+    // Handle page visibility changes (tab switches) - recalculate based on timestamps
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden && !exitIntentEnabled && !exitIntentTriggered) {
+            // Page became visible again, recalculate based on actual elapsed time
+            checkAndEnableExitIntent();
         }
-    }
+    });
+
+    // Initial check - uses timestamps so it works even if user switched tabs
+    checkAndEnableExitIntent();
 
     // Desktop: Detect mouse leaving viewport (only after enabled)
     document.addEventListener('mouseout', function(e) {
