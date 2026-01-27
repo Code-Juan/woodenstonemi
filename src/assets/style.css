@@ -759,6 +759,15 @@ nav a.current-page:hover {
     position: relative !important;
 }
 
+/* Show and style the label element (if it exists) */
+#tawkchat-container .tawk-min-chat-label,
+#tawkchat-container .tawk-label-container,
+#tawkchat-container [class*="label"] {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
 #tawkchat-container .tawk-min-container::before {
     content: "Get Instant Answers!" !important;
     position: absolute !important;

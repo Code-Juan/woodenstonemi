@@ -1584,17 +1584,34 @@ function addTawkTooltip() {
     // Wait for the chat bubble container to be available
     function tryAddTooltip() {
         const tawkContainer = document.querySelector('#tawkchat-container');
-        const chatBubble = tawkContainer?.querySelector('.tawk-min-container') || 
-                          tawkContainer?.querySelector('[class*="tawk-min"]') ||
-                          tawkContainer?.querySelector('[id*="tawk-min"]');
-        
-        if (!chatBubble || chatBubble.querySelector('.tawk-tooltip-custom')) {
-            // If bubble not found or tooltip already exists, try again
-            if (!chatBubble) {
-                setTimeout(tryAddTooltip, 500);
-            }
+        if (!tawkContainer) {
+            setTimeout(tryAddTooltip, 500);
             return;
         }
+
+        // Try multiple selectors to find the chat bubble
+        const chatBubble = tawkContainer.querySelector('.tawk-min-container') || 
+                          tawkContainer.querySelector('[class*="tawk-min"]') ||
+                          tawkContainer.querySelector('[id*="tawk-min"]') ||
+                          tawkContainer.querySelector('[class*="tawk"]');
+        
+        if (!chatBubble) {
+            setTimeout(tryAddTooltip, 500);
+            return;
+        }
+
+        // Check if tooltip already exists
+        if (chatBubble.querySelector('.tawk-tooltip-custom')) {
+            return;
+        }
+
+        // Look for the "We are here" label element to use as reference
+        const labelElement = tawkContainer.querySelector('.tawk-min-chat-label') ||
+                            tawkContainer.querySelector('.tawk-label-container') ||
+                            tawkContainer.querySelector('[class*="label"]') ||
+                            Array.from(tawkContainer.querySelectorAll('*')).find(el => 
+                                el.textContent && el.textContent.toLowerCase().includes('we are here')
+                            );
 
         // Remove existing tooltip if any
         const existingTooltip = document.querySelector('.tawk-tooltip-custom');
@@ -1602,9 +1619,31 @@ function addTawkTooltip() {
             existingTooltip.remove();
         }
 
-        // Create tooltip container
+        // If we found the label element, modify it instead of creating new
+        if (labelElement) {
+            labelElement.textContent = 'Get Instant Answers!';
+            labelElement.style.cssText += `
+                display: block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                background-color: var(--slate, #2c3e50) !important;
+                color: var(--white, #ffffff) !important;
+                padding: 10px 16px !important;
+                border-radius: 8px !important;
+                font-size: 14px !important;
+                font-weight: 600 !important;
+                white-space: nowrap !important;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
+                animation: floatUp 3s ease-in-out infinite !important;
+            `;
+            console.log('Modified existing label element:', labelElement);
+            return;
+        }
+
+        // Create new tooltip container
         const tooltipContainer = document.createElement('div');
         tooltipContainer.className = 'tawk-tooltip-custom';
+        tooltipContainer.textContent = 'Get Instant Answers!';
         tooltipContainer.style.cssText = `
             position: absolute;
             right: 0;
@@ -1612,13 +1651,6 @@ function addTawkTooltip() {
             transform: translateX(50%);
             z-index: 10000;
             pointer-events: none;
-            animation: floatUp 3s ease-in-out infinite;
-        `;
-
-        // Create tooltip text
-        const tooltipText = document.createElement('div');
-        tooltipText.textContent = 'Get Instant Answers!';
-        tooltipText.style.cssText = `
             background-color: var(--slate, #2c3e50);
             color: var(--white, #ffffff);
             padding: 10px 16px;
@@ -1629,6 +1661,7 @@ function addTawkTooltip() {
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
             font-family: inherit;
             line-height: 1.4;
+            animation: floatUp 3s ease-in-out infinite;
         `;
 
         // Create arrow
@@ -1640,9 +1673,9 @@ function addTawkTooltip() {
             transform: translateX(-50%);
             border: 8px solid transparent;
             border-top-color: var(--slate, #2c3e50);
+            z-index: 10001;
         `;
 
-        tooltipContainer.appendChild(tooltipText);
         tooltipContainer.appendChild(arrow);
         
         // Ensure parent has position relative
@@ -1651,7 +1684,14 @@ function addTawkTooltip() {
             chatBubble.style.position = 'relative';
         }
         
-        chatBubble.appendChild(tooltipContainer);
+        // Try to append to chat bubble, or to container if that fails
+        try {
+            chatBubble.appendChild(tooltipContainer);
+            console.log('Added tooltip to chat bubble');
+        } catch (e) {
+            console.log('Could not append to chat bubble, trying container:', e);
+            tawkContainer.appendChild(tooltipContainer);
+        }
 
         // Hide on mobile
         const mediaQuery = window.matchMedia('(max-width: 768px)');
@@ -1662,7 +1702,11 @@ function addTawkTooltip() {
                 tooltipContainer.style.display = 'block';
             }
         }
-        mediaQuery.addListener(handleMobileChange);
+        if (mediaQuery.addListener) {
+            mediaQuery.addListener(handleMobileChange);
+        } else if (mediaQuery.addEventListener) {
+            mediaQuery.addEventListener('change', handleMobileChange);
+        }
         handleMobileChange(mediaQuery);
     }
 
@@ -1678,9 +1722,14 @@ function addTawkTooltip() {
     if (tawkContainer) {
         observer.observe(tawkContainer, {
             childList: true,
-            subtree: true
+            subtree: true,
+            attributes: true
         });
     }
+    
+    // Also try after a delay to catch late-loading widgets
+    setTimeout(tryAddTooltip, 2000);
+    setTimeout(tryAddTooltip, 5000);
 }
 
 /**
