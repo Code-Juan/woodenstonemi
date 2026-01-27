@@ -3172,11 +3172,56 @@ textarea:focus {
     text-align: center;
 }
 
+.recent-projects-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-lg);
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
 .recent-projects-title {
     font-family: 'Merriweather', serif;
     color: var(--accent-color);
     font-size: var(--font-size-h2);
-    margin-bottom: var(--spacing-lg);
+    margin: 0;
+}
+
+.projects-toggle {
+    display: flex;
+    gap: 0.5rem;
+    background-color: var(--marble);
+    padding: 0.25rem;
+    border-radius: 8px;
+}
+
+.toggle-btn {
+    padding: 0.5rem 1.5rem;
+    border: none;
+    background-color: transparent;
+    color: var(--slate);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.toggle-btn:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: var(--accent-color);
+}
+
+.toggle-btn.active {
+    background-color: var(--accent-color);
+    color: var(--white);
+}
+
+.toggle-btn.active:hover {
+    background-color: var(--copper);
+    color: var(--white);
 }
 
 .recent-projects-grid {
@@ -3246,11 +3291,38 @@ textarea:focus {
 
 .recent-project-overlay p {
     font-size: 0.9rem;
-    margin: 0;
+    margin: 0.25rem 0 0 0;
     color: rgba(255, 255, 255, 0.9);
 }
 
+.recent-project-overlay .project-details {
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 500;
+}
+
 @media (max-width: 768px) {
+    .recent-projects-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .recent-projects-title {
+        text-align: center;
+    }
+    
+    .projects-toggle {
+        justify-content: center;
+        width: 100%;
+    }
+    
+    .toggle-btn {
+        flex: 1;
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
+    }
+    
     .recent-projects-grid {
         grid-template-columns: 1fr;
         gap: var(--spacing-md);
