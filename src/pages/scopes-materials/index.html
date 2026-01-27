@@ -79,6 +79,22 @@
         </nav>
     </header>
 
+    <!-- Breadcrumb Navigation -->
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+            <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                <a itemprop="item" href="/">
+                    <span itemprop="name">Home</span>
+                </a>
+                <meta itemprop="position" content="1" />
+            </li>
+            <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                <span itemprop="name" aria-current="page">Scopes & Materials</span>
+                <meta itemprop="position" content="2" />
+            </li>
+        </ol>
+    </nav>
+
     <!-- Hero Section -->
     <section class="materials-hero">
         <div class="hero-background"></div>
@@ -212,9 +228,14 @@
     </section>
 
     <!-- Call to Action -->
-    <section class="materials-cta">
-        <div class="container">
-            <h2>INQUIRE ABOUT ANY ADDITIONAL MATERIALS OR SERVICES YOU MAY REQUIRE</h2>
+    <section class="cta-section">
+        <div class="cta-container">
+            <h2>Inquire About Additional Materials or Services</h2>
+            <p>Have questions about specific materials or need custom solutions? Contact us to discuss your project requirements.</p>
+            <div class="cta-buttons">
+                <a href="/contact-us/#request-quote" class="cta-button cta-primary">Request a Quote</a>
+                <a href="/project-portfolio/" class="cta-button cta-secondary">View Our Projects</a>
+            </div>
         </div>
     </section>
 

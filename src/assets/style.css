@@ -2911,6 +2911,192 @@ textarea:focus {
     opacity: 0.7;
 }
 
+/* Breadcrumb Navigation */
+.breadcrumbs {
+    padding: 1rem var(--container-padding);
+    background-color: var(--marble);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    font-size: 0.9rem;
+}
+
+.breadcrumbs ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.breadcrumbs li {
+    display: inline-flex;
+    align-items: center;
+}
+
+.breadcrumbs li:not(:last-child)::after {
+    content: "›";
+    margin-left: 0.5rem;
+    color: var(--light-gray);
+    font-weight: bold;
+}
+
+.breadcrumbs a {
+    color: var(--slate);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.breadcrumbs a:hover {
+    color: var(--copper);
+    text-decoration: underline;
+}
+
+.breadcrumbs [aria-current="page"] {
+    color: var(--copper);
+    font-weight: 600;
+    pointer-events: none;
+}
+
+@media (max-width: 768px) {
+    .breadcrumbs {
+        padding: 0.75rem var(--container-padding);
+        font-size: 0.85rem;
+    }
+    
+    .breadcrumbs li:not(:last-child)::after {
+        margin-left: 0.25rem;
+    }
+}
+
+/* Google Maps Section */
+.map-section {
+    padding: var(--spacing-xl) var(--container-padding);
+    background-color: var(--white);
+}
+
+.map-section h2 {
+    text-align: center;
+    margin-bottom: var(--spacing-lg);
+    color: var(--slate);
+    font-family: 'Merriweather', serif;
+}
+
+.map-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.map-container iframe {
+    display: block;
+    width: 100%;
+    border: none;
+}
+
+@media (max-width: 768px) {
+    .map-container iframe {
+        height: 350px;
+    }
+}
+
+/* Social Proof / Trust Badges Section */
+.social-proof-section {
+    padding: var(--spacing-xl) var(--container-padding);
+    background-color: var(--white);
+}
+
+.trust-badges {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-lg);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.trust-badge {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.5rem;
+    background-color: var(--marble);
+    border-radius: 8px;
+    border-left: 4px solid var(--copper);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.trust-badge:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.badge-icon {
+    font-size: 2rem;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.badge-content h3 {
+    margin: 0 0 0.5rem 0;
+    color: var(--slate);
+    font-size: 1.1rem;
+    font-family: 'Merriweather', serif;
+}
+
+.badge-content p {
+    margin: 0;
+    color: var(--light-gray);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+    .trust-badges {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+    
+    .trust-badge {
+        padding: 1rem;
+    }
+}
+
+/* Form Progress Indicator */
+.form-progress {
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background-color: var(--marble);
+    border-radius: 8px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--copper), var(--accent-color));
+    border-radius: 4px;
+    transition: width 0.3s ease;
+    width: 0%;
+}
+
+.progress-text {
+    margin: 0;
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--slate);
+    font-weight: 600;
+}
+
 /* Trust Indicators */
 .trust-indicators {
     display: flex;

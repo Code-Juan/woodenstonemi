@@ -82,6 +82,22 @@
         </nav>
     </header>
 
+    <!-- Breadcrumb Navigation -->
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+            <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                <a itemprop="item" href="/">
+                    <span itemprop="name">Home</span>
+                </a>
+                <meta itemprop="position" content="1" />
+            </li>
+            <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                <span itemprop="name" aria-current="page">Contact Us</span>
+                <meta itemprop="position" content="2" />
+            </li>
+        </ol>
+    </nav>
+
     <!-- Hero Section -->
     <section class="page-hero contact-hero">
         <div class="hero-content">
@@ -96,7 +112,7 @@
             <div class="contact-grid">
                 <div class="contact-card">
                     <h3>Email</h3>
-                    <p>atocco@woodenstonemi.com</p>
+                    <p><a href="mailto:atocco@woodenstonemi.com">atocco@woodenstonemi.com</a></p>
                     <p>We typically respond within 24 hours</p>
                 </div>
                 <div class="contact-card">
@@ -112,12 +128,44 @@
         </div>
     </section>
 
+    <!-- Google Maps -->
+    <section class="map-section">
+        <div class="container">
+            <h2>Find Us</h2>
+            <div class="map-container">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2938.5!2d-82.9!3d42.6!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDLCsDM2JzAwLjAiTiA4MsKwNTQnMDAuMCJX!5e0!3m2!1sen!2sus!4v1234567890123!5m2!1sen!2sus&q=44720+Trinity+Dr,+Clinton+Township,+MI+48038"
+                    width="100%" 
+                    height="450" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade"
+                    title="The Wooden Stone LLC Location - 44720 Trinity Dr, Clinton Township, MI 48038">
+                </iframe>
+            </div>
+            <p style="text-align: center; margin-top: 1rem;">
+                <a href="https://www.google.com/maps/dir//44720+Trinity+Dr,+Clinton+Township,+MI+48038" target="_blank" rel="noopener noreferrer" class="cta-button cta-secondary">
+                    Get Directions
+                </a>
+            </p>
+        </div>
+    </section>
+
     <!-- Contact Form -->
     <section id="request-quote" class="contact-form-section">
         <div class="container">
             <div class="form-container">
                 <h2>Request a Quote</h2>
                 <p>Fill out the form below and we'll get back to you with a detailed quote for your project.</p>
+
+                <!-- Form Progress Indicator -->
+                <div class="form-progress" id="formProgress" style="display: none;">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <p class="progress-text" id="progressText">0% Complete</p>
+                </div>
 
                 <!-- Trust Indicators -->
                 <div class="trust-indicators">
@@ -335,6 +383,37 @@
             const submitBtn = document.getElementById('submitBtn');
             const loadingSpinner = document.getElementById('loading-spinner');
             const formMessage = document.getElementById('form-message');
+            const formProgress = document.getElementById('formProgress');
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+
+            // Form progress tracking
+            const requiredFields = form.querySelectorAll('input[required], select[required], textarea[required]');
+            const totalFields = requiredFields.length;
+            
+            function updateFormProgress() {
+                let filledFields = 0;
+                requiredFields.forEach(field => {
+                    if (field.value.trim() !== '' || (field.type === 'file' && field.files.length > 0)) {
+                        filledFields++;
+                    }
+                });
+                
+                const percentage = Math.round((filledFields / totalFields) * 100);
+                progressFill.style.width = percentage + '%';
+                progressText.textContent = percentage + '% Complete';
+                
+                // Show progress bar when user starts filling form
+                if (filledFields > 0 && formProgress.style.display === 'none') {
+                    formProgress.style.display = 'block';
+                }
+            }
+
+            // Track progress on input/change events
+            requiredFields.forEach(field => {
+                field.addEventListener('input', updateFormProgress);
+                field.addEventListener('change', updateFormProgress);
+            });
 
             function showMessage(message, type = 'success') {
                 formMessage.textContent = message;

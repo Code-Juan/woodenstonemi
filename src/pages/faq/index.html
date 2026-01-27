@@ -115,6 +115,22 @@
         </nav>
     </header>
 
+    <!-- Breadcrumb Navigation -->
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+            <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                <a itemprop="item" href="/">
+                    <span itemprop="name">Home</span>
+                </a>
+                <meta itemprop="position" content="1" />
+            </li>
+            <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                <span itemprop="name" aria-current="page">FAQ</span>
+                <meta itemprop="position" content="2" />
+            </li>
+        </ol>
+    </nav>
+
     <!-- Hero Section -->
     <section class="page-hero faq-hero">
         <div class="hero-content">
@@ -288,11 +304,13 @@
 
     <!-- Call to Action -->
     <section class="cta-section">
-        <div class="container">
+        <div class="cta-container">
             <h2>Still Have Questions?</h2>
-            <p>Can't find the answer you're looking for? Our team is here to help with any specific questions about your
-                project.</p>
-            <a href="/contact-us/" class="btn">Contact Us Today</a>
+            <p>Can't find the answer you're looking for? Our team is here to help with any specific questions about your project.</p>
+            <div class="cta-buttons">
+                <a href="/contact-us/#request-quote" class="cta-button cta-primary">Contact Us Today</a>
+                <a href="/what-we-do/" class="cta-button cta-secondary">Learn More</a>
+            </div>
         </div>
     </section>
 

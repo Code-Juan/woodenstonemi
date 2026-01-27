@@ -89,6 +89,22 @@
         </nav>
     </header>
 
+    <!-- Breadcrumb Navigation -->
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+            <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                <a itemprop="item" href="/">
+                    <span itemprop="name">Home</span>
+                </a>
+                <meta itemprop="position" content="1" />
+            </li>
+            <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                <span itemprop="name" aria-current="page">Project Portfolio</span>
+                <meta itemprop="position" content="2" />
+            </li>
+        </ol>
+    </nav>
+
     <!-- Hero Section -->
     <section class="portfolio-hero">
         <div class="hero-background"></div>
@@ -135,10 +151,13 @@
 
     <!-- Call to Action -->
     <section class="cta-section">
-        <div class="container">
+        <div class="cta-container">
             <h2>Inspired by Our Work?</h2>
             <p>Let's discuss how we can bring your vision to life</p>
-            <a href="/contact-us/" class="btn">Start Your Project</a>
+            <div class="cta-buttons">
+                <a href="/contact-us/#request-quote" class="cta-button cta-primary">Get Free Quote</a>
+                <a href="/what-we-do/" class="cta-button cta-secondary">Learn More</a>
+            </div>
         </div>
     </section>
 
