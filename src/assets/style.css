@@ -2497,9 +2497,10 @@ textarea:focus {
 }
 
 /* Back to Top Button */
+/* Positioned above chat bubble to avoid overlap */
 .back-to-top-btn {
     position: fixed;
-    bottom: 2rem;
+    bottom: 6.5rem; /* Position above chat bubble (chat is ~60px tall + spacing) */
     right: 2rem;
     width: 50px;
     height: 50px;
@@ -2514,6 +2515,17 @@ textarea:focus {
     transition: all 0.3s ease;
     z-index: 1000;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Adjust position on mobile to account for chat bubble */
+@media (max-width: 768px) {
+    .back-to-top-btn {
+        bottom: 5.5rem; /* Slightly higher on mobile for better spacing */
+        right: 1rem;
+        width: 45px;
+        height: 45px;
+        font-size: 1.3rem;
+    }
 }
 
 .back-to-top-btn:hover {
