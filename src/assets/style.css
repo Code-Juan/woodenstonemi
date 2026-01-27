@@ -762,6 +762,10 @@ nav a.current-page:hover {
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
+    min-width: max-content !important;
+    width: auto !important;
+    max-width: none !important;
+    overflow: visible !important;
 }
 
 /* Arrow pointing down */

@@ -1585,6 +1585,13 @@ function getSavedVisitorData() {
  * Uses simpler positioning relative to the container
  */
 function addTawkTooltip() {
+    // Prevent multiple calls
+    if (window.tawkTooltipAdded) {
+        console.log('Tooltip already added, skipping');
+        return;
+    }
+    window.tawkTooltipAdded = true;
+    
     let tooltipElement = null;
 
     // Function to update tooltip position
@@ -1642,10 +1649,17 @@ function addTawkTooltip() {
 
     // Function to create the tooltip
     function createTooltip() {
+        // If tooltip already exists, don't create another
+        if (tooltipElement && document.body.contains(tooltipElement)) {
+            console.log('Tooltip already exists, skipping creation');
+            return true;
+        }
+
         // Remove existing if any
         const existing = document.querySelector('.tawk-tooltip-custom');
         if (existing) {
             existing.remove();
+            tooltipElement = null;
         }
 
         // Try to find container, but don't require it
@@ -1675,9 +1689,12 @@ function addTawkTooltip() {
         // Create tooltip
         tooltipElement = document.createElement('div');
         tooltipElement.className = 'tawk-tooltip-custom';
-        tooltipElement.textContent = 'Get Instant Answers!';
         tooltipElement.setAttribute('data-tawk-tooltip', 'true');
         tooltipElement.id = 'tawk-custom-tooltip';
+        
+        // Create text node to ensure full text displays
+        const tooltipText = document.createTextNode('Get Instant Answers!');
+        tooltipElement.appendChild(tooltipText);
         
         // Set initial fixed position (will be updated if container found)
         tooltipElement.style.cssText = `
@@ -1700,6 +1717,8 @@ function addTawkTooltip() {
             right: 20px !important;
             bottom: 90px !important;
             transform: none !important;
+            min-width: max-content !important;
+            width: auto !important;
         `;
         
         // Add arrow
@@ -1770,7 +1789,7 @@ function addTawkTooltip() {
             // If container not found after a few attempts, create tooltip anyway at fixed position
             if (attempt >= 3) {
                 console.log('Tawk container not found, creating tooltip at fixed position');
-                if (!tooltipElement) {
+                if (!tooltipElement || !document.body.contains(tooltipElement)) {
                     createTooltip();
                 }
                 return;
@@ -1810,43 +1829,54 @@ function addTawkTooltip() {
             return;
         }
 
-        if (!tooltipElement) {
+        if (!tooltipElement || !document.body.contains(tooltipElement)) {
             createTooltip();
         }
     }
 
-    // Start trying immediately - will create at fixed position if container not found
-    tryCreateTooltip();
-
-    // Watch for container appearance
-    const observer = new MutationObserver(() => {
-        if (!tooltipElement) {
-            tryCreateTooltip();
-        } else {
-            // Update position if tooltip exists
-            updateTooltipPosition();
-        }
-    });
-
-    observer.observe(document.body, {
-        childList: true,
-        subtree: true
-    });
-
-    // Also try after delays - create tooltip even if container never found
-    setTimeout(() => {
-        if (!tooltipElement) {
-            console.log('Creating tooltip at fixed position (container not found)');
-            createTooltip();
-        }
-    }, 2000);
+    // Track if we've already started the process
+    let initializationStarted = false;
     
-    setTimeout(() => {
-        if (!tooltipElement) {
-            console.log('Creating tooltip at fixed position (final attempt)');
-            createTooltip();
-        }
-    }, 5000);
+    function initializeTooltip() {
+        if (initializationStarted) return;
+        initializationStarted = true;
+
+        // Start trying immediately - will create at fixed position if container not found
+        tryCreateTooltip();
+
+        // Watch for container appearance
+        const observer = new MutationObserver(() => {
+            if (!tooltipElement || !document.body.contains(tooltipElement)) {
+                tryCreateTooltip();
+            } else {
+                // Update position if tooltip exists
+                updateTooltipPosition();
+            }
+        });
+
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+
+        // Also try after delays - create tooltip even if container never found
+        setTimeout(() => {
+            if (!tooltipElement || !document.body.contains(tooltipElement)) {
+                console.log('Creating tooltip at fixed position (container not found)');
+                createTooltip();
+            }
+        }, 2000);
+        
+        setTimeout(() => {
+            if (!tooltipElement || !document.body.contains(tooltipElement)) {
+                console.log('Creating tooltip at fixed position (final attempt)');
+                createTooltip();
+            }
+        }, 5000);
+    }
+    
+    // Initialize
+    initializeTooltip();
 }
 
 /**
