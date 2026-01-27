@@ -1287,18 +1287,26 @@ nav a.current-page:hover {
     .contact-card a[href^="tel:"] {
         font-size: 1.3rem;
         padding: 0.5rem 1rem;
-        background-color: var(--primary-color);
-        color: white;
+        background-color: var(--primary-color) !important;
+        color: white !important;
         border-radius: 8px;
         text-align: center;
         display: block;
         margin-top: 0.5rem;
+        font-weight: 600;
     }
     
-    .contact-card a[href^="tel:"]:hover {
-        background-color: var(--secondary-color);
-        color: white;
+    .contact-card a[href^="tel:"]:hover,
+    .contact-card a[href^="tel:"]:active,
+    .contact-card a[href^="tel:"]:focus {
+        background-color: var(--secondary-color) !important;
+        color: white !important;
         text-decoration: none;
+    }
+    
+    /* Ensure parent p tag doesn't override link color */
+    .contact-card p a[href^="tel:"] {
+        color: white !important;
     }
 }
 
