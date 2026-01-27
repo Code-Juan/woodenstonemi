@@ -606,11 +606,11 @@ nav a.current-page:hover {
     .sticky-cta {
         display: block;
     }
-    
+
     .cta-buttons {
         flex-direction: column;
     }
-    
+
     .cta-button {
         width: 100%;
     }
@@ -716,6 +716,7 @@ nav a.current-page:hover {
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
@@ -726,6 +727,7 @@ nav a.current-page:hover {
         transform: translateY(50px);
         opacity: 0;
     }
+
     to {
         transform: translateY(0);
         opacity: 1;
@@ -736,7 +738,7 @@ nav a.current-page:hover {
     .exit-intent-popup-content {
         padding: 1.5rem;
     }
-    
+
     .exit-intent-popup-content h2 {
         font-size: 1.5rem;
     }
@@ -1273,25 +1275,30 @@ nav a.current-page:hover {
     font-size: 1.2rem;
     font-weight: 600;
     color: var(--accent-color);
-    color: #B87333; /* Copper color fallback */
+    color: #B87333;
+    /* Copper color fallback */
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
 .contact-card a[href^="tel:"]:hover {
-    color: #A0522D; /* Darker brown/copper */
+    color: #A0522D;
+    /* Darker brown/copper */
     text-decoration: underline;
 }
 
 /* Mobile click-to-call enhancement */
 @media (max-width: 768px) {
+
     .contact-card a[href^="tel:"],
     .contact-card p a[href^="tel:"] {
         font-size: 1.3rem !important;
         padding: 0.75rem 1.5rem !important;
-        background-color: #B87333 !important; /* Copper color */
+        background-color: #B87333 !important;
+        /* Copper color */
         background-color: var(--accent-color) !important;
-        color: #FFFFFF !important; /* Explicit white */
+        color: #FFFFFF !important;
+        /* Explicit white */
         border-radius: 8px;
         text-align: center;
         display: block;
@@ -1300,21 +1307,22 @@ nav a.current-page:hover {
         text-decoration: none !important;
         width: fit-content;
         min-width: 200px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         transition: background-color 0.3s ease;
     }
-    
+
     .contact-card a[href^="tel:"]:hover,
     .contact-card a[href^="tel:"]:active,
     .contact-card a[href^="tel:"]:focus,
     .contact-card p a[href^="tel:"]:hover,
     .contact-card p a[href^="tel:"]:active,
     .contact-card p a[href^="tel:"]:focus {
-        background-color: #A0522D !important; /* Darker brown/copper */
+        background-color: #A0522D !important;
+        /* Darker brown/copper */
         color: #FFFFFF !important;
         text-decoration: none !important;
     }
-    
+
     /* Override any parent p styles that might affect the link */
     .contact-card p:first-of-type a[href^="tel:"] {
         color: #FFFFFF !important;
@@ -1760,7 +1768,7 @@ body.loading {
     .contact-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .contact-card-full {
         grid-column: 1;
     }
@@ -2500,7 +2508,8 @@ textarea:focus {
 /* Positioned above chat bubble to avoid overlap */
 .back-to-top-btn {
     position: fixed;
-    bottom: 6.5rem; /* Position above chat bubble (chat is ~60px tall + spacing) */
+    bottom: 7rem;
+    /* Position above chat bubble (chat is ~60px tall + spacing) */
     right: 2rem;
     width: 50px;
     height: 50px;
@@ -2520,7 +2529,8 @@ textarea:focus {
 /* Adjust position on mobile to account for chat bubble */
 @media (max-width: 768px) {
     .back-to-top-btn {
-        bottom: 5.5rem; /* Slightly higher on mobile for better spacing */
+        bottom: 5.5rem;
+        /* Slightly higher on mobile for better spacing */
         right: 1rem;
         width: 45px;
         height: 45px;
@@ -3036,7 +3046,7 @@ textarea:focus {
         padding: 0.75rem var(--container-padding);
         font-size: 0.85rem;
     }
-    
+
     .breadcrumbs li:not(:last-child)::after {
         margin-left: 0.25rem;
     }
@@ -3082,11 +3092,11 @@ textarea:focus {
     .map-container iframe {
         height: 350px;
     }
-    
+
     .map-actions {
         flex-direction: column;
     }
-    
+
     .map-actions .cta-button {
         width: 100%;
     }
@@ -3147,7 +3157,7 @@ textarea:focus {
         grid-template-columns: 1fr;
         gap: var(--spacing-md);
     }
-    
+
     .trust-badge {
         padding: 1rem;
     }
@@ -3197,7 +3207,7 @@ textarea:focus {
     .area-badges {
         gap: 0.5rem;
     }
-    
+
     .area-badge {
         font-size: 0.8rem;
         padding: 0.4rem 0.8rem;
