@@ -101,6 +101,7 @@ app.use(express.static(path.join(__dirname, '..')));
 
 // Routes
 app.use('/api/contact', require('./routes/contact'));
+app.use('/api/resources', require('./routes/resources'));
 
 // Serve HTML pages
 app.get('/', (req, res) => {
@@ -121,6 +122,10 @@ app.get('/scopes-materials', (req, res) => {
 
 app.get('/project-portfolio', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'src', 'pages', 'project-portfolio', 'index.html'));
+});
+
+app.get('/resources', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'src', 'pages', 'resources', 'index.html'));
 });
 
 // Email template preview route
