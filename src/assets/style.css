@@ -1272,13 +1272,14 @@ nav a.current-page:hover {
     display: inline-block;
     font-size: 1.2rem;
     font-weight: 600;
-    color: var(--primary-color);
+    color: var(--accent-color);
+    color: #B87333; /* Copper color fallback */
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
 .contact-card a[href^="tel:"]:hover {
-    color: var(--secondary-color);
+    color: #A0522D; /* Darker brown/copper */
     text-decoration: underline;
 }
 
@@ -1288,10 +1289,9 @@ nav a.current-page:hover {
     .contact-card p a[href^="tel:"] {
         font-size: 1.3rem !important;
         padding: 0.75rem 1.5rem !important;
-        background-color: #8B4513 !important; /* Fallback brown color */
-        background-color: var(--primary-color) !important;
-        color: #FFFFFF !important; /* Explicit white fallback */
-        color: white !important;
+        background-color: #B87333 !important; /* Copper color */
+        background-color: var(--accent-color) !important;
+        color: #FFFFFF !important; /* Explicit white */
         border-radius: 8px;
         text-align: center;
         display: block;
@@ -1301,6 +1301,7 @@ nav a.current-page:hover {
         width: fit-content;
         min-width: 200px;
         box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        transition: background-color 0.3s ease;
     }
     
     .contact-card a[href^="tel:"]:hover,
@@ -1309,17 +1310,14 @@ nav a.current-page:hover {
     .contact-card p a[href^="tel:"]:hover,
     .contact-card p a[href^="tel:"]:active,
     .contact-card p a[href^="tel:"]:focus {
-        background-color: #A0522D !important; /* Fallback darker brown */
-        background-color: var(--secondary-color) !important;
+        background-color: #A0522D !important; /* Darker brown/copper */
         color: #FFFFFF !important;
-        color: white !important;
         text-decoration: none !important;
     }
     
     /* Override any parent p styles that might affect the link */
     .contact-card p:first-of-type a[href^="tel:"] {
         color: #FFFFFF !important;
-        color: white !important;
     }
 }
 
