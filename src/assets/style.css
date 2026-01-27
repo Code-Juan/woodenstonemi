@@ -743,29 +743,29 @@ nav a.current-page:hover {
 }
 
 /* Tawk.to Chat Widget Customization */
-/* Ensure container is positioned for absolute children */
-#tawkchat-container {
-    position: relative !important;
+/* Custom tooltip that floats above the chat bubble */
+.tawk-tooltip-custom {
+    position: fixed !important;
+    z-index: 99999 !important;
+    pointer-events: none !important;
+    background-color: var(--slate, #2c3e50) !important;
+    color: var(--white, #ffffff) !important;
+    padding: 10px 16px !important;
+    border-radius: 8px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    white-space: nowrap !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
+    font-family: inherit !important;
+    line-height: 1.4 !important;
+    animation: floatUp 3s ease-in-out infinite !important;
 }
 
-#tawkchat-container > iframe {
-    position: relative !important;
-}
-
-/* Custom tooltip text floating above chat bubble */
-#tawkchat-container .tawk-min-container,
-#tawkchat-container [class*="tawk-min"],
-#tawkchat-container [id*="tawk-min"] {
-    position: relative !important;
-}
-
-/* Show and style the label element (if it exists) */
-#tawkchat-container .tawk-min-chat-label,
-#tawkchat-container .tawk-label-container,
-#tawkchat-container [class*="label"] {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
+/* Hide tooltip on mobile */
+@media (max-width: 768px) {
+    .tawk-tooltip-custom {
+        display: none !important;
+    }
 }
 
 #tawkchat-container .tawk-min-container::before {

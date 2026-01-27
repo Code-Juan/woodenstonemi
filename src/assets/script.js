@@ -1579,77 +1579,56 @@ function getSavedVisitorData() {
 
 /**
  * Add floating tooltip text above Tawk.to chat bubble
+ * Creates a separate element positioned relative to the chat bubble
  */
 function addTawkTooltip() {
-    // Wait for the chat bubble container to be available
-    function tryAddTooltip() {
+    let tooltipElement = null;
+    let positionUpdateInterval = null;
+
+    // Function to update tooltip position based on chat bubble location
+    function updateTooltipPosition() {
         const tawkContainer = document.querySelector('#tawkchat-container');
-        if (!tawkContainer) {
-            setTimeout(tryAddTooltip, 500);
+        if (!tawkContainer || !tooltipElement) {
             return;
         }
 
-        // Try multiple selectors to find the chat bubble
-        const chatBubble = tawkContainer.querySelector('.tawk-min-container') || 
-                          tawkContainer.querySelector('[class*="tawk-min"]') ||
-                          tawkContainer.querySelector('[id*="tawk-min"]') ||
-                          tawkContainer.querySelector('[class*="tawk"]');
+        // Get the container's position
+        const containerRect = tawkContainer.getBoundingClientRect();
+        const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+        const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
+
+        // Position tooltip above the container (chat bubble is typically at bottom-right)
+        // Adjust these values based on your chat bubble size
+        const bubbleHeight = 60; // Approximate height of chat bubble
+        const tooltipHeight = 50; // Approximate height of tooltip
         
-        if (!chatBubble) {
-            setTimeout(tryAddTooltip, 500);
-            return;
-        }
+        tooltipElement.style.position = 'fixed';
+        tooltipElement.style.right = (window.innerWidth - containerRect.right - containerRect.width / 2) + 'px';
+        tooltipElement.style.bottom = (window.innerHeight - containerRect.top + bubbleHeight + 12) + 'px';
+        tooltipElement.style.transform = 'translateX(50%)';
+    }
 
-        // Check if tooltip already exists
-        if (chatBubble.querySelector('.tawk-tooltip-custom')) {
-            return;
-        }
-
-        // Look for the "We are here" label element to use as reference
-        const labelElement = tawkContainer.querySelector('.tawk-min-chat-label') ||
-                            tawkContainer.querySelector('.tawk-label-container') ||
-                            tawkContainer.querySelector('[class*="label"]') ||
-                            Array.from(tawkContainer.querySelectorAll('*')).find(el => 
-                                el.textContent && el.textContent.toLowerCase().includes('we are here')
-                            );
-
+    // Function to create and position the tooltip
+    function createTooltip() {
         // Remove existing tooltip if any
         const existingTooltip = document.querySelector('.tawk-tooltip-custom');
         if (existingTooltip) {
             existingTooltip.remove();
         }
 
-        // If we found the label element, modify it instead of creating new
-        if (labelElement) {
-            labelElement.textContent = 'Get Instant Answers!';
-            labelElement.style.cssText += `
-                display: block !important;
-                visibility: visible !important;
-                opacity: 1 !important;
-                background-color: var(--slate, #2c3e50) !important;
-                color: var(--white, #ffffff) !important;
-                padding: 10px 16px !important;
-                border-radius: 8px !important;
-                font-size: 14px !important;
-                font-weight: 600 !important;
-                white-space: nowrap !important;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
-                animation: floatUp 3s ease-in-out infinite !important;
-            `;
-            console.log('Modified existing label element:', labelElement);
-            return;
+        // Check if container exists
+        const tawkContainer = document.querySelector('#tawkchat-container');
+        if (!tawkContainer) {
+            return false;
         }
 
-        // Create new tooltip container
-        const tooltipContainer = document.createElement('div');
-        tooltipContainer.className = 'tawk-tooltip-custom';
-        tooltipContainer.textContent = 'Get Instant Answers!';
-        tooltipContainer.style.cssText = `
-            position: absolute;
-            right: 0;
-            bottom: calc(100% + 12px);
-            transform: translateX(50%);
-            z-index: 10000;
+        // Create tooltip element
+        tooltipElement = document.createElement('div');
+        tooltipElement.className = 'tawk-tooltip-custom';
+        tooltipElement.textContent = 'Get Instant Answers!';
+        tooltipElement.style.cssText = `
+            position: fixed;
+            z-index: 99999;
             pointer-events: none;
             background-color: var(--slate, #2c3e50);
             color: var(--white, #ffffff);
@@ -1662,6 +1641,8 @@ function addTawkTooltip() {
             font-family: inherit;
             line-height: 1.4;
             animation: floatUp 3s ease-in-out infinite;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         `;
 
         // Create arrow
@@ -1673,33 +1654,37 @@ function addTawkTooltip() {
             transform: translateX(-50%);
             border: 8px solid transparent;
             border-top-color: var(--slate, #2c3e50);
-            z-index: 10001;
+            z-index: 100001;
         `;
 
-        tooltipContainer.appendChild(arrow);
+        tooltipElement.appendChild(arrow);
+        document.body.appendChild(tooltipElement);
+
+        // Update position
+        updateTooltipPosition();
         
-        // Ensure parent has position relative
-        const computedStyle = window.getComputedStyle(chatBubble);
-        if (computedStyle.position === 'static') {
-            chatBubble.style.position = 'relative';
+        // Fade in
+        setTimeout(() => {
+            if (tooltipElement) {
+                tooltipElement.style.opacity = '1';
+            }
+        }, 100);
+
+        // Set up position updates
+        if (positionUpdateInterval) {
+            clearInterval(positionUpdateInterval);
         }
-        
-        // Try to append to chat bubble, or to container if that fails
-        try {
-            chatBubble.appendChild(tooltipContainer);
-            console.log('Added tooltip to chat bubble');
-        } catch (e) {
-            console.log('Could not append to chat bubble, trying container:', e);
-            tawkContainer.appendChild(tooltipContainer);
-        }
+        positionUpdateInterval = setInterval(updateTooltipPosition, 100);
+
+        // Update on scroll and resize
+        window.addEventListener('scroll', updateTooltipPosition, { passive: true });
+        window.addEventListener('resize', updateTooltipPosition);
 
         // Hide on mobile
         const mediaQuery = window.matchMedia('(max-width: 768px)');
         function handleMobileChange(e) {
-            if (e.matches) {
-                tooltipContainer.style.display = 'none';
-            } else {
-                tooltipContainer.style.display = 'block';
+            if (tooltipElement) {
+                tooltipElement.style.display = e.matches ? 'none' : 'block';
             }
         }
         if (mediaQuery.addListener) {
@@ -1708,28 +1693,66 @@ function addTawkTooltip() {
             mediaQuery.addEventListener('change', handleMobileChange);
         }
         handleMobileChange(mediaQuery);
+
+        console.log('Tawk.to tooltip created and positioned');
+        return true;
     }
 
-    // Try immediately and also set up observer for when widget loads
-    tryAddTooltip();
-    
-    // Also watch for when the widget appears
-    const observer = new MutationObserver(function(mutations) {
-        tryAddTooltip();
-    });
-    
-    const tawkContainer = document.querySelector('#tawkchat-container');
-    if (tawkContainer) {
-        observer.observe(tawkContainer, {
-            childList: true,
-            subtree: true,
-            attributes: true
-        });
+    // Try to create tooltip
+    function tryCreateTooltip() {
+        const tawkContainer = document.querySelector('#tawkchat-container');
+        if (!tawkContainer) {
+            setTimeout(tryCreateTooltip, 500);
+            return;
+        }
+
+        // Check if container is visible and has dimensions
+        const rect = tawkContainer.getBoundingClientRect();
+        if (rect.width === 0 && rect.height === 0) {
+            setTimeout(tryCreateTooltip, 500);
+            return;
+        }
+
+        if (!tooltipElement) {
+            createTooltip();
+        }
     }
-    
-    // Also try after a delay to catch late-loading widgets
-    setTimeout(tryAddTooltip, 2000);
-    setTimeout(tryAddTooltip, 5000);
+
+    // Start trying to create tooltip
+    tryCreateTooltip();
+
+    // Watch for container changes
+    const observer = new MutationObserver(function(mutations) {
+        if (!tooltipElement) {
+            tryCreateTooltip();
+        } else {
+            updateTooltipPosition();
+        }
+    });
+
+    // Observe the body for when tawkchat-container is added
+    const bodyObserver = new MutationObserver(function(mutations) {
+        const tawkContainer = document.querySelector('#tawkchat-container');
+        if (tawkContainer && !tooltipElement) {
+            observer.observe(tawkContainer, {
+                childList: true,
+                subtree: true,
+                attributes: true,
+                attributeFilter: ['style', 'class']
+            });
+            tryCreateTooltip();
+        }
+    });
+
+    bodyObserver.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+
+    // Also try after delays
+    setTimeout(tryCreateTooltip, 1000);
+    setTimeout(tryCreateTooltip, 3000);
+    setTimeout(tryCreateTooltip, 5000);
 }
 
 /**
