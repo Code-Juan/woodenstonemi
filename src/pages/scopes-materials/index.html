@@ -32,9 +32,30 @@
     <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
     <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">
 
+    <!-- Resource hints for performance -->
+    <link rel="preload" href="/assets/style.css" as="style">
+    <link rel="preload" href="/assets/script.js" as="script">
+    <link rel="preload" href="/The Wooden Stone Logo (Transparent).svg" as="image">
+    
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    
     <!-- Font preconnects to prevent FOIT/FOUT -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SSW2QFJYGW"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-SSW2QFJYGW', {
+            'page_title': document.title,
+            'page_location': window.location.href,
+            'page_path': window.location.pathname
+        });
+    </script>
 
     <!-- Inline script removed - using single source of truth in script.js -->
 
@@ -62,8 +83,25 @@
             <a href="/scopes-materials/">Scopes & Materials</a>
             <a href="/project-portfolio/">Project Portfolio</a>
             <a href="/contact-us/">Contact Us</a>
+            <a href="/faq/">FAQ</a>
         </nav>
     </header>
+
+    <!-- Breadcrumb Navigation -->
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+            <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                <a itemprop="item" href="/">
+                    <span itemprop="name">Home</span>
+                </a>
+                <meta itemprop="position" content="1" />
+            </li>
+            <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                <span itemprop="name" aria-current="page">Scopes & Materials</span>
+                <meta itemprop="position" content="2" />
+            </li>
+        </ol>
+    </nav>
 
     <!-- Hero Section -->
     <section class="materials-hero">
@@ -198,9 +236,17 @@
     </section>
 
     <!-- Call to Action -->
-    <section class="materials-cta">
-        <div class="container">
-            <h2>INQUIRE ABOUT ANY ADDITIONAL MATERIALS OR SERVICES YOU MAY REQUIRE</h2>
+    <section class="cta-section">
+        <div class="cta-container">
+            <h2>Inquire About Additional Materials or Services</h2>
+            <p>Have questions about specific materials or need custom solutions? Contact us to discuss your project requirements.</p>
+            <div class="cta-buttons">
+                <a href="/contact-us/#request-quote" class="cta-button cta-primary">Request a Quote</a>
+                <a href="/project-portfolio/" class="cta-button cta-secondary">View Our Projects</a>
+            </div>
+            <p style="text-align: center; margin-top: 1.5rem;">
+                <a href="/resources/" style="color: var(--accent-color); text-decoration: underline;">Download Free Resources & Guides →</a>
+            </p>
         </div>
     </section>
 
@@ -208,6 +254,20 @@
     <footer>
         <p>&copy; <span id="year"></span> The Wooden Stone LLC. All rights reserved.</p>
     </footer>
+
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/6978d91335a2d2198418d18e/1jg00vt28';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+    <!--End of Tawk.to Script-->
 </body>
 
 </html>

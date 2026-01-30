@@ -13,7 +13,15 @@ const config = {
     endpoints: {
         contact: '/api/contact',
         health: '/api/contact/health'
-    }
+    },
+    
+    // Google Analytics 4 Configuration
+    ga4MeasurementId: 'G-SSW2QFJYGW',
+    
+    // Tawk.to Live Chat Configuration
+    tawkToPropertyId: '6978d91335a2d2198418d18e',
+    tawkToWidgetId: '1jg00vt28',
+    tawkToApiKey: 'ddf975d22553c51d9bae63b315c22700009c4a3b'
 };
 
 // Export for use in other files

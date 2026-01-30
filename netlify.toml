@@ -28,3 +28,8 @@
   from = "/contact-us/"
   to = "/contact-us"
   status = 301
+
+[[redirects]]
+  from = "/resources/"
+  to = "/resources"
+  status = 301

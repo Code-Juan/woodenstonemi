@@ -64,7 +64,9 @@ const allowedOrigins = [
     'http://localhost:3000',
     'https://woodenstonemi.com',
     'https://www.woodenstonemi.com',
-    'https://dev.woodenstonemi.com'
+    'https://dev.woodenstonemi.com',
+    'https://woodenstone-webdev.netlify.app', // Netlify dev branch
+    'https://*.netlify.app' // Allow all Netlify preview deployments
 ];
 
 // Add custom origin from environment if provided
@@ -77,7 +79,12 @@ app.use(cors({
         // Allow requests with no origin (like mobile apps or curl requests)
         if (!origin) return callback(null, true);
 
+        // Check exact match first
         if (allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } 
+        // Check if origin matches Netlify pattern
+        else if (origin && origin.match(/^https:\/\/.*\.netlify\.app$/)) {
             callback(null, true);
         } else {
             console.log('CORS blocked origin:', origin);
@@ -101,6 +108,7 @@ app.use(express.static(path.join(__dirname, '..')));
 
 // Routes
 app.use('/api/contact', require('./routes/contact'));
+app.use('/api/resources', require('./routes/resources'));
 
 // Serve HTML pages
 app.get('/', (req, res) => {
@@ -121,6 +129,10 @@ app.get('/scopes-materials', (req, res) => {
 
 app.get('/project-portfolio', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'src', 'pages', 'project-portfolio', 'index.html'));
+});
+
+app.get('/resources', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'src', 'pages', 'resources', 'index.html'));
 });
 
 // Email template preview route

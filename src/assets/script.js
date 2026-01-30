@@ -136,6 +136,7 @@ function getCurrentPage() {
         'what-we-do': 'what-we-do',
         'scopes-materials': 'scopes-materials',
         'project-portfolio': 'project-portfolio',
+        'faq': 'faq',
         'contact-us': 'contact-us'
     };
 
@@ -151,6 +152,7 @@ function getPageFromFilename(filename) {
         'what-we-do.html': 'what-we-do',
         'scopes-materials.html': 'scopes-materials',
         'project-portfolio.html': 'project-portfolio',
+        'faq.html': 'faq',
         'contact-us.html': 'contact-us'
     };
 
@@ -172,6 +174,7 @@ function getPageFromHref(href) {
         'what-we-do': 'what-we-do',
         'scopes-materials': 'scopes-materials',
         'project-portfolio': 'project-portfolio',
+        'faq': 'faq',
         'contact-us': 'contact-us'
     };
 
@@ -1004,12 +1007,431 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     initImageModal();
+    
+    // Handle hash navigation to specific projects on portfolio page
+    initProjectHashNavigation();
 
     // Initialize contact form functionality
     initContactForm();
+
+    // Initialize GA4 tracking
+    initGA4Tracking();
+
+    // Initialize exit-intent popup
+    initExitIntentPopup();
 });
 
 
+
+// Google Analytics 4 Event Tracking Functions
+function trackGA4Event(eventName, eventParams = {}) {
+    if (typeof gtag !== 'undefined') {
+        gtag('event', eventName, eventParams);
+    }
+}
+
+// Track CTA button clicks
+function trackCTAClick(ctaText, location) {
+    trackGA4Event('cta_click', {
+        'cta_text': ctaText,
+        'cta_location': location,
+        'event_category': 'engagement',
+        'event_label': ctaText
+    });
+}
+
+// Track form interactions
+function trackFormStart() {
+    trackGA4Event('form_start', {
+        'event_category': 'form',
+        'event_label': 'contact_form'
+    });
+}
+
+function trackFormSubmission(success, projectType = '', interestedScopes = []) {
+    trackGA4Event(success ? 'form_submission' : 'form_submission_error', {
+        'event_category': 'form',
+        'event_label': 'contact_form',
+        'project_type': projectType,
+        'interested_scopes': interestedScopes.join(', '),
+        'value': success ? 1 : 0
+    });
+}
+
+// Track scroll depth
+function trackScrollDepth() {
+    let maxScroll = 0;
+    const thresholds = [25, 50, 75, 90, 100];
+    const tracked = new Set();
+
+    window.addEventListener('scroll', () => {
+        const scrollPercent = Math.round(
+            ((window.scrollY + window.innerHeight) / document.documentElement.scrollHeight) * 100
+        );
+
+        if (scrollPercent > maxScroll) {
+            maxScroll = scrollPercent;
+            
+            thresholds.forEach(threshold => {
+                if (scrollPercent >= threshold && !tracked.has(threshold)) {
+                    tracked.add(threshold);
+                    trackGA4Event('scroll_depth', {
+                        'event_category': 'engagement',
+                        'event_label': `${threshold}%`,
+                        'value': threshold
+                    });
+                }
+            });
+        }
+    }, { passive: true });
+}
+
+// Track phone number clicks
+function trackPhoneClick(phoneNumber) {
+    trackGA4Event('phone_click', {
+        'event_category': 'contact',
+        'event_label': phoneNumber,
+        'value': 1
+    });
+}
+
+// Track email link clicks
+function trackEmailClick(email) {
+    trackGA4Event('email_click', {
+        'event_category': 'contact',
+        'event_label': email,
+        'value': 1
+    });
+}
+
+// Handle hash navigation to specific projects on portfolio page
+function initProjectHashNavigation() {
+    // Only run on portfolio page
+    const isPortfolioPage = window.location.pathname.includes('project-portfolio');
+    if (!isPortfolioPage) return;
+    
+    function scrollToProject() {
+        const hash = window.location.hash;
+        if (!hash || !hash.startsWith('#project-')) return;
+        
+        const projectId = hash.substring(1); // Remove the #
+        const projectElement = document.getElementById(projectId);
+        
+        if (projectElement) {
+            // Wait a bit for projects to render if they're still loading
+            setTimeout(() => {
+                const element = document.getElementById(projectId);
+                if (element) {
+                    // Scroll to element with offset for header
+                    const headerHeight = document.querySelector('header')?.offsetHeight || 80;
+                    const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+                    const offsetPosition = elementPosition - headerHeight - 20;
+                    
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Highlight the project briefly
+                    element.style.transition = 'box-shadow 0.3s ease';
+                    element.style.boxShadow = '0 0 20px rgba(184, 115, 51, 0.5)';
+                    setTimeout(() => {
+                        element.style.boxShadow = '';
+                    }, 2000);
+                }
+            }, 100);
+        }
+    }
+    
+    // Check hash on page load
+    if (window.location.hash) {
+        // Wait for projects to be rendered
+        const checkProjects = setInterval(() => {
+            const projectsContainer = document.getElementById('projects-container');
+            if (projectsContainer && projectsContainer.children.length > 0) {
+                clearInterval(checkProjects);
+                scrollToProject();
+            }
+        }, 100);
+        
+        // Stop checking after 5 seconds
+        setTimeout(() => clearInterval(checkProjects), 5000);
+    }
+    
+    // Listen for hash changes (when clicking links on the same page)
+    window.addEventListener('hashchange', scrollToProject);
+}
+
+// Initialize GA4 tracking
+function initGA4Tracking() {
+    // Track scroll depth
+    trackScrollDepth();
+
+    // Track CTA button clicks
+    document.querySelectorAll('.cta-button, .btn[href*="contact"], a[href*="contact-us"]').forEach(button => {
+        button.addEventListener('click', function() {
+            const ctaText = this.textContent.trim();
+            const location = this.closest('section')?.className || 'unknown';
+            trackCTAClick(ctaText, location);
+        });
+    });
+
+    // Track phone number clicks
+    document.querySelectorAll('a[href^="tel:"]').forEach(link => {
+        link.addEventListener('click', function() {
+            trackPhoneClick(this.getAttribute('href').replace('tel:', ''));
+        });
+    });
+
+    // Track email link clicks
+    document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
+        link.addEventListener('click', function() {
+            trackEmailClick(this.getAttribute('href').replace('mailto:', ''));
+        });
+    });
+}
+
+// Exit-Intent Popup Functionality
+function initExitIntentPopup() {
+    // Check if popup was already shown in this session
+    if (sessionStorage.getItem('exitIntentShown') === 'true') {
+        return;
+    }
+
+    let exitIntentTriggered = false;
+    let userHasInteracted = false;
+    let exitIntentEnabled = false;
+    
+    // Check if this is the first page load in the session
+    const sessionStartTime = sessionStorage.getItem('sessionStartTime');
+    const isFirstPageLoad = !sessionStartTime;
+    
+    // Set session start time if this is the first page
+    if (isFirstPageLoad) {
+        sessionStorage.setItem('sessionStartTime', Date.now().toString());
+    }
+    
+    const MIN_TIME_ON_FIRST_PAGE = 5000; // Wait 5 seconds on first page only
+    const MIN_INTERACTION_TIME = 3000; // User must interact for at least 3 seconds
+
+    // Track user interaction
+    let interactionStartTime = null;
+    const trackInteraction = () => {
+        if (!userHasInteracted) {
+            userHasInteracted = true;
+            interactionStartTime = Date.now();
+            // Store interaction time in sessionStorage so it persists across tab switches
+            sessionStorage.setItem('interactionStartTime', interactionStartTime.toString());
+            // Check if we can enable exit-intent after interaction
+            setTimeout(() => {
+                checkAndEnableExitIntent();
+            }, 100);
+        }
+    };
+
+    // Restore interaction time if it exists (user switched tabs)
+    const storedInteractionTime = sessionStorage.getItem('interactionStartTime');
+    if (storedInteractionTime) {
+        userHasInteracted = true;
+        interactionStartTime = parseInt(storedInteractionTime);
+    }
+
+    // Listen for user interactions
+    document.addEventListener('mousemove', trackInteraction, { once: true });
+    document.addEventListener('scroll', trackInteraction, { once: true });
+    document.addEventListener('click', trackInteraction, { once: true });
+    document.addEventListener('touchstart', trackInteraction, { once: true });
+
+    // Function to check and enable exit-intent based on elapsed time (timestamp-based)
+    const checkAndEnableExitIntent = () => {
+        if (exitIntentEnabled || exitIntentTriggered) {
+            return;
+        }
+
+        const now = Date.now();
+        const sessionStart = parseInt(sessionStorage.getItem('sessionStartTime'));
+        const timeSinceSessionStart = now - sessionStart;
+        
+        // Calculate time since interaction
+        const timeSinceInteraction = interactionStartTime ? now - interactionStartTime : 0;
+        
+        // Check if enough time has passed since session start
+        if (timeSinceSessionStart >= MIN_TIME_ON_FIRST_PAGE) {
+            // Enough time has passed since session start
+            if (userHasInteracted && timeSinceInteraction >= MIN_INTERACTION_TIME) {
+                // User has interacted and enough time has passed - enable immediately
+                exitIntentEnabled = true;
+            } else if (userHasInteracted) {
+                // User has interacted but not enough interaction time yet
+                const remainingInteractionTime = MIN_INTERACTION_TIME - timeSinceInteraction;
+                if (remainingInteractionTime > 0) {
+                    setTimeout(() => {
+                        exitIntentEnabled = true;
+                    }, remainingInteractionTime);
+                } else {
+                    exitIntentEnabled = true;
+                }
+            }
+            // If no interaction yet, wait for it (trackInteraction will handle enabling)
+        } else {
+            // Not enough time since session start yet - check again when it should be ready
+            const remainingSessionTime = MIN_TIME_ON_FIRST_PAGE - timeSinceSessionStart;
+            setTimeout(() => {
+                checkAndEnableExitIntent();
+            }, remainingSessionTime);
+        }
+    };
+
+
+    // Handle page visibility changes (tab switches) - recalculate based on timestamps
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden && !exitIntentEnabled && !exitIntentTriggered) {
+            // Page became visible again, recalculate based on actual elapsed time
+            checkAndEnableExitIntent();
+        }
+    });
+
+    // Initial check - uses timestamps so it works even if user switched tabs
+    checkAndEnableExitIntent();
+
+    // Desktop: Detect mouse leaving viewport (only after enabled)
+    document.addEventListener('mouseout', function(e) {
+        if (!exitIntentEnabled || exitIntentTriggered) {
+            return;
+        }
+
+        // Check if mouse is actually leaving the viewport (not just moving within page)
+        // relatedTarget is null when leaving the document
+        if (e.relatedTarget === null && e.clientY < 10) {
+            exitIntentTriggered = true;
+            showExitIntentPopup();
+        }
+    });
+
+    // Mobile: Show after 30 seconds or 50% scroll
+    let mobileTimer = setTimeout(() => {
+        if (!exitIntentTriggered && window.innerWidth <= 768 && exitIntentEnabled) {
+            exitIntentTriggered = true;
+            showExitIntentPopup();
+        }
+    }, 30000);
+
+    // Also trigger on scroll depth for mobile
+    let maxScroll = 0;
+    window.addEventListener('scroll', () => {
+        if (window.innerWidth <= 768 && !exitIntentTriggered && exitIntentEnabled) {
+            const scrollPercent = Math.round(
+                ((window.scrollY + window.innerHeight) / document.documentElement.scrollHeight) * 100
+            );
+            if (scrollPercent > maxScroll) {
+                maxScroll = scrollPercent;
+                if (scrollPercent >= 50) {
+                    exitIntentTriggered = true;
+                    clearTimeout(mobileTimer);
+                    showExitIntentPopup();
+                }
+            }
+        }
+    }, { passive: true });
+}
+
+function showExitIntentPopup() {
+    // Create popup HTML
+    const popup = document.createElement('div');
+    popup.id = 'exit-intent-popup';
+    popup.className = 'exit-intent-popup';
+    popup.innerHTML = `
+        <div class="exit-intent-popup-content">
+            <button class="exit-intent-close" aria-label="Close popup">&times;</button>
+            <h2>Wait! Before You Go...</h2>
+            <p>Get a free quote for your commercial countertop project</p>
+            <form id="exitIntentForm" class="exit-intent-form">
+                <input type="email" id="exitIntentEmail" placeholder="Enter your email" required>
+                <input type="text" id="exitIntentCompany" placeholder="Company (optional)">
+                <button type="submit" class="cta-button cta-primary">Get Free Quote</button>
+            </form>
+            <p class="exit-intent-privacy">We respect your privacy. No spam, ever.</p>
+        </div>
+        <div class="exit-intent-overlay"></div>
+    `;
+
+    document.body.appendChild(popup);
+    document.body.style.overflow = 'hidden';
+
+    // Close button
+    popup.querySelector('.exit-intent-close').addEventListener('click', closeExitIntentPopup);
+    popup.querySelector('.exit-intent-overlay').addEventListener('click', closeExitIntentPopup);
+
+    // Form submission
+    const form = popup.querySelector('#exitIntentForm');
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const emailInput = document.getElementById('exitIntentEmail');
+        const companyInput = document.getElementById('exitIntentCompany');
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const email = emailInput.value.trim();
+        const company = companyInput ? companyInput.value.trim() : '';
+        
+        if (!email) return;
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending...';
+
+        try {
+            const apiUrl = window.location.hostname === 'localhost'
+                ? 'http://localhost:3000'
+                : 'https://wooden-stone-backend.onrender.com';
+
+            const body = { email };
+            if (company) body.company = company;
+
+            const response = await fetch(`${apiUrl}/api/contact/exit-intent`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+
+            const result = await response.json();
+
+            if (response.ok && result.success) {
+                // Track in GA4
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'exit_intent_form_submit', {
+                        'event_category': 'lead_generation',
+                        'event_label': 'exit_intent_popup',
+                        'value': 1
+                    });
+                }
+                sessionStorage.setItem('exitIntentShown', 'true');
+                closeExitIntentPopup();
+            } else {
+                throw new Error(result.message || 'Something went wrong');
+            }
+        } catch (err) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Get Free Quote';
+            alert(err.message || 'Something went wrong. Please try again or contact us directly.');
+        }
+    });
+
+    // Track popup shown
+    if (typeof gtag !== 'undefined') {
+        gtag('event', 'exit_intent_popup_shown', {
+            'event_category': 'lead_generation',
+            'event_label': 'exit_intent_popup'
+        });
+    }
+
+    sessionStorage.setItem('exitIntentShown', 'true');
+}
+
+function closeExitIntentPopup() {
+    const popup = document.getElementById('exit-intent-popup');
+    if (popup) {
+        popup.remove();
+        document.body.style.overflow = '';
+    }
+}
 
 // Contact Form Email Functionality - DISABLED (Using Postmark API instead)
 function initContactForm() {
@@ -1067,3 +1489,308 @@ function showFormMessage(message, type) {
         }
     }, 5000);
 }
+
+// ============================================================================
+// Tawk.to JavaScript API Integration
+// ============================================================================
+
+/**
+ * Initialize Tawk.to JavaScript API integration
+ * Sets up event tracking, visitor attributes, and provides helper functions
+ */
+function initTawkToAPI() {
+    // Wait for Tawk.to to load
+    if (typeof Tawk_API === 'undefined') {
+        setTimeout(initTawkToAPI, 100);
+        return;
+    }
+
+    const config = window.appConfig || {};
+    const apiKey = config.tawkToApiKey;
+
+    // Set up Tawk.to event handlers
+    Tawk_API.onLoad = function() {
+        console.log('Tawk.to widget loaded');
+        
+        // Set default visitor attributes if available from localStorage
+        const savedVisitorData = getSavedVisitorData();
+        if (savedVisitorData && Object.keys(savedVisitorData).length > 0) {
+            setTawkVisitorAttributes(savedVisitorData);
+        }
+    };
+
+    // Track when chat starts
+    Tawk_API.onChatStarted = function() {
+        console.log('Chat started');
+        
+        // Track in Google Analytics 4
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'chat_started', {
+                'event_category': 'engagement',
+                'event_label': 'tawk_to_chat',
+                'value': 1
+            });
+        }
+    };
+
+    // Track when chat ends
+    Tawk_API.onChatEnded = function() {
+        console.log('Chat ended');
+        
+        // Track in Google Analytics 4
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'chat_ended', {
+                'event_category': 'engagement',
+                'event_label': 'tawk_to_chat',
+                'value': 1
+            });
+        }
+    };
+
+    // Track when chat is maximized
+    Tawk_API.onChatMaximized = function() {
+        console.log('Chat maximized');
+        
+        // Track in Google Analytics 4
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'chat_maximized', {
+                'event_category': 'engagement',
+                'event_label': 'tawk_to_chat',
+                'value': 1
+            });
+        }
+    };
+
+    // Track when chat is minimized
+    Tawk_API.onChatMinimized = function() {
+        console.log('Chat minimized');
+        
+        // Track in Google Analytics 4
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'chat_minimized', {
+                'event_category': 'engagement',
+                'event_label': 'tawk_to_chat',
+                'value': 1
+            });
+        }
+    };
+
+    // Track when agent responds
+    Tawk_API.onAgentStatusChange = function(status) {
+        console.log('Agent status changed:', status);
+        
+        // Track in Google Analytics 4
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'agent_status_change', {
+                'event_category': 'engagement',
+                'event_label': 'tawk_to_chat',
+                'agent_status': status,
+                'value': 1
+            });
+        }
+    };
+
+    // Track when offline message is sent
+    Tawk_API.onOfflineSubmit = function(data) {
+        console.log('Offline message submitted:', data);
+        
+        // Track in Google Analytics 4
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'offline_message_submitted', {
+                'event_category': 'engagement',
+                'event_label': 'tawk_to_chat',
+                'value': 1
+            });
+        }
+    };
+}
+
+/**
+ * Set visitor attributes in Tawk.to
+ * @param {Object} attributes - Visitor attributes object
+ * @param {string} attributes.name - Visitor name
+ * @param {string} attributes.email - Visitor email
+ * @param {string} attributes.hash - Hash for secure mode (optional)
+ * @param {Object} attributes.attributes - Custom attributes object
+ */
+function setTawkVisitorAttributes(attributes) {
+    if (typeof Tawk_API === 'undefined') {
+        console.warn('Tawk_API not loaded yet');
+        return;
+    }
+
+    const config = window.appConfig || {};
+    const apiKey = config.tawkToApiKey;
+
+    // Prepare attributes object
+    const tawkAttributes = {
+        name: attributes.name || null,
+        email: attributes.email || null,
+        hash: attributes.hash || null
+    };
+
+    // Add custom attributes if provided
+    if (attributes.attributes && typeof attributes.attributes === 'object') {
+        Object.assign(tawkAttributes, attributes.attributes);
+    }
+
+    // Set attributes using Tawk.to API
+    Tawk_API.setAttributes(tawkAttributes, function(error) {
+        if (error) {
+            console.error('Error setting Tawk.to visitor attributes:', error);
+        } else {
+            console.log('Tawk.to visitor attributes set successfully:', tawkAttributes);
+            
+            // Save visitor data to localStorage for future sessions
+            if (attributes.name || attributes.email) {
+                saveVisitorData({
+                    name: attributes.name,
+                    email: attributes.email,
+                    attributes: attributes.attributes
+                });
+            }
+        }
+    });
+}
+
+/**
+ * Set visitor attributes from contact form data
+ * Call this after a user submits a contact form
+ * @param {Object} formData - Form data object
+ */
+function setTawkVisitorFromForm(formData) {
+    const attributes = {
+        name: formData.name || null,
+        email: formData.email || null,
+        attributes: {
+            phone: formData.phone || null,
+            company: formData.company || null,
+            projectType: formData.projectType || null,
+            interestedScopes: formData.interestedScopes || null,
+            source: 'contact_form',
+            lastFormSubmission: new Date().toISOString()
+        }
+    };
+
+    setTawkVisitorAttributes(attributes);
+}
+
+/**
+ * Show Tawk.to widget
+ */
+function showTawkWidget() {
+    if (typeof Tawk_API !== 'undefined' && Tawk_API.showWidget) {
+        Tawk_API.showWidget();
+    }
+}
+
+/**
+ * Hide Tawk.to widget
+ */
+function hideTawkWidget() {
+    if (typeof Tawk_API !== 'undefined' && Tawk_API.hideWidget) {
+        Tawk_API.hideWidget();
+    }
+}
+
+/**
+ * Maximize Tawk.to chat window
+ */
+function maximizeTawkChat() {
+    if (typeof Tawk_API !== 'undefined' && Tawk_API.maximize) {
+        Tawk_API.maximize();
+    }
+}
+
+/**
+ * Minimize Tawk.to chat window
+ */
+function minimizeTawkChat() {
+    if (typeof Tawk_API !== 'undefined' && Tawk_API.minimize) {
+        Tawk_API.minimize();
+    }
+}
+
+/**
+ * Toggle Tawk.to widget visibility
+ */
+function toggleTawkWidget() {
+    if (typeof Tawk_API !== 'undefined') {
+        const widget = document.querySelector('#tawkchat-container');
+        if (widget && widget.style.display === 'none') {
+            showTawkWidget();
+        } else {
+            hideTawkWidget();
+        }
+    }
+}
+
+/**
+ * Save visitor data to localStorage
+ * @param {Object} data - Visitor data to save
+ */
+function saveVisitorData(data) {
+    try {
+        const dataToSave = {
+            name: data.name || null,
+            email: data.email || null,
+            attributes: data.attributes || {},
+            timestamp: new Date().toISOString()
+        };
+        localStorage.setItem('tawk_visitor_data', JSON.stringify(dataToSave));
+    } catch (e) {
+        console.warn('Could not save visitor data to localStorage:', e);
+    }
+}
+
+/**
+ * Get saved visitor data from localStorage
+ * @returns {Object|null} Saved visitor data or null
+ */
+function getSavedVisitorData() {
+    try {
+        const saved = localStorage.getItem('tawk_visitor_data');
+        if (saved) {
+            const data = JSON.parse(saved);
+            // Check if data is less than 30 days old
+            const savedDate = new Date(data.timestamp);
+            const daysSince = (Date.now() - savedDate.getTime()) / (1000 * 60 * 60 * 24);
+            if (daysSince < 30) {
+                return data;
+            } else {
+                localStorage.removeItem('tawk_visitor_data');
+            }
+        }
+    } catch (e) {
+        console.warn('Could not retrieve visitor data from localStorage:', e);
+    }
+    return null;
+}
+
+/**
+ * Clear saved visitor data from localStorage
+ */
+function clearSavedVisitorData() {
+    try {
+        localStorage.removeItem('tawk_visitor_data');
+    } catch (e) {
+        console.warn('Could not clear visitor data from localStorage:', e);
+    }
+}
+
+// Initialize Tawk.to API when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+    initTawkToAPI();
+});
+
+// Make functions available globally for use in other scripts
+window.TawkToAPI = {
+    setVisitorAttributes: setTawkVisitorAttributes,
+    setVisitorFromForm: setTawkVisitorFromForm,
+    showWidget: showTawkWidget,
+    hideWidget: hideTawkWidget,
+    maximizeChat: maximizeTawkChat,
+    minimizeChat: minimizeTawkChat,
+    toggleWidget: toggleTawkWidget,
+    clearSavedData: clearSavedVisitorData
+};
