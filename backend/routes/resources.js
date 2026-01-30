@@ -11,9 +11,9 @@ const postmarkClient = new Postmark.ServerClient(process.env.POSTMARK_API_KEY);
 // Resource configuration
 const resources = {
     checklist: {
-        name: 'Commercial Countertop Installation Planning Checklist',
-        filename: 'commercial-countertop-installation-checklist.pdf',
-        downloadPath: path.join(__dirname, '..', '..', 'src', 'assets', 'downloads', 'Commercial Countertop Installation Planning Checklist.pdf')
+        name: 'Commercial Countertop Pre-Production Checklist',
+        filename: 'commercial-countertop-pre-production-checklist.pdf',
+        downloadPath: path.join(__dirname, '..', '..', 'src', 'assets', 'downloads', 'Commercial Countertop Pre-Production Checklist.pdf')
     },
     materials: {
         name: 'Countertop Material Selection Guide for Commercial Properties',
@@ -46,9 +46,9 @@ router.post('/download', downloadValidation, async (req, res) => {
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(400).json({ 
-                success: false, 
-                errors: errors.array() 
+            return res.status(400).json({
+                success: false,
+                errors: errors.array()
             });
         }
 
@@ -56,9 +56,9 @@ router.post('/download', downloadValidation, async (req, res) => {
         const resource = resources[resourceType];
 
         if (!resource) {
-            return res.status(400).json({ 
-                success: false, 
-                message: 'Invalid resource type' 
+            return res.status(400).json({
+                success: false,
+                message: 'Invalid resource type'
             });
         }
 
@@ -68,7 +68,7 @@ router.post('/download', downloadValidation, async (req, res) => {
 
         // Send email with download link
         const emailTemplate = getEmailTemplate(resource.name, downloadUrl, name, req.protocol, req.get('host'));
-        
+
         await postmarkClient.sendEmail({
             From: process.env.POSTMARK_FROM_EMAIL || 'noreply@woodenstonemi.com',
             To: email,
@@ -98,16 +98,16 @@ router.post('/download', downloadValidation, async (req, res) => {
             Tag: 'resource-notification'
         });
 
-        res.json({ 
-            success: true, 
-            message: 'Download link sent to your email' 
+        res.json({
+            success: true,
+            message: 'Download link sent to your email'
         });
 
     } catch (error) {
         console.error('Error processing resource download:', error);
-        res.status(500).json({ 
-            success: false, 
-            message: 'An error occurred. Please try again later.' 
+        res.status(500).json({
+            success: false,
+            message: 'An error occurred. Please try again later.'
         });
     }
 });
@@ -119,17 +119,17 @@ router.get('/download-file/:resourceType', async (req, res) => {
         const { token, email } = req.query;
 
         if (!token || !email) {
-            return res.status(400).json({ 
-                success: false, 
-                message: 'Invalid download link' 
+            return res.status(400).json({
+                success: false,
+                message: 'Invalid download link'
             });
         }
 
         const resource = resources[resourceType];
         if (!resource) {
-            return res.status(404).json({ 
-                success: false, 
-                message: 'Resource not found' 
+            return res.status(404).json({
+                success: false,
+                message: 'Resource not found'
             });
         }
 
@@ -141,9 +141,9 @@ router.get('/download-file/:resourceType', async (req, res) => {
         const fs = require('fs');
         if (!fs.existsSync(resource.downloadPath)) {
             // If PDF doesn't exist yet, return placeholder message
-            return res.status(404).json({ 
-                success: false, 
-                message: 'Resource file is being prepared. Please contact us directly.' 
+            return res.status(404).json({
+                success: false,
+                message: 'Resource file is being prepared. Please contact us directly.'
             });
         }
 
@@ -151,18 +151,18 @@ router.get('/download-file/:resourceType', async (req, res) => {
         res.download(resource.downloadPath, resource.filename, (err) => {
             if (err) {
                 console.error('Error downloading file:', err);
-                res.status(500).json({ 
-                    success: false, 
-                    message: 'Error downloading file' 
+                res.status(500).json({
+                    success: false,
+                    message: 'Error downloading file'
                 });
             }
         });
 
     } catch (error) {
         console.error('Error serving download:', error);
-        res.status(500).json({ 
-            success: false, 
-            message: 'An error occurred' 
+        res.status(500).json({
+            success: false,
+            message: 'An error occurred'
         });
     }
 });

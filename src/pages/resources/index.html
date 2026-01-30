@@ -13,8 +13,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://woodenstonemi.com/resources/">
     <meta property="og:title" content="Free Resources - The Wooden Stone LLC">
-    <meta property="og:description"
-        content="Download free guides and resources for commercial countertop projects.">
+    <meta property="og:description" content="Download free guides and resources for commercial countertop projects.">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
@@ -33,7 +32,7 @@
     <link rel="preload" href="/assets/style.css" as="style">
     <link rel="preload" href="/assets/script.js" as="script">
     <link rel="preload" href="/The Wooden Stone Logo (Transparent).svg" as="image">
-    
+
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
 
@@ -45,7 +44,7 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-SSW2QFJYGW"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
+        function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
         gtag('config', 'G-SSW2QFJYGW', {
             'page_title': document.title,
@@ -114,7 +113,8 @@
                 <div class="resource-card">
                     <div class="resource-icon">📄</div>
                     <h2>Company Brochure</h2>
-                    <p>Learn more about The Wooden Stone LLC - our services, process, project portfolio, and why we're the trusted choice for commercial countertop projects across Michigan, Ohio, and Indiana.</p>
+                    <p>Learn more about The Wooden Stone LLC - our services, process, project portfolio, and why we're
+                        the trusted choice for commercial countertop projects across Michigan, Ohio, and Indiana.</p>
                     <ul class="resource-features">
                         <li>✓ Company overview and services</li>
                         <li>✓ Our process and approach</li>
@@ -130,14 +130,15 @@
                 <!-- Resource 2: Installation Checklist -->
                 <div class="resource-card">
                     <div class="resource-icon">📋</div>
-                    <h2>Commercial Countertop Installation Planning Checklist</h2>
-                    <p>Everything you need to plan your next multi-unit countertop project. Includes pre-installation requirements, timeline planning, material selection tips, and questions to ask contractors.</p>
+                    <h2>Commercial Countertop Pre-Production Checklist</h2>
+                    <p>Everything you need to plan your next project. Includes pre-construction and pre-production
+                        checklists, timeline planning, and material selection tips.</p>
                     <ul class="resource-features">
-                        <li>✓ Pre-installation requirements checklist</li>
+                        <li>✓ Pre-construction checklist</li>
+                        <li>✓ Pre-production requirements</li>
                         <li>✓ Timeline planning guide</li>
                         <li>✓ Material selection tips</li>
-                        <li>✓ Budget planning worksheet</li>
-                        <li>✓ Questions to ask contractors</li>
+                        <li>✓ Common mistakes to avoid</li>
                     </ul>
                     <button class="cta-button cta-primary resource-download-btn" data-resource="checklist">
                         Download Free Checklist
@@ -148,11 +149,11 @@
                 <div class="resource-card">
                     <div class="resource-icon">🏗️</div>
                     <h2>Countertop Material Selection Guide for Commercial Properties</h2>
-                    <p>Comprehensive guide comparing granite, quartz, marble, and other materials. Includes durability ratings, cost ranges, maintenance requirements, and best use cases for commercial properties.</p>
+                    <p>Comprehensive guide comparing granite, quartz, marble, and other materials. Includes durability
+                        ratings, maintenance requirements, and best use cases for commercial properties.</p>
                     <ul class="resource-features">
                         <li>✓ Material comparison matrix</li>
                         <li>✓ Durability ratings for high-traffic areas</li>
-                        <li>✓ Cost ranges per square foot</li>
                         <li>✓ Maintenance requirements</li>
                         <li>✓ Best use cases by property type</li>
                     </ul>
@@ -204,43 +205,43 @@
     <script src="/assets/script.js"></script>
     <script>
         // Resource download functionality
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const modal = document.getElementById('resource-modal');
             const modalClose = document.getElementById('modal-close');
             const resourceForm = document.getElementById('resource-form');
             const successDiv = document.getElementById('resource-success');
             const downloadBtns = document.querySelectorAll('.resource-download-btn');
-            
+
             let currentResource = '';
 
             // Open modal when download button is clicked
             downloadBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
+                btn.addEventListener('click', function () {
                     currentResource = this.getAttribute('data-resource');
                     document.getElementById('resource-type').value = currentResource;
-                    
+
                     // Set modal title and description based on resource
                     const titles = {
-                        'checklist': 'Commercial Countertop Installation Planning Checklist',
+                        'checklist': 'Commercial Countertop Pre-Production Checklist',
                         'materials': 'Countertop Material Selection Guide',
                         'brochure': 'Company Brochure'
                     };
                     const descriptions = {
-                        'checklist': 'Get your free installation planning checklist delivered to your inbox.',
+                        'checklist': 'Get your free pre-production checklist delivered to your inbox.',
                         'materials': 'Get your free material selection guide delivered to your inbox.',
                         'brochure': 'Get our company brochure delivered to your inbox.'
                     };
-                    
+
                     document.getElementById('modal-title').textContent = `Download ${titles[currentResource]}`;
                     document.getElementById('modal-description').textContent = descriptions[currentResource];
-                    
+
                     modal.style.display = 'flex';
                     document.body.style.overflow = 'hidden';
                 });
             });
 
             // Close modal
-            modalClose.addEventListener('click', function() {
+            modalClose.addEventListener('click', function () {
                 modal.style.display = 'none';
                 document.body.style.overflow = '';
                 resourceForm.reset();
@@ -249,7 +250,7 @@
             });
 
             // Close modal when clicking outside
-            modal.addEventListener('click', function(e) {
+            modal.addEventListener('click', function (e) {
                 if (e.target === modal) {
                     modal.style.display = 'none';
                     document.body.style.overflow = '';
@@ -260,9 +261,9 @@
             });
 
             // Handle form submission
-            resourceForm.addEventListener('submit', async function(e) {
+            resourceForm.addEventListener('submit', async function (e) {
                 e.preventDefault();
-                
+
                 const formData = new FormData(resourceForm);
                 const data = {
                     name: formData.get('name'),
@@ -276,7 +277,7 @@
                     const apiUrl = window.location.hostname === 'localhost'
                         ? 'http://localhost:3000'
                         : 'https://wooden-stone-backend.onrender.com';
-                    
+
                     const response = await fetch(`${apiUrl}/api/resources/download`, {
                         method: 'POST',
                         headers: {
@@ -292,7 +293,7 @@
                         resourceForm.style.display = 'none';
                         document.getElementById('success-email').textContent = data.email;
                         successDiv.style.display = 'block';
-                        
+
                         // Track download request
                         if (typeof gtag !== 'undefined') {
                             gtag('event', 'resource_download_request', {
@@ -314,15 +315,15 @@
 
     <!--Start of Tawk.to Script-->
     <script type="text/javascript">
-    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-    (function(){
-    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-    s1.async=true;
-    s1.src='https://embed.tawk.to/6978d91335a2d2198418d18e/1jg00vt28';
-    s1.charset='UTF-8';
-    s1.setAttribute('crossorigin','*');
-    s0.parentNode.insertBefore(s1,s0);
-    })();
+        var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+        (function () {
+            var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+            s1.async = true;
+            s1.src = 'https://embed.tawk.to/6978d91335a2d2198418d18e/1jg00vt28';
+            s1.charset = 'UTF-8';
+            s1.setAttribute('crossorigin', '*');
+            s0.parentNode.insertBefore(s1, s0);
+        })();
     </script>
     <!--End of Tawk.to Script-->
 </body>
