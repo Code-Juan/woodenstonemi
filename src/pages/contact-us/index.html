@@ -36,12 +36,12 @@
     <link rel="preload" href="/assets/style.css" as="style">
     <link rel="preload" href="/assets/script.js" as="script">
     <link rel="preload" href="/The Wooden Stone Logo (Transparent).svg" as="image">
-    
+
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link rel="dns-prefetch" href="//www.google.com">
     <link rel="dns-prefetch" href="//maps.googleapis.com">
-    
+
     <!-- Font preconnects to prevent FOIT/FOUT -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -51,7 +51,7 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-SSW2QFJYGW"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
+        function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
         gtag('config', 'G-SSW2QFJYGW', {
             'page_title': document.title,
@@ -139,7 +139,9 @@
                     <h3>Location</h3>
                     <p>44720 Trinity Dr</p>
                     <p>Clinton Township, MI 48038</p>
-                    <p><a href="https://www.google.com/maps/place/The+Wooden+Stone,+LLC/@42.6268691,-82.9079287,17z/data=!3m1!4b1!4m6!3m5!1s0x88252118a3311a93:0x52ab01fe621b1a98!8m2!3d42.6268691!4d-82.9053538!16s%2Fg%2F11yjvfr604?entry=ttu" target="_blank" rel="noopener noreferrer" style="color: var(--primary-color); text-decoration: underline;">View on Google Maps</a></p>
+                    <p><a href="https://www.google.com/maps/place/The+Wooden+Stone,+LLC/@42.6268691,-82.9079287,17z/data=!3m1!4b1!4m6!3m5!1s0x88252118a3311a93:0x52ab01fe621b1a98!8m2!3d42.6268691!4d-82.9053538!16s%2Fg%2F11yjvfr604?entry=ttu"
+                            target="_blank" rel="noopener noreferrer"
+                            style="color: var(--primary-color); text-decoration: underline;">View on Google Maps</a></p>
                 </div>
             </div>
         </div>
@@ -150,22 +152,19 @@
         <div class="container">
             <h2>Find Us</h2>
             <div class="map-container">
-                <iframe 
+                <iframe
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2938.5!2d-82.9053538!3d42.6268691!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDLCsDM3JzM2LjciTiA4MsKwNTQnMTkuMyJX!5e0!3m2!1sen!2sus!4v1234567890123!5m2!1sen!2sus&q=The+Wooden+Stone,+LLC,+44720+Trinity+Dr,+Clinton+Township,+MI+48038"
-                    width="100%" 
-                    height="450" 
-                    style="border:0;" 
-                    allowfullscreen="" 
-                    loading="lazy" 
-                    referrerpolicy="no-referrer-when-downgrade"
-                    title="The Wooden Stone LLC - Google Business Profile">
+                    width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade" title="The Wooden Stone LLC - Google Business Profile">
                 </iframe>
             </div>
             <div class="map-actions">
-                <a href="https://www.google.com/maps/dir/?api=1&destination=The+Wooden+Stone,+LLC,+44720+Trinity+Dr,+Clinton+Township,+MI+48038" target="_blank" rel="noopener noreferrer" class="cta-button cta-secondary">
+                <a href="https://www.google.com/maps/dir/?api=1&destination=The+Wooden+Stone,+LLC,+44720+Trinity+Dr,+Clinton+Township,+MI+48038"
+                    target="_blank" rel="noopener noreferrer" class="cta-button cta-secondary">
                     Get Directions
                 </a>
-                <a href="https://www.google.com/maps/place/The+Wooden+Stone,+LLC/@42.6268691,-82.9079287,17z/data=!3m1!4b1!4m6!3m5!1s0x88252118a3311a93:0x52ab01fe621b1a98!8m2!3d42.6268691!4d-82.9053538!16s%2Fg%2F11yjvfr604?entry=ttu" target="_blank" rel="noopener noreferrer" class="cta-button cta-secondary">
+                <a href="https://www.google.com/maps/place/The+Wooden+Stone,+LLC/@42.6268691,-82.9079287,17z/data=!3m1!4b1!4m6!3m5!1s0x88252118a3311a93:0x52ab01fe621b1a98!8m2!3d42.6268691!4d-82.9053538!16s%2Fg%2F11yjvfr604?entry=ttu"
+                    target="_blank" rel="noopener noreferrer" class="cta-button cta-secondary">
                     View on Google Maps
                 </a>
             </div>
@@ -410,7 +409,7 @@
             // Form progress tracking
             const requiredFields = form.querySelectorAll('input[required], select[required], textarea[required]');
             const totalFields = requiredFields.length;
-            
+
             function updateFormProgress() {
                 let filledFields = 0;
                 requiredFields.forEach(field => {
@@ -418,11 +417,11 @@
                         filledFields++;
                     }
                 });
-                
+
                 const percentage = Math.round((filledFields / totalFields) * 100);
                 progressFill.style.width = percentage + '%';
                 progressText.textContent = percentage + '% Complete';
-                
+
                 // Show progress bar when user starts filling form
                 if (filledFields > 0 && formProgress.style.display === 'none') {
                     formProgress.style.display = 'block';
@@ -469,7 +468,7 @@
 
             // Track form start in GA4
             let formStartedTracked = false;
-            form.addEventListener('focusin', function() {
+            form.addEventListener('focusin', function () {
                 if (!formStartedTracked) {
                     formStartedTracked = true;
                     if (typeof gtag !== 'undefined') {
@@ -647,7 +646,7 @@
 
                     if (result.success) {
                         showMessage(result.message, 'success');
-                        
+
                         // Track successful form submission in GA4
                         const projectType = formData.get('projectType') || '';
                         const interestedScopes = formData.getAll('interestedScopes') || [];
@@ -660,7 +659,7 @@
                                 'value': 1
                             });
                         }
-                        
+
                         // Set visitor attributes in Tawk.to for future chat sessions
                         if (typeof window.TawkToAPI !== 'undefined' && window.TawkToAPI.setVisitorFromForm) {
                             const formDataObj = {
@@ -673,7 +672,7 @@
                             };
                             window.TawkToAPI.setVisitorFromForm(formDataObj);
                         }
-                        
+
                         form.reset();
                         // Clear file list after successful submission
                         currentFiles = [];
@@ -725,7 +724,7 @@
                     }
                 } catch (error) {
                     console.error('Form submission error:', error);
-                    
+
                     // Track form submission error in GA4
                     if (typeof gtag !== 'undefined') {
                         gtag('event', 'form_submission_error', {
@@ -735,7 +734,7 @@
                             'value': 0
                         });
                     }
-                    
+
                     showMessage('Failed to send message. Please try again later or contact us directly.', 'error');
                 } finally {
                     setLoading(false);
@@ -892,15 +891,15 @@
 
     <!--Start of Tawk.to Script-->
     <script type="text/javascript">
-    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-    (function(){
-    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-    s1.async=true;
-    s1.src='https://embed.tawk.to/6978d91335a2d2198418d18e/1jg00vt28';
-    s1.charset='UTF-8';
-    s1.setAttribute('crossorigin','*');
-    s0.parentNode.insertBefore(s1,s0);
-    })();
+        var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+        (function () {
+            var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+            s1.async = true;
+            s1.src = 'https://embed.tawk.to/6978d91335a2d2198418d18e/1jg00vt28';
+            s1.charset = 'UTF-8';
+            s1.setAttribute('crossorigin', '*');
+            s0.parentNode.insertBefore(s1, s0);
+        })();
     </script>
     <!--End of Tawk.to Script-->
 </body>

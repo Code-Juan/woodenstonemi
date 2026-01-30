@@ -27,10 +27,61 @@ const resources = {
     }
 };
 
-// Generate secure download token
+// Token configuration - set RESOURCE_DOWNLOAD_SECRET in production so tokens remain valid across restarts
+const TOKEN_SECRET = process.env.RESOURCE_DOWNLOAD_SECRET || crypto.randomBytes(32).toString('hex');
+const TOKEN_EXPIRY_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
+
+// Base64url helpers (Node 14 compatibility - base64url added in Node 15.7+)
+function toBase64url(buf) {
+    return buf.toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+function fromBase64url(str) {
+    const base64 = str.replace(/-/g, '+').replace(/_/g, '/');
+    return Buffer.from(base64, 'base64').toString('utf8');
+}
+
+// Generate signed download token (includes expiry, verifiable without database)
 function generateDownloadToken(email, resourceType) {
-    const data = `${email}:${resourceType}:${Date.now()}`;
-    return crypto.createHash('sha256').update(data).digest('hex').substring(0, 32);
+    const expiresAt = Date.now() + TOKEN_EXPIRY_MS;
+    const payload = `${email}:${resourceType}:${expiresAt}`;
+    const signature = crypto.createHmac('sha256', TOKEN_SECRET).update(payload).digest('hex');
+    return toBase64url(Buffer.from(payload, 'utf8')) + '.' + signature;
+}
+
+// Verify token: signature valid, email/resourceType match, not expired
+function verifyDownloadToken(token, email, resourceType) {
+    try {
+        const [payloadB64, signature] = token.split('.');
+        if (!payloadB64 || !signature) return { valid: false };
+
+        const payload = fromBase64url(payloadB64);
+        const parts = payload.split(':');
+        if (parts.length !== 3) return { valid: false };
+
+        const [tokenEmail, tokenResourceType, expiresAtStr] = parts;
+        const expiresAt = parseInt(expiresAtStr, 10);
+        if (isNaN(expiresAt)) return { valid: false };
+
+        // Verify signature (constant-time comparison)
+        const expectedSignature = crypto.createHmac('sha256', TOKEN_SECRET).update(payload).digest('hex');
+        if (signature.length !== expectedSignature.length || !crypto.timingSafeEqual(Buffer.from(signature, 'hex'), Buffer.from(expectedSignature, 'hex'))) {
+            return { valid: false };
+        }
+
+        // Verify email and resourceType match
+        if (tokenEmail !== email || tokenResourceType !== resourceType) {
+            return { valid: false };
+        }
+
+        // Verify not expired
+        if (Date.now() > expiresAt) {
+            return { valid: false, expired: true };
+        }
+
+        return { valid: true };
+    } catch (e) {
+        return { valid: false };
+    }
 }
 
 // Validation rules
@@ -133,9 +184,14 @@ router.get('/download-file/:resourceType', async (req, res) => {
             });
         }
 
-        // Verify token (simplified - in production, store tokens in database)
-        const expectedToken = generateDownloadToken(email, resourceType);
-        // For now, we'll allow the download (in production, verify token matches stored value)
+        // Verify token signature, expiry, and params match
+        const verification = verifyDownloadToken(token, email, resourceType);
+        if (!verification.valid) {
+            return res.status(403).json({
+                success: false,
+                message: verification.expired ? 'This download link has expired. Please request a new one.' : 'Invalid download link'
+            });
+        }
 
         // Check if file exists
         const fs = require('fs');
@@ -151,10 +207,12 @@ router.get('/download-file/:resourceType', async (req, res) => {
         res.download(resource.downloadPath, resource.filename, (err) => {
             if (err) {
                 console.error('Error downloading file:', err);
-                res.status(500).json({
-                    success: false,
-                    message: 'Error downloading file'
-                });
+                if (!res.headersSent) {
+                    res.status(500).json({
+                        success: false,
+                        message: 'Error downloading file'
+                    });
+                }
             }
         });
 

@@ -1347,6 +1347,7 @@ function showExitIntentPopup() {
             <p>Get a free quote for your commercial countertop project</p>
             <form id="exitIntentForm" class="exit-intent-form">
                 <input type="email" id="exitIntentEmail" placeholder="Enter your email" required>
+                <input type="text" id="exitIntentCompany" placeholder="Company (optional)">
                 <button type="submit" class="cta-button cta-primary">Get Free Quote</button>
             </form>
             <p class="exit-intent-privacy">We respect your privacy. No spam, ever.</p>
@@ -1363,23 +1364,54 @@ function showExitIntentPopup() {
 
     // Form submission
     const form = popup.querySelector('#exitIntentForm');
-    form.addEventListener('submit', function(e) {
+    form.addEventListener('submit', async function(e) {
         e.preventDefault();
-        const email = document.getElementById('exitIntentEmail').value;
+        const emailInput = document.getElementById('exitIntentEmail');
+        const companyInput = document.getElementById('exitIntentCompany');
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const email = emailInput.value.trim();
+        const company = companyInput ? companyInput.value.trim() : '';
         
-        // Track in GA4
-        if (typeof gtag !== 'undefined') {
-            gtag('event', 'exit_intent_form_submit', {
-                'event_category': 'lead_generation',
-                'event_label': 'exit_intent_popup',
-                'value': 1
-            });
-        }
+        if (!email) return;
 
-        // Redirect to contact form with email pre-filled
-        window.location.href = `/contact-us/#request-quote`;
-        sessionStorage.setItem('exitIntentShown', 'true');
-        closeExitIntentPopup();
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending...';
+
+        try {
+            const apiUrl = window.location.hostname === 'localhost'
+                ? 'http://localhost:3000'
+                : 'https://wooden-stone-backend.onrender.com';
+
+            const body = { email };
+            if (company) body.company = company;
+
+            const response = await fetch(`${apiUrl}/api/contact/exit-intent`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+
+            const result = await response.json();
+
+            if (response.ok && result.success) {
+                // Track in GA4
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'exit_intent_form_submit', {
+                        'event_category': 'lead_generation',
+                        'event_label': 'exit_intent_popup',
+                        'value': 1
+                    });
+                }
+                sessionStorage.setItem('exitIntentShown', 'true');
+                closeExitIntentPopup();
+            } else {
+                throw new Error(result.message || 'Something went wrong');
+            }
+        } catch (err) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Get Free Quote';
+            alert(err.message || 'Something went wrong. Please try again or contact us directly.');
+        }
     });
 
     // Track popup shown

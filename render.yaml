@@ -22,6 +22,8 @@ services:
         value: support@woodenstonemi.com
       - key: SESSION_SECRET
         generateValue: true
+      - key: RESOURCE_DOWNLOAD_SECRET
+        sync: false
       - key: RATE_LIMIT_WINDOW_MS
         value: 900000
       - key: RATE_LIMIT_MAX_REQUESTS

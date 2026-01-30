@@ -119,6 +119,66 @@ const validateContactForm = [
         .withMessage('Form submission failed validation')
 ];
 
+// Exit intent email validation (email required, company optional)
+const validateExitIntent = [
+    body('email')
+        .isEmail()
+        .normalizeEmail()
+        .withMessage('Please provide a valid email address'),
+    body('company')
+        .optional({ checkFalsy: true })
+        .trim()
+        .isLength({ max: 100 })
+        .withMessage('Company name must be less than 100 characters')
+];
+
+// POST /api/contact/exit-intent - Handle exit intent popup (email-only lead capture)
+router.post('/exit-intent', validateExitIntent, async (req, res) => {
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({
+                success: false,
+                message: 'Please provide a valid email address',
+                errors: errors.array()
+            });
+        }
+
+        const { email, company } = req.body;
+        const toEmail = process.env.TO_EMAIL || process.env.POSTMARK_TO_EMAIL || 'atocco@woodenstonemi.com';
+        const companyLine = company ? `<p><strong>Company:</strong> ${company}</p>` : '';
+        const companyText = company ? `Company: ${company}\n` : '';
+
+        await postmarkClient.sendEmail({
+            From: process.env.POSTMARK_FROM_EMAIL || process.env.FROM_EMAIL || 'noreply@woodenstonemi.com',
+            To: toEmail,
+            Subject: 'Exit Intent Lead - Quote Request Interest',
+            HtmlBody: `
+                <h2>Exit Intent Lead Capture</h2>
+                <p>Someone showed interest in getting a quote by submitting their email from the exit intent popup.</p>
+                <p><strong>Email:</strong> ${email}</p>
+                ${companyLine}
+                <p><strong>Date:</strong> ${new Date().toLocaleString()}</p>
+                <hr>
+                <p style="font-size: 12px; color: #666;">Sent from woodenstonemi.com exit intent popup</p>
+            `,
+            TextBody: `Exit Intent Lead - Quote Request Interest\n\nEmail: ${email}\n${companyText}Date: ${new Date().toLocaleString()}\n\nSent from woodenstonemi.com exit intent popup`,
+            MessageStream: 'outbound'
+        });
+
+        res.json({
+            success: true,
+            message: 'Thank you! We\'ll be in touch soon.'
+        });
+    } catch (error) {
+        console.error('Exit intent email error:', error.message);
+        res.status(500).json({
+            success: false,
+            message: 'Something went wrong. Please try again or contact us directly.'
+        });
+    }
+});
+
 // Send confirmation email to user
 async function sendConfirmationEmail(userEmail, userName) {
     try {
