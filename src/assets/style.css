@@ -2546,7 +2546,7 @@ textarea:focus {
 /* Positioned above chat bubble to avoid overlap */
 .back-to-top-btn {
     position: fixed;
-    bottom: 9rem;
+    bottom: 12rem;
     /* Position above chat bubble (chat is ~60px tall + spacing) */
     right: 2rem;
     width: 50px;
