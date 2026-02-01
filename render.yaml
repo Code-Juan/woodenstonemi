@@ -17,7 +17,9 @@ services:
       - key: TO_EMAIL
         sync: false
       - key: SALES_EMAIL
-        value: sales@woodenstonemi.com
+        sync: false
+      - key: LEADS_EMAIL
+        sync: false
       - key: SUPPORT_EMAIL
         value: support@woodenstonemi.com
       - key: SESSION_SECRET

@@ -142,7 +142,7 @@ router.post('/download', downloadValidation, async (req, res) => {
 
         await postmarkClient.sendEmail({
             From: process.env.POSTMARK_FROM_EMAIL || 'noreply@woodenstonemi.com',
-            To: process.env.POSTMARK_TO_EMAIL || 'atocco@woodenstonemi.com',
+            To: process.env.LEADS_EMAIL || process.env.TO_EMAIL,
             Subject: `New Resource Download: ${resource.name}`,
             HtmlBody: notificationEmail,
             MessageStream: 'outbound',

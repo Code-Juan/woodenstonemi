@@ -145,7 +145,7 @@ router.post('/exit-intent', validateExitIntent, async (req, res) => {
         }
 
         const { email, company } = req.body;
-        const toEmail = process.env.TO_EMAIL || process.env.POSTMARK_TO_EMAIL || 'atocco@woodenstonemi.com';
+        const toEmail = process.env.LEADS_EMAIL || process.env.TO_EMAIL;
         const companyLine = company ? `<p><strong>Company:</strong> ${company}</p>` : '';
         const companyText = company ? `Company: ${company}\n` : '';
 
@@ -951,8 +951,8 @@ router.post('/', upload.array('attachments', parseInt(process.env.MAX_FILES_PER_
         // 2. Check for gibberish/random name patterns
         if (name && isRandomPattern(name)) {
             const realIP = req.headers['cf-connecting-ip'] || (req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'].split(',')[0].trim() : null) || clientIP;
-            console.log('❌ SPAM BLOCKED: Random/gibberish name pattern detected', { 
-                email, 
+            console.log('❌ SPAM BLOCKED: Random/gibberish name pattern detected', {
+                email,
                 name,
                 ip: clientIP,
                 realIP: realIP,
@@ -977,8 +977,8 @@ router.post('/', upload.array('attachments', parseInt(process.env.MAX_FILES_PER_
         // 2b. Check for gibberish/random company patterns
         if (company && isRandomPattern(company)) {
             const realIP = req.headers['cf-connecting-ip'] || (req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'].split(',')[0].trim() : null) || clientIP;
-            console.log('❌ SPAM BLOCKED: Random/gibberish company name detected', { 
-                email, 
+            console.log('❌ SPAM BLOCKED: Random/gibberish company name detected', {
+                email,
                 company,
                 ip: clientIP,
                 realIP: realIP,
@@ -1003,8 +1003,8 @@ router.post('/', upload.array('attachments', parseInt(process.env.MAX_FILES_PER_
         // 2c. Check for meaningless/gibberish project descriptions
         if (projectDescription && isMeaninglessDescription(projectDescription)) {
             const realIP = req.headers['cf-connecting-ip'] || (req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'].split(',')[0].trim() : null) || clientIP;
-            console.log('❌ SPAM BLOCKED: Meaningless/gibberish project description detected', { 
-                email, 
+            console.log('❌ SPAM BLOCKED: Meaningless/gibberish project description detected', {
+                email,
                 descriptionLength: projectDescription.length,
                 ip: clientIP,
                 realIP: realIP,
@@ -1101,7 +1101,7 @@ router.post('/', upload.array('attachments', parseInt(process.env.MAX_FILES_PER_
         // Prepare email content
         const emailContent = {
             From: process.env.FROM_EMAIL,
-            To: process.env.TO_EMAIL,
+            To: process.env.SALES_EMAIL || process.env.TO_EMAIL,
             Subject: `New Contact Form Submission - ${projectTypeDisplayNames[projectType] || projectType} Project`,
             HtmlBody: generateEmailHTML({
                 name,
