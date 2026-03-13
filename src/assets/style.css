@@ -279,7 +279,7 @@ nav a.current-page:hover {
 }
 
 .hero-logo-img {
-    max-width: min(800px, 90vw);
+    max-width: min(350px, 50vw);
     max-height: 100%;
     height: auto;
     object-fit: contain;
@@ -1876,7 +1876,7 @@ body.loading {
     }
 
     .hero-logo img {
-        max-width: 80vw;
+        max-width: min(280px, 70vw);
     }
 
     .hero-slideshow {
