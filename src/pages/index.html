@@ -562,8 +562,11 @@
         <p>&copy; <span id="year"></span> The Wooden Stone LLC. All rights reserved.</p>
     </footer>
 
-    <!-- Recent Projects (projects-data.js is loaded once via the deferred script in <head>) -->
+    <!-- Recent Projects (projects-data.js is loaded once via the deferred script in <head>).
+         Wrapped in an IIFE so local helpers (renderProjects, etc.) don't collide with
+         same-named globals declared in projects-data.js for the portfolio page. -->
     <script>
+    (function () {
         // Parse date string to Date object for sorting
         function parseProjectDate(dateString) {
             if (!dateString) return new Date(0);
@@ -684,6 +687,7 @@
             // Initial load - show recent projects
             switchView('recent');
         });
+    })();
     </script>
 
     <!--Start of Tawk.to Script-->
