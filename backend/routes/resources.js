@@ -265,7 +265,7 @@ function getEmailTemplate(resourceName, downloadUrl, recipientName, protocol, ho
                     <div class="footer">
                         <p>The Wooden Stone LLC<br>
                         44720 Trinity Dr, Clinton Township, MI 48038<br>
-                        Serving Michigan, Ohio, and Indiana</p>
+                        Serving Michigan, Ohio, Indiana, Illinois, and Wisconsin &mdash; with the ability to service all 48 mainland states</p>
                         <p><a href="${protocol || 'https'}://${host || 'woodenstonemi.com'}/resources">Unsubscribe</a></p>
                     </div>
                 </div>
@@ -288,7 +288,7 @@ If you have any questions about your project or need a quote, feel free to conta
 
 The Wooden Stone LLC
 44720 Trinity Dr, Clinton Township, MI 48038
-Serving Michigan, Ohio, and Indiana
+Serving Michigan, Ohio, Indiana, Illinois, and Wisconsin — with the ability to service all 48 mainland states
         `
     };
 }

@@ -65,6 +65,11 @@ async function build() {
             await fs.copy('CNAME', 'dist/CNAME');
         }
 
+        // Copy Open Graph image if it exists
+        if (await fs.pathExists('og-image.jpg')) {
+            await fs.copy('og-image.jpg', 'dist/og-image.jpg');
+        }
+
         // Copy robots.txt if it exists
         if (await fs.pathExists('robots.txt')) {
             await fs.copy('robots.txt', 'dist/robots.txt');
