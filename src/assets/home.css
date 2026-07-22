@@ -169,7 +169,35 @@ body.home .ws-cite {
 
 /* Section theme scopes */
 body.home .ws-section {
+    position: relative;
     padding: 88px var(--ws-pad);
+}
+
+/* Vertical stage tags on section edges (decorative) */
+body.home .ws-stage-tag {
+    position: absolute;
+    top: 50%;
+    right: 26px;
+    transform: translateY(-50%);
+    writing-mode: vertical-rl;
+    font-family: var(--ws-sans);
+    font-weight: 500;
+    font-size: 10px;
+    letter-spacing: .4em;
+    text-transform: uppercase;
+    color: rgba(217, 184, 124, .28);
+    pointer-events: none;
+    user-select: none;
+}
+
+body.home .ws-ivory .ws-stage-tag {
+    color: rgba(126, 94, 51, .30);
+}
+
+@media (max-width: 960px) {
+    body.home .ws-stage-tag {
+        display: none;
+    }
 }
 
 body.home .ws-field {
@@ -612,6 +640,78 @@ body.home .ws-measures p {
     margin: 0;
 }
 
+/* Field-evidence photo cards: desaturated shots with caption bars.
+   Captions sit on a solid bar, never on the photo. */
+body.home .ws-evidence {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    margin-top: 52px;
+}
+
+body.home .ws-evidence figure {
+    margin: 0;
+    border: 1px solid rgba(138, 106, 59, .35);
+    background-color: var(--ws-field);
+}
+
+body.home .ws-evidence img {
+    display: block;
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    filter: saturate(.86);
+}
+
+body.home .ws-evidence figcaption {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 14px 18px;
+    background-color: var(--ws-field);
+    border-top: 1px solid var(--ws-line-soft);
+}
+
+body.home .ws-evidence figcaption span:first-child {
+    font-family: var(--ws-sans);
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--ws-bronze-hi);
+}
+
+body.home .ws-evidence figcaption span:last-child {
+    font-family: var(--ws-sans);
+    font-weight: 300;
+    font-size: 11.5px;
+    letter-spacing: .08em;
+    color: rgba(244, 241, 233, .72);
+}
+
+@media (max-width: 768px) {
+    body.home .ws-evidence {
+        grid-template-columns: 1fr;
+        gap: 22px;
+    }
+
+    body.home .ws-evidence img {
+        height: 230px;
+    }
+}
+
+/* Inline diagrams (hub-and-spoke, two-company loop) */
+body.home .ws-diagram {
+    margin: 48px auto 0;
+    max-width: 470px;
+}
+
+body.home .ws-diagram svg {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
 /* --------------------------------------------------------------------------
    03 The Program (checkpoints)
    -------------------------------------------------------------------------- */
@@ -848,10 +948,63 @@ body.home footer {
     letter-spacing: .04em;
 }
 
-body.home .ws-footer-line {
+body.home .ws-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
     max-width: 880px;
-    margin: 0 auto 12px;
-    line-height: 1.8;
+    margin: 0 auto 18px;
+    padding-bottom: 22px;
+    text-align: center;
+    border-bottom: 1px solid var(--ws-line-soft);
+}
+
+body.home .ws-footer p {
+    margin: 0;
+}
+
+body.home .ws-footer-brand {
+    font-family: var(--ws-serif);
+    font-weight: 500;
+    font-size: 17px;
+    letter-spacing: .02em;
+    color: var(--ws-paper);
+}
+
+body.home .ws-footer-tag {
+    font-family: var(--ws-sans);
+    font-weight: 500;
+    font-size: 10.5px;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--ws-bronze);
+}
+
+body.home .ws-footer-nap {
+    font-size: 13px;
+    color: rgba(244, 241, 233, .72);
+}
+
+body.home .ws-footer-nap a {
+    color: var(--ws-bronze-hi);
+    text-decoration: none;
+    font-variant-numeric: tabular-nums;
+}
+
+body.home .ws-footer-nap a:hover {
+    text-decoration: underline;
+}
+
+body.home .ws-footer-states {
+    font-size: 11.5px;
+    color: rgba(244, 241, 233, .55);
+}
+
+body.home .ws-footer-copy {
+    margin: 0;
+    text-align: center;
+    font-size: 11.5px;
+    color: rgba(244, 241, 233, .45);
 }
 
 body.home .sticky-cta {
