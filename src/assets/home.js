@@ -12,29 +12,38 @@
 
     var REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-    /* "The Standard, in Four Frames": the slideshow tells the process story
-       (template, fabricate, install, punch). Stage captions live OUTSIDE the
-       aria-hidden media layer as real text and are synced here. The photos
-       are approved stand-ins until dedicated process photography is shot. */
-    var STAGES = [
-        { kicker: '01 · Template', line: 'Measured once. Cut once.', src: 'images/estimating-blueprint-hero.jpg' },
-        { kicker: '02 · Fabricate', line: 'Your slab, not a substitute.', src: 'images/Scopes & Materials/countertops-hero.jpg' },
-        { kicker: '03 · Install', line: 'Units, not headaches.', src: 'images/on-time-installations-hero.jpg' },
-        { kicker: '04 · Punch', line: 'Signed off before you ask.', src: 'images/quality-inspection-hero.jpg' }
-    ];
-    var INTERVAL = 7000;
+    /* Hero slideshow: the original site's rotating real-project photos, kept
+       and restyled for the new design. Images come from script.js's global
+       getRandomInteriorImages() ({src, alt, projectName} objects). The project
+       name is shown as a caption and indicators are generated to match. */
+    var INTERVAL = 5500;
 
     function initStorySlides() {
         var wrap = document.querySelector('.ws-slides');
         if (!wrap) return;
 
+        var sources = [];
+        try {
+            if (typeof getRandomInteriorImages === 'function') {
+                sources = getRandomInteriorImages(6) || [];
+            }
+        } catch (e) {
+            sources = [];
+        }
+        if (!sources.length) {
+            sources = [
+                { src: 'images/on-time-installations-hero.jpg', projectName: 'The Wooden Stone' },
+                { src: 'images/Scopes & Materials/countertops-hero.jpg', projectName: 'The Wooden Stone' }
+            ];
+        }
+
         var frag = document.createDocumentFragment();
-        STAGES.forEach(function (stage, i) {
+        sources.forEach(function (item, i) {
             var slide = document.createElement('div');
             slide.className = 'ws-slide' + (i === 0 ? ' active' : '');
             var img = document.createElement('img');
-            img.src = stage.src;
-            img.alt = '';
+            img.src = item.src;
+            img.alt = item.projectName ? (item.projectName + ' - completed project') : '';
             img.decoding = 'async';
             if (i !== 0) img.loading = 'lazy';
             slide.appendChild(img);
@@ -43,14 +52,34 @@
         wrap.innerHTML = '';
         wrap.appendChild(frag);
 
+        var projectEl = document.querySelector('.ws-show-project');
+
+        /* Build one indicator per slide to match the real slide count. */
+        var ticksWrap = document.querySelector('.ws-ticks');
+        var ticks = [];
+        if (ticksWrap) {
+            ticksWrap.innerHTML = '';
+            sources.forEach(function (item, i) {
+                var tick = document.createElement('button');
+                tick.type = 'button';
+                tick.className = 'ws-tick' + (i === 0 ? ' active' : '');
+                tick.setAttribute('aria-label', 'Show project ' + (i + 1));
+                ticksWrap.appendChild(tick);
+                ticks.push(tick);
+            });
+        }
+
         var slides = wrap.children;
-        var kickerEl = document.querySelector('.ws-stage-kicker');
-        var lineEl = document.querySelector('.ws-stage-line');
-        var ticks = Array.prototype.slice.call(document.querySelectorAll('.ws-tick'));
         var current = 0;
         var timer = null;
         var userPaused = false;
         var hoverPaused = false;
+
+        function label(item) {
+            return item && item.projectName
+                ? String(item.projectName).toLowerCase().replace(/\b\w/g, function (m) { return m.toUpperCase(); })
+                : ' ';
+        }
 
         function show(i) {
             slides[current].classList.remove('active');
@@ -58,9 +87,10 @@
             current = i;
             slides[current].classList.add('active');
             if (ticks[current]) ticks[current].classList.add('active');
-            if (kickerEl) kickerEl.textContent = STAGES[current].kicker;
-            if (lineEl) lineEl.textContent = STAGES[current].line;
+            if (projectEl) projectEl.textContent = label(sources[current]);
         }
+
+        if (projectEl) projectEl.textContent = label(sources[0]);
 
         function next() {
             show((current + 1) % slides.length);
@@ -79,7 +109,7 @@
             }
         }
 
-        /* Manual stage selection always works, including under reduced
+        /* Manual project selection always works, including under reduced
            motion; it only restarts the timer when autoplay is allowed. */
         ticks.forEach(function (tick, i) {
             tick.addEventListener('click', function () {
@@ -96,17 +126,17 @@
                 btn.classList.toggle('paused', userPaused);
                 btn.setAttribute('aria-pressed', String(userPaused));
                 btn.setAttribute('aria-label',
-                    userPaused ? 'Play process slideshow' : 'Pause process slideshow');
+                    userPaused ? 'Play project slideshow' : 'Pause project slideshow');
                 if (userPaused) stop(); else play();
             });
         }
 
-        var hero = document.querySelector('.ws-hero');
-        if (hero) {
-            hero.addEventListener('mouseenter', function () { hoverPaused = true; stop(); });
-            hero.addEventListener('mouseleave', function () { hoverPaused = false; play(); });
-            hero.addEventListener('focusin', function () { hoverPaused = true; stop(); });
-            hero.addEventListener('focusout', function () { hoverPaused = false; play(); });
+        var show_panel = document.querySelector('.ws-hero-show');
+        if (show_panel) {
+            show_panel.addEventListener('mouseenter', function () { hoverPaused = true; stop(); });
+            show_panel.addEventListener('mouseleave', function () { hoverPaused = false; play(); });
+            show_panel.addEventListener('focusin', function () { hoverPaused = true; stop(); });
+            show_panel.addEventListener('focusout', function () { hoverPaused = false; play(); });
         }
 
         document.addEventListener('visibilitychange', function () {
