@@ -1004,7 +1004,7 @@ body.home .ws-footer-copy {
     margin: 0;
     text-align: center;
     font-size: 11.5px;
-    color: rgba(244, 241, 233, .45);
+    color: rgba(244, 241, 233, .55);
 }
 
 body.home .sticky-cta {
@@ -1018,6 +1018,76 @@ body.home .sticky-cta a {
     letter-spacing: .14em;
     text-transform: uppercase;
     font-size: 13px;
+}
+
+/* --------------------------------------------------------------------------
+   Exit-intent popup (injected site-wide by script.js) re-themed dark on the
+   homepage only. Selectors reach it because it is appended to document.body.
+   -------------------------------------------------------------------------- */
+
+body.home .exit-intent-popup-content {
+    background-color: var(--ws-field2);
+    border: 1px solid var(--ws-line);
+    border-radius: 0;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, .55);
+}
+
+body.home .exit-intent-popup-content h2 {
+    font-family: var(--ws-serif);
+    font-weight: 500;
+    color: var(--ws-paper);
+}
+
+body.home .exit-intent-popup-content p {
+    color: rgba(244, 241, 233, .74);
+}
+
+body.home .exit-intent-close {
+    color: rgba(244, 241, 233, .7);
+}
+
+body.home .exit-intent-close:hover {
+    color: var(--ws-bronze-hi);
+}
+
+body.home .exit-intent-form input[type="email"],
+body.home .exit-intent-form input[type="text"] {
+    background-color: rgba(244, 241, 233, .04);
+    border: 1px solid var(--ws-line);
+    border-radius: 0;
+    color: var(--ws-paper);
+}
+
+body.home .exit-intent-form input::placeholder {
+    color: rgba(244, 241, 233, .5);
+}
+
+body.home .exit-intent-form input[type="email"]:focus,
+body.home .exit-intent-form input[type="text"]:focus {
+    border-color: var(--ws-bronze-hi);
+}
+
+body.home .exit-intent-form .cta-button {
+    background-color: var(--ws-bronze);
+    color: var(--ws-field);
+    border: 1px solid var(--ws-bronze-deep);
+    border-radius: 0;
+    font-family: var(--ws-sans);
+    font-weight: 500;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    font-size: 12px;
+    min-width: 0;
+}
+
+body.home .exit-intent-form .cta-button:hover {
+    background-color: var(--ws-bronze-hi);
+    border-color: var(--ws-bronze-deep);
+    color: var(--ws-field);
+}
+
+body.home .exit-intent-privacy {
+    color: rgba(244, 241, 233, .55);
 }
 
 /* --------------------------------------------------------------------------
