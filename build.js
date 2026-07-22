@@ -17,6 +17,7 @@ async function build() {
 
         // Copy logo files to dist
         await fs.copy('assets/brand/The Wooden Stone Logo (Transparent).svg', 'dist/The Wooden Stone Logo (Transparent).svg');
+        await fs.copy('assets/brand/The Wooden Stone Logo (Light).svg', 'dist/The Wooden Stone Logo (Light).svg');
         await fs.copy('assets/brand/Wooden Stone Logo.svg', 'dist/Wooden Stone Logo.svg');
 
         // Generate favicon files from the icon

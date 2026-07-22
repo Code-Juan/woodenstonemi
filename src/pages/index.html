@@ -313,7 +313,7 @@
     <!-- Resource hints for faster loading -->
     <link rel="preload" href="assets/style.css" as="style">
     <link rel="preload" href="assets/script.js" as="script">
-    <link rel="preload" href="The Wooden Stone Logo (Transparent).svg" as="image">
+    <link rel="preload" href="The Wooden Stone Logo (Light).svg" as="image">
 
     <!-- Font preconnects to prevent FOIT/FOUT -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -373,18 +373,20 @@
     </script>
 
     <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="assets/home.css">
     <script defer src="assets/projects-data.js"></script>
     <script defer src="assets/script.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Open+Sans&display=swap"
+    <script defer src="assets/home.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Poppins:wght@300;500&display=swap"
         rel="stylesheet">
 </head>
 
-<body>
+<body class="home">
     <!-- Header -->
     <header>
         <div class="logo">
             <a href="/">
-                <img src="The Wooden Stone Logo (Transparent).svg" alt="The Wooden Stone LLC Logo">
+                <img src="The Wooden Stone Logo (Light).svg" alt="The Wooden Stone LLC Logo">
             </a>
         </div>
         <button class="mobile-menu-toggle" aria-label="Toggle navigation menu">
@@ -412,79 +414,162 @@
         </ol>
     </nav>
 
-    <!-- Hero Sections -->
-    <div class="hero-container">
-        <section class="hero-logo">
-            <div class="logo-container">
-                <img src="The Wooden Stone Logo (Transparent).svg" alt="The Wooden Stone LLC Logo"
-                    class="hero-logo-img">
+    <!-- Homepage rebrand (2026). The hero slideshow is owned by assets/home.js;
+         script.js's slideshow gate ('.hero-slideshow .slideshow-container')
+         intentionally has no match on this page. -->
+    <main>
+        <!-- Hero -->
+        <section class="ws-hero">
+            <div class="ws-hero-media" aria-hidden="true">
+                <div class="ws-slides">
+                    <!-- Ambient background slides are populated by home.js -->
+                </div>
+                <div class="ws-hero-scrim"></div>
+            </div>
+            <div class="ws-hero-inner rv">
+                <p class="ws-kicker">Commercial Countertop Fabrication &amp; Installation · Multifamily · MI · OH · IN · IL · WI</p>
+                <h1>You've bought countertops before.</h1>
+                <p class="ws-hero-sub">So you know it's never the slab that blows the schedule. It's the no-show crew,
+                    the material excuse, the punch list nobody closes. The Wooden Stone is a commercial countertop
+                    fabricator and installer for multifamily general contractors across Michigan, Ohio, Indiana,
+                    Illinois and Wisconsin, with the capability to serve all 48 mainland states. We are built so none
+                    of that happens on your job.</p>
+                <div class="ws-hero-ctas">
+                    <a href="/contact-us/#request-quote" class="cta-button ws-btn ws-btn-solid">Request a Bid</a>
+                    <a href="tel:+15862084628" class="ws-btn ws-btn-ghost ws-phone">(586) 208-4628</a>
+                </div>
+            </div>
+            <button class="ws-slides-pause" type="button" aria-pressed="false" aria-label="Pause background slideshow">
+                <svg class="ws-icon-pause" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 2h4v12H3zM9 2h4v12H9z"/></svg>
+                <svg class="ws-icon-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2l10 6-10 6z"/></svg>
+            </button>
+        </section>
+
+        <!-- Trust strip -->
+        <section class="ws-strip" aria-label="Credentials">
+            <ul>
+                <li><strong>Licensed &amp; Insured</strong><span>Full commercial coverage</span></li>
+                <li><strong>30+ Projects</strong><span>Multifamily communities delivered</span></li>
+                <li><strong>5 States</strong><span>MI OH IN IL WI · 48-state capable</span></li>
+                <li><strong>24-Hour</strong><span>Response on bids and questions</span></li>
+            </ul>
+        </section>
+
+        <!-- 01 · The Friday Problem -->
+        <section class="ws-section ws-field">
+            <div class="ws-wrap rv">
+                <div class="ws-level" aria-hidden="true"></div>
+                <p class="ws-kicker"><span class="ws-num">01</span> · The Friday Problem</p>
+                <h2 class="ws-h2">Six in ten construction projects finish behind schedule. Countertops are one of the
+                    quiet reasons why.</h2>
+                <p class="ws-cite">Dodge Data &amp; Analytics owner survey</p>
+                <ul class="ws-fail-list">
+                    <li>The template crew that shows up two days late and quietly resets your whole finish sequence.</li>
+                    <li>The slab that has been "on a truck" for three weeks.</li>
+                    <li>The install crew that turns eight units the first week and disappears the second.</li>
+                    <li>The punch list that is still open when the leasing office starts touring residents.</li>
+                    <li>The phone call that never gets returned.</li>
+                </ul>
+                <p class="ws-em">You've run this trade before. This is not that story.</p>
             </div>
         </section>
-        <section class="hero-slideshow">
-            <div class="slideshow-container">
-                <div class="slides">
-                    <!-- Slides will be dynamically populated with random interior images -->
+
+        <!-- 02 · The Standard -->
+        <section class="ws-section ws-ivory">
+            <div class="ws-wrap rv">
+                <p class="ws-kicker"><span class="ws-num">02</span> · The Standard We're Measured By</p>
+                <h2 class="ws-h2">We don't sell countertops. We sell the day your schedule holds.</h2>
+                <p class="ws-lead">Every decision in our shop and in the field serves four measures. They are the only
+                    four a general contractor actually grades us on.</p>
+                <div class="ws-measures">
+                    <article>
+                        <h3>Turnover dates kept</h3>
+                        <p>Countertops sit on the critical path to unit turns. We build the template, fabrication and
+                            install sequence backward from your dates, then hold it.</p>
+                    </article>
+                    <article>
+                        <h3>Punch lists closed</h3>
+                        <p>Open punch items block sign-off, retainage and lease-up. Ours get closed while the crew is
+                            still in the building, not after the third phone call.</p>
+                    </article>
+                    <article>
+                        <h3>Crews that show</h3>
+                        <p>Self-performing crews scheduled to your pull plan, not our convenience. When we commit to a
+                            floor, the crew is on it.</p>
+                    </article>
+                    <article>
+                        <h3>Calls returned</h3>
+                        <p>One accountable point of contact from preconstruction through closeout. Questions get
+                            answers the same day, not the same week.</p>
+                    </article>
                 </div>
             </div>
         </section>
-        <section class="hero-fade-overlay"></section>
-    </div>
 
-    <!-- Mission Statement Section -->
-    <section class="mission-section">
-        <div class="mission-content">
-            <h2>Our Mission</h2>
-            <p>At The Wooden Stone, our mission is to support general contractors by delivering reliable, high-quality
-                countertop and cabinetry solutions with industry-leading efficiency and professionalism. We specialize
-                in commercial projects, streamlining the fabrication and installation process to help our partners stay
-                on schedule and ahead of deadlines.</p>
-            <p>We are driven by a commitment to efficiency, teamwork, innovation, and safety—both on the jobsite and in
-                our shop. Our goal is to build trust through consistent performance, while investing in the people who
-                make it possible. By offering competitive benefits and fostering a supportive workplace, we aim to
-                create a company culture where employees thrive and customers have confidence in every project we
-                complete.</p>
-        </div>
-    </section>
+        <!-- 03 · The Program -->
+        <section class="ws-section ws-field">
+            <div class="ws-wrap rv">
+                <p class="ws-kicker"><span class="ws-num">03</span> · The Program</p>
+                <h2 class="ws-h2">Ten checkpoints between a signed contract and a signed-off unit.</h2>
+                <p class="ws-lead">Every project runs the same sequence, whether it's 40 units or 400. No improvising,
+                    no surprises, no waiting on answers.</p>
+                <ol class="ws-checkpoints ws-first">
+                    <li><span class="ws-ck-num">01</span>Scope &amp; unit-mix takeoff</li>
+                    <li><span class="ws-ck-num">02</span>Submittals &amp; material approvals</li>
+                    <li><span class="ws-ck-num">03</span>Field measure &amp; template</li>
+                    <li><span class="ws-ck-num">04</span>Slab allocation &amp; approval</li>
+                    <li><span class="ws-ck-num">05</span>Fabrication with in-shop QC</li>
+                    <li><span class="ws-ck-num">06</span>Staged delivery by building</li>
+                </ol>
+                <details class="ws-more">
+                    <summary>See all ten checkpoints</summary>
+                    <ol class="ws-checkpoints" start="7">
+                        <li><span class="ws-ck-num">07</span>Install to the pull schedule</li>
+                        <li><span class="ws-ck-num">08</span>Unit-count reporting as we go</li>
+                        <li><span class="ws-ck-num">09</span>Punch walk &amp; same-week closeout</li>
+                        <li><span class="ws-ck-num">10</span>Turnover sign-off &amp; warranty handoff</li>
+                    </ol>
+                </details>
+            </div>
+        </section>
 
-    <!-- Social Proof Section -->
-    <section class="social-proof-section">
-        <div class="container">
-            <div class="trust-badges">
-                <div class="trust-badge">
-                    <div class="badge-icon">✓</div>
-                    <div class="badge-content">
-                        <h3>Licensed & Insured</h3>
-                        <p>Fully licensed and insured for your protection</p>
-                    </div>
-                </div>
-                <div class="trust-badge">
-                    <div class="badge-icon">🏆</div>
-                    <div class="badge-content">
-                        <h3>30+ Projects Completed</h3>
-                        <p>Proven track record of successful projects</p>
-                    </div>
-                </div>
-                <div class="trust-badge">
-                    <div class="badge-icon">📍</div>
-                    <div class="badge-content">
-                        <h3>Serving MI, OH, IN, IL, WI</h3>
-                        <p>Regularly servicing multifamily projects with countertops &amp; cabinetry solutions across five major states.</p>
-                    </div>
-                </div>
-                <div class="trust-badge">
-                    <div class="badge-icon">⏱️</div>
-                    <div class="badge-content">
-                        <h3>24-Hour Response</h3>
-                        <p>Quick turnaround on quotes and inquiries</p>
-                    </div>
+        <!-- 04 · What Becomes Easier -->
+        <section class="ws-section ws-ivory">
+            <div class="ws-wrap rv">
+                <p class="ws-kicker"><span class="ws-num">04</span> · What Becomes Easier</p>
+                <h2 class="ws-h2">What a countertop package feels like when it isn't your problem.</h2>
+                <div class="ws-outcomes">
+                    <article>
+                        <h3>Your schedule</h3>
+                        <p>Countertops are a late, gating trade. When template, fabrication and install hit their
+                            windows, your last ninety days stop being a gamble.</p>
+                        <p class="ws-answer">What becomes easier: the Friday schedule call.</p>
+                    </article>
+                    <article>
+                        <h3>Your coordination</h3>
+                        <p>One vendor carries measure, material, fabrication, delivery and install. No broker layers,
+                            no finger-pointing between the shop and the crew.</p>
+                        <p class="ws-answer">What becomes easier: your phone.</p>
+                    </article>
+                    <article>
+                        <h3>Your risk</h3>
+                        <p>Licensed, insured and accountable to a written program. Every unit installed, inspected,
+                            signed off and warrantied.</p>
+                        <p class="ws-answer">What becomes easier: closeout.</p>
+                    </article>
                 </div>
             </div>
-            <p class="service-area-expanded" style="text-align: center; margin-top: 1.5rem; font-size: 1rem; font-weight: 600;">Ability to service all 48 mainland states.</p>
-            
+        </section>
+
+        <!-- 05 · Field Evidence (existing projects grid; IDs and JS untouched) -->
+        <section class="ws-section ws-ivory ws-proof">
+            <div class="ws-wrap rv">
+                <p class="ws-kicker"><span class="ws-num">05</span> · Field Evidence</p>
+
             <!-- Recent Projects -->
             <div class="recent-projects-section">
                 <div class="recent-projects-header">
-                    <h2 class="recent-projects-title">Projects</h2>
+                    <h2 class="recent-projects-title">Recent Multifamily Work</h2>
                     <div class="projects-toggle">
                         <button class="toggle-btn active" data-view="recent" id="toggle-recent">Recent Projects</button>
                         <button class="toggle-btn" data-view="top" id="toggle-top">Top Projects</button>
@@ -497,60 +582,34 @@
         </div>
     </section>
 
-    <!-- Call to Action Section -->
-    <section class="cta-section">
-        <div class="cta-container">
-            <h2>Ready to Start Your Project?</h2>
-            <p>Get a detailed quote for your commercial countertop project</p>
-            <div class="cta-buttons">
-                <a href="/contact-us/#request-quote" class="cta-button cta-primary">Request a Bid Today</a>
-                <a href="/project-portfolio/" class="cta-button cta-secondary">View Our Work</a>
+        <!-- 06 · Two Companies, One Loop -->
+        <section class="ws-section ws-field2 ws-loop">
+            <div class="ws-wrap rv">
+                <p class="ws-kicker"><span class="ws-num">06</span> · Two Companies, One Loop</p>
+                <h2 class="ws-h2">You've heard every installer blame the material. We can't.</h2>
+                <p class="ws-lead">Our sister company, Judestone, is a strategic stone supply operation. Slabs are
+                    sourced, tracked and staged inside the same loop that fabricates and installs them. When supply
+                    and installation answer to the same name, "the material didn't show" stops existing as an
+                    excuse.</p>
+                <p class="ws-em">Material is never our excuse. Nothing is.</p>
             </div>
-            <p style="text-align: center; margin-top: 1.5rem;">
-                <a href="/resources/" style="color: var(--accent-color); text-decoration: underline;">Download Free Resources & Guides →</a>
-            </p>
-        </div>
-    </section>
+        </section>
 
-    <!-- Services Section -->
-    <section class="services">
-        <div class="service-card">
-            <h3>ESTIMATING</h3>
-            <div class="service-image">
-                <img src="images/estimating-blueprint.jpg"
-                    alt="Architectural blueprint with drafting compass showing detailed floor plan" loading="lazy"
-                    srcset="images/estimating-blueprint-thumb.jpg 400w, images/estimating-blueprint-gallery.jpg 800w, images/estimating-blueprint-hero.jpg 1200w, images/estimating-blueprint.jpg 1600w"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw">
+        <!-- 07 · The Invitation -->
+        <section class="ws-section ws-field ws-close">
+            <div class="ws-wrap rv">
+                <p class="ws-kicker"><span class="ws-num">07</span> · The Invitation</p>
+                <h2 class="ws-h2">Judge us by the schedule.</h2>
+                <p class="ws-lead">Send us the unit mix and the dates you're carrying. We'll show you the program that
+                    protects them, in writing, before you award anything.</p>
+                <div class="ws-hero-ctas">
+                    <a href="/contact-us/#request-quote" class="cta-button ws-btn ws-btn-solid">Request a Bid</a>
+                    <a href="/resources/" class="ws-btn ws-btn-ghost">Get the Capability Packet</a>
+                </div>
+                <p class="ws-close-phone">Prefer a person? <a href="tel:+15862084628">(586) 208-4628</a></p>
             </div>
-        </div>
-        <div class="service-card">
-            <h3>PRE CONSTRUCTION</h3>
-            <div class="service-image">
-                <img src="images/pre-construction-team.jpg"
-                    alt="Three construction workers reviewing blueprints on concrete floor" loading="lazy"
-                    srcset="images/pre-construction-team-thumb.jpg 400w, images/pre-construction-team-gallery.jpg 800w, images/pre-construction-team-hero.jpg 1200w, images/pre-construction-team.jpg 1600w"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw">
-            </div>
-        </div>
-        <div class="service-card">
-            <h3>ON TIME INSTALLATIONS</h3>
-            <div class="service-image">
-                <img src="images/on-time-installations.jpg"
-                    alt="Modern bathroom with double vanity, marble countertop, and elegant fixtures" loading="lazy"
-                    srcset="images/on-time-installations-thumb.jpg 400w, images/on-time-installations-gallery.jpg 800w, images/on-time-installations-hero.jpg 1200w, images/on-time-installations.jpg 1600w"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw">
-            </div>
-        </div>
-        <div class="service-card">
-            <h3>QUALITY & INTEGRITY</h3>
-            <div class="service-image">
-                <img src="images/quality-inspection.jpg"
-                    alt="Construction worker with clipboard inspecting wall damage and cracks" loading="lazy"
-                    srcset="images/quality-inspection-thumb.jpg 400w, images/quality-inspection-gallery.jpg 800w, images/quality-inspection-hero.jpg 1200w, images/quality-inspection.jpg 1600w"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw">
-            </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
     <!-- Sticky CTA for Mobile -->
     <div class="sticky-cta">
@@ -559,6 +618,9 @@
 
     <!-- Footer -->
     <footer>
+        <p class="ws-footer-line">The Wooden Stone LLC · Commercial countertop fabrication &amp; installation for
+            multifamily construction · 44720 Trinity Dr, Clinton Township, MI 48038 · Serving Michigan, Ohio,
+            Indiana, Illinois &amp; Wisconsin · Capable in all 48 mainland states</p>
         <p>&copy; <span id="year"></span> The Wooden Stone LLC. All rights reserved.</p>
     </footer>
 
