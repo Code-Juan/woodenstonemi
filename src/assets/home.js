@@ -12,31 +12,28 @@
 
     var REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-    /* Ambient hero slideshow. Reuses script.js's global
-       getRandomInteriorImages() ({src, alt, projectName} objects) so image
-       curation stays in one place until the curated four-frame story lands. */
-    function initAmbientSlides() {
+    /* "The Standard, in Four Frames": the slideshow tells the process story
+       (template, fabricate, install, punch). Stage captions live OUTSIDE the
+       aria-hidden media layer as real text and are synced here. The photos
+       are approved stand-ins until dedicated process photography is shot. */
+    var STAGES = [
+        { kicker: '01 · Template', line: 'Measured once. Cut once.', src: 'images/estimating-blueprint-hero.jpg' },
+        { kicker: '02 · Fabricate', line: 'Your slab, not a substitute.', src: 'images/Scopes & Materials/countertops-hero.jpg' },
+        { kicker: '03 · Install', line: 'Units, not headaches.', src: 'images/on-time-installations-hero.jpg' },
+        { kicker: '04 · Punch', line: 'Signed off before you ask.', src: 'images/quality-inspection-hero.jpg' }
+    ];
+    var INTERVAL = 7000;
+
+    function initStorySlides() {
         var wrap = document.querySelector('.ws-slides');
         if (!wrap) return;
 
-        var sources = [];
-        try {
-            if (typeof getRandomInteriorImages === 'function') {
-                sources = getRandomInteriorImages(5) || [];
-            }
-        } catch (e) {
-            sources = [];
-        }
-        if (!sources.length) {
-            sources = [{ src: 'images/on-time-installations-hero.jpg', alt: '' }];
-        }
-
         var frag = document.createDocumentFragment();
-        sources.forEach(function (item, i) {
+        STAGES.forEach(function (stage, i) {
             var slide = document.createElement('div');
             slide.className = 'ws-slide' + (i === 0 ? ' active' : '');
             var img = document.createElement('img');
-            img.src = item.src;
+            img.src = stage.src;
             img.alt = '';
             img.decoding = 'async';
             if (i !== 0) img.loading = 'lazy';
@@ -47,16 +44,26 @@
         wrap.appendChild(frag);
 
         var slides = wrap.children;
+        var kickerEl = document.querySelector('.ws-stage-kicker');
+        var lineEl = document.querySelector('.ws-stage-line');
+        var ticks = Array.prototype.slice.call(document.querySelectorAll('.ws-tick'));
         var current = 0;
         var timer = null;
         var userPaused = false;
         var hoverPaused = false;
-        var INTERVAL = 8000;
+
+        function show(i) {
+            slides[current].classList.remove('active');
+            if (ticks[current]) ticks[current].classList.remove('active');
+            current = i;
+            slides[current].classList.add('active');
+            if (ticks[current]) ticks[current].classList.add('active');
+            if (kickerEl) kickerEl.textContent = STAGES[current].kicker;
+            if (lineEl) lineEl.textContent = STAGES[current].line;
+        }
 
         function next() {
-            slides[current].classList.remove('active');
-            current = (current + 1) % slides.length;
-            slides[current].classList.add('active');
+            show((current + 1) % slides.length);
         }
 
         function play() {
@@ -72,6 +79,16 @@
             }
         }
 
+        /* Manual stage selection always works, including under reduced
+           motion; it only restarts the timer when autoplay is allowed. */
+        ticks.forEach(function (tick, i) {
+            tick.addEventListener('click', function () {
+                show(i);
+                stop();
+                play();
+            });
+        });
+
         var btn = document.querySelector('.ws-slides-pause');
         if (btn) {
             btn.addEventListener('click', function () {
@@ -79,7 +96,7 @@
                 btn.classList.toggle('paused', userPaused);
                 btn.setAttribute('aria-pressed', String(userPaused));
                 btn.setAttribute('aria-label',
-                    userPaused ? 'Play background slideshow' : 'Pause background slideshow');
+                    userPaused ? 'Play process slideshow' : 'Pause process slideshow');
                 if (userPaused) stop(); else play();
             });
         }
@@ -160,7 +177,7 @@
 
     document.addEventListener('DOMContentLoaded', function () {
         if (!document.body.classList.contains('home')) return;
-        initAmbientSlides();
+        initStorySlides();
         initReveal();
         initRail();
     });
