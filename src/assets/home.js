@@ -5,8 +5,8 @@
    This file owns the hero slideshow (with WCAG 2.2.2 pause control),
    reveal-on-scroll, and the scroll progress rail.
 
-   To change which photos appear in the hero slideshow, edit the
-   HERO_SLIDES list just below. */
+   To change the hero slideshow, edit SLIDE_MIX (how many exteriors /
+   kitchens / vanities show per load) or the photo pools just below. */
 
 (function () {
     'use strict';
@@ -16,36 +16,86 @@
     var REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)');
 
     /* ------------------------------------------------------------------ *
-     * HERO SLIDESHOW IMAGES - edit this list to control what shows.
+     * HERO SLIDESHOW - each page load randomly picks from the portfolio.
      *
-     * These are the finished countertop installs from real projects. To
-     * add a photo, copy a line and change the path + project. To remove
-     * one, delete its line (or put // in front to hide it temporarily).
-     * Any project image in projects-data.js can be used; the "-hero.jpg"
-     * (largest) variant is preferred for sharpness. Order = display order.
+     * SLIDE_MIX sets how many of each type appear per load. Change these
+     * numbers to shift the balance (they total the number of slides shown):
+     *   exteriors - photos of the buildings
+     *   kitchens  - finished kitchen installs (the largest share)
+     *   vanities  - bathroom / vanity installs (a small accent)
+     * The pools below list every photo eligible for each type; add or
+     * remove a line (or put // in front) to change what can be chosen.
+     * The "-hero.jpg" (largest) variant is used for sharpness.
      * ------------------------------------------------------------------ */
-    var HERO_SLIDES = [
-        // --- Kitchens ---
+    var SLIDE_MIX = { exteriors: 3, kitchens: 4, vanities: 1 };
+
+    var EXTERIOR_PHOTOS = [
+        { src: 'images/Previous Jobs/8. Ironworks Apartments/exterior-overview1-hero.jpg', project: 'Ironworks Apartments' },
+        { src: 'images/Previous Jobs/8. Ironworks Apartments/exterior-overview2-hero.jpg', project: 'Ironworks Apartments' },
+        { src: 'images/Previous Jobs/5. 450 Amsterdam Apartments/exterior-overview-real-hero.jpg', project: '450 Amsterdam Apartments' },
+        { src: 'images/Previous Jobs/9. State & Main Apartments/exterior-overview-hero.jpg', project: 'State & Main Apartments' },
+        { src: 'images/Previous Jobs/12. Chatham Apartments/exterior-overview-hero.jpg', project: 'Chatham Apartments' },
+        { src: 'images/Previous Jobs/6. Terra Station Apartments/exterior-overview-hero.jpg', project: 'Terra Station Apartments' },
+        { src: 'images/Previous Jobs/21. Baldwin Woods Apartments/exterior-overview-hero.jpg', project: 'Baldwin Woods Apartments' },
+        { src: 'images/Previous Jobs/13. Palms Apartments/exterior-overview-hero.jpg', project: 'Palms Apartments' },
+        { src: 'images/Previous Jobs/14. 2135 Hubbard/mavor-apartments-detroit-mi-building-photo-hero.jpg', project: '2135 Hubbard' },
+        { src: 'images/Previous Jobs/16. 25 E. Palmer (Barlum Apartments)/the-barlum-detroit-mi-primary-photo-hero.jpg', project: '25 E. Palmer' },
+        { src: 'images/Previous Jobs/10. Freewheel Apartments/freewheel-apartments-marquette-mi-primary-photo-hero.jpg', project: 'Freewheel Apartments' },
+        { src: 'images/Previous Jobs/7. Brightdawn Apartments/exterior-overview-hero.jpg', project: 'Brightdawn Apartments' },
+        { src: 'images/Previous Jobs/3. Preserve on Ash - Phase 1/Preserve-on-Ash-Phase-1_medium-hero.jpg', project: 'The Preserve on Ash' }
+    ];
+
+    var KITCHEN_PHOTOS = [
         { src: 'images/Previous Jobs/23. Seaton Place Apartments/kitchen-view1-hero.jpg', project: 'Seaton Place Apartments' },
+        { src: 'images/Previous Jobs/23. Seaton Place Apartments/kitchen-view2-hero.jpg', project: 'Seaton Place Apartments' },
         { src: 'images/Previous Jobs/23. Seaton Place Apartments/kitchen-dining-view-hero.jpg', project: 'Seaton Place Apartments' },
         { src: 'images/Previous Jobs/1. Woodview Commons/(Kitchen 1) woodview-commons-ann-arbor-mi-building-photo-hero.jpg', project: 'Woodview Commons Flats' },
+        { src: 'images/Previous Jobs/1. Woodview Commons/(Kitchen 2) woodview-commons-ann-arbor-mi-building-photo-hero.jpg', project: 'Woodview Commons Flats' },
+        { src: 'images/Previous Jobs/1. Woodview Commons/(Kitchen 3) woodview-commons-ann-arbor-mi-building-photo-hero.jpg', project: 'Woodview Commons Flats' },
+        { src: 'images/Previous Jobs/1. Woodview Commons/(Kitchen 4) woodview-commons-ann-arbor-mi-building-photo-hero.jpg', project: 'Woodview Commons Flats' },
         { src: 'images/Previous Jobs/13. Palms Apartments/kitchen-view-hero.jpg', project: 'Palms Apartments' },
+        { src: 'images/Previous Jobs/13. Palms Apartments/kitchen-view2-hero.jpg', project: 'Palms Apartments' },
         { src: 'images/Previous Jobs/7. Brightdawn Apartments/kitchen-view-hero.jpg', project: 'Brightdawn Apartments' },
-        { src: 'images/Previous Jobs/4. 3740 2nd Ave Apartments/Kitchen1 VIEW_3740 Apartments-hero.jpg', project: '3740 2nd Ave Apartments' },
-        // --- Baths ---
+        { src: 'images/Previous Jobs/19. Higgenbotham Garden Apartments/view-of-kitchen-hero.jpg', project: 'Higginbotham Garden Apartments' },
+        { src: 'images/Previous Jobs/4. 3740 2nd Ave Apartments/Kitchen1 VIEW_3740 Apartments-hero.jpg', project: '3740 2nd Ave Apartments' }
+    ];
+
+    var VANITY_PHOTOS = [
         { src: 'images/Previous Jobs/23. Seaton Place Apartments/bathroom-view1-hero.jpg', project: 'Seaton Place Apartments' },
+        { src: 'images/Previous Jobs/23. Seaton Place Apartments/bathroom-view2-hero.jpg', project: 'Seaton Place Apartments' },
         { src: 'images/Previous Jobs/1. Woodview Commons/(Bath 1) woodview-commons-ann-arbor-mi-building-photo-hero.jpg', project: 'Woodview Commons Flats' },
+        { src: 'images/Previous Jobs/1. Woodview Commons/(Bath 2) woodview-commons-ann-arbor-mi-building-photo-hero.jpg', project: 'Woodview Commons Flats' },
+        { src: 'images/Previous Jobs/4. 3740 2nd Ave Apartments/bath1 VIEW_3740 Apartments-hero.jpg', project: '3740 2nd Ave Apartments' },
         { src: 'images/Previous Jobs/13. Palms Apartments/bathroom-view-hero.jpg', project: 'Palms Apartments' }
     ];
+
     var INTERVAL = 5500;
+
+    /* Fisher-Yates shuffle returning up to n items (does not mutate input) */
+    function pickRandom(pool, n) {
+        var a = pool.slice();
+        for (var i = a.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+        }
+        return a.slice(0, Math.max(0, n));
+    }
+
+    function buildPlaylist() {
+        var chosen = []
+            .concat(pickRandom(EXTERIOR_PHOTOS, SLIDE_MIX.exteriors))
+            .concat(pickRandom(KITCHEN_PHOTOS, SLIDE_MIX.kitchens))
+            .concat(pickRandom(VANITY_PHOTOS, SLIDE_MIX.vanities));
+        return pickRandom(chosen, chosen.length).map(function (s) {
+            return { src: s.src, projectName: s.project };
+        });
+    }
 
     function initStorySlides() {
         var wrap = document.querySelector('.ws-slides');
         if (!wrap) return;
 
-        var sources = HERO_SLIDES.map(function (s) {
-            return { src: s.src, projectName: s.project };
-        });
+        var sources = buildPlaylist();
         if (!sources.length) {
             sources = [
                 { src: 'images/on-time-installations-hero.jpg', projectName: 'The Wooden Stone' },
