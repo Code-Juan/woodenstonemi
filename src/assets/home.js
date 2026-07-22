@@ -3,7 +3,10 @@
    initializes here because its gate requires '.hero-slideshow
    .slideshow-container', which the rebuilt hero intentionally does not use.
    This file owns the hero slideshow (with WCAG 2.2.2 pause control),
-   reveal-on-scroll, and the scroll progress rail. */
+   reveal-on-scroll, and the scroll progress rail.
+
+   To change which photos appear in the hero slideshow, edit the
+   HERO_SLIDES list just below. */
 
 (function () {
     'use strict';
@@ -12,24 +15,37 @@
 
     var REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-    /* Hero slideshow: the original site's rotating real-project photos, kept
-       and restyled for the new design. Images come from script.js's global
-       getRandomInteriorImages() ({src, alt, projectName} objects). The project
-       name is shown as a caption and indicators are generated to match. */
+    /* ------------------------------------------------------------------ *
+     * HERO SLIDESHOW IMAGES - edit this list to control what shows.
+     *
+     * These are the finished countertop installs from real projects. To
+     * add a photo, copy a line and change the path + project. To remove
+     * one, delete its line (or put // in front to hide it temporarily).
+     * Any project image in projects-data.js can be used; the "-hero.jpg"
+     * (largest) variant is preferred for sharpness. Order = display order.
+     * ------------------------------------------------------------------ */
+    var HERO_SLIDES = [
+        // --- Kitchens ---
+        { src: 'images/Previous Jobs/23. Seaton Place Apartments/kitchen-view1-hero.jpg', project: 'Seaton Place Apartments' },
+        { src: 'images/Previous Jobs/23. Seaton Place Apartments/kitchen-dining-view-hero.jpg', project: 'Seaton Place Apartments' },
+        { src: 'images/Previous Jobs/1. Woodview Commons/(Kitchen 1) woodview-commons-ann-arbor-mi-building-photo-hero.jpg', project: 'Woodview Commons Flats' },
+        { src: 'images/Previous Jobs/13. Palms Apartments/kitchen-view-hero.jpg', project: 'Palms Apartments' },
+        { src: 'images/Previous Jobs/7. Brightdawn Apartments/kitchen-view-hero.jpg', project: 'Brightdawn Apartments' },
+        { src: 'images/Previous Jobs/4. 3740 2nd Ave Apartments/Kitchen1 VIEW_3740 Apartments-hero.jpg', project: '3740 2nd Ave Apartments' },
+        // --- Baths ---
+        { src: 'images/Previous Jobs/23. Seaton Place Apartments/bathroom-view1-hero.jpg', project: 'Seaton Place Apartments' },
+        { src: 'images/Previous Jobs/1. Woodview Commons/(Bath 1) woodview-commons-ann-arbor-mi-building-photo-hero.jpg', project: 'Woodview Commons Flats' },
+        { src: 'images/Previous Jobs/13. Palms Apartments/bathroom-view-hero.jpg', project: 'Palms Apartments' }
+    ];
     var INTERVAL = 5500;
 
     function initStorySlides() {
         var wrap = document.querySelector('.ws-slides');
         if (!wrap) return;
 
-        var sources = [];
-        try {
-            if (typeof getRandomInteriorImages === 'function') {
-                sources = getRandomInteriorImages(6) || [];
-            }
-        } catch (e) {
-            sources = [];
-        }
+        var sources = HERO_SLIDES.map(function (s) {
+            return { src: s.src, projectName: s.project };
+        });
         if (!sources.length) {
             sources = [
                 { src: 'images/on-time-installations-hero.jpg', projectName: 'The Wooden Stone' },
