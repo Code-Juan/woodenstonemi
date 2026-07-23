@@ -720,6 +720,63 @@ body.home .ws-ck-num {
     margin-right: 12px;
 }
 
+/* Field-process photo row (jobsite crews), after the checkpoints */
+body.home .ws-process {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 56px;
+}
+
+body.home .ws-process figure {
+    margin: 0;
+    border: 1px solid var(--ws-bronze-deep);
+    background-color: var(--ws-field2);
+}
+
+body.home .ws-process img {
+    display: block;
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    filter: saturate(.86);
+}
+
+body.home .ws-process figcaption {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 14px 16px;
+    border-top: 1px solid var(--ws-line-soft);
+}
+
+body.home .ws-process figcaption span:first-child {
+    font-family: var(--ws-sans);
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--ws-bronze-hi);
+}
+
+body.home .ws-process figcaption span:last-child {
+    font-family: var(--ws-serif);
+    font-style: italic;
+    font-size: 14.5px;
+    color: rgba(244, 241, 233, .78);
+}
+
+@media (max-width: 760px) {
+    body.home .ws-process {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    body.home .ws-process img {
+        height: 240px;
+    }
+}
+
 /* --------------------------------------------------------------------------
    04 What Becomes Easier (ivory)
    -------------------------------------------------------------------------- */
