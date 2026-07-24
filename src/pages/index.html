@@ -759,7 +759,7 @@
             // Extract end date (after the dash) or start date if no dash
             const parts = dateString.split(' - ');
             const dateStr = parts.length > 1 ? parts[1].trim() : parts[0].trim();
-            
+
             // Parse month and year (e.g., "March 2025", "Nov 2024")
             const monthNames = {
                 'jan': 0, 'january': 0, 'feb': 1, 'february': 1, 'mar': 2, 'march': 2,
@@ -767,8 +767,10 @@
                 'jul': 6, 'july': 6, 'aug': 7, 'august': 7, 'sep': 8, 'september': 8,
                 'oct': 9, 'october': 9, 'nov': 10, 'november': 10, 'dec': 11, 'december': 11
             };
-            
-            const match = dateStr.match(/(\w+)\s+(\d{4})/i);
+
+            // Prefer the end date; if it doesn't parse (e.g. "In Progress"), use the start date
+            let match = dateStr.match(/(\w+)\s+(\d{4})/i);
+            if (!match && parts.length > 1) match = parts[0].trim().match(/(\w+)\s+(\d{4})/i);
             if (match) {
                 const month = monthNames[match[1].toLowerCase()];
                 const year = parseInt(match[2]);

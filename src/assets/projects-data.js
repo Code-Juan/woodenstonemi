@@ -89,8 +89,11 @@ const projectsData = [
         dates: "March 2025 - July 2025",
         images: [
             "images/Previous Jobs/8. Ironworks Apartments/exterior-overview1-hero.jpg",
-            "images/Previous Jobs/8. Ironworks Apartments/exterior-overview2-hero.jpg",
-            "images/Previous Jobs/8. Ironworks Apartments/exterior-overview3-hero.jpg"
+            "images/Previous Jobs/8. Ironworks Apartments/kitchen-view1-hero.png",
+            "images/Previous Jobs/8. Ironworks Apartments/kitchen-view2-hero.png",
+            "images/Previous Jobs/8. Ironworks Apartments/kitchen-view3-hero.png",
+            "images/Previous Jobs/8. Ironworks Apartments/bathroom-view1-hero.png",
+            "images/Previous Jobs/8. Ironworks Apartments/bathroom-view2-hero.png"
         ]
     },
     {
@@ -104,17 +107,21 @@ const projectsData = [
         client: "Braun Construction Group",
         dates: "April 2025 - Sept 2025",
         images: [
-            "images/Previous Jobs/7. Brightdawn Apartments/exterior-overview-hero.jpg",
-            "images/Previous Jobs/7. Brightdawn Apartments/kitchen-view-hero.jpg",
-            "images/Previous Jobs/7. Brightdawn Apartments/floor-plan-view-hero.jpg"
+            "images/Previous Jobs/7. Brightdawn Apartments/apartments-overview-hero.jpg",
+            "images/Previous Jobs/7. Brightdawn Apartments/kitchen-view1-hero.jpg",
+            "images/Previous Jobs/7. Brightdawn Apartments/kitchen-view2-hero.jpg",
+            "images/Previous Jobs/7. Brightdawn Apartments/kitchen-view3-hero.png",
+            "images/Previous Jobs/7. Brightdawn Apartments/bathroom-view1-hero.jpg",
+            "images/Previous Jobs/7. Brightdawn Apartments/bathroom-view2-hero.png",
+            "images/Previous Jobs/7. Brightdawn Apartments/bathroom-view3-hero.png"
         ]
     },
     {
         id: 7,
-        name: "THE PRESERVE ON ASH",
+        name: "THE PRESERVE ON ASH - PHASE 1",
         location: "Detroit, MI",
         type: "Multifamily Units & Amenities",
-        details: "73 Units, New Construction",
+        details: "69 Units, New Construction",
         scopes: "Quartz Countertops",
         materials: "Quartz Countertops",
         client: "Sachse Construction",
@@ -135,7 +142,8 @@ const projectsData = [
         client: "Williams Distributing",
         dates: "May 2025 - Aug 2025",
         images: [
-            "images/Previous Jobs/10. Freewheel Apartments/freewheel-apartments-marquette-mi-primary-photo-hero.jpg"
+            "images/Previous Jobs/10. Freewheel Apartments/freewheel-apartments-marquette-mi-primary-photo-hero.jpg",
+            "images/Previous Jobs/10. Freewheel Apartments/kitchen-view1-hero.png"
         ]
     },
     {
@@ -150,8 +158,10 @@ const projectsData = [
         dates: "Mar 2025 - May 2025",
         images: [
             "images/Previous Jobs/5. 450 Amsterdam Apartments/exterior-overview-hero.jpg",
-            "images/Previous Jobs/5. 450 Amsterdam Apartments/exterior-overview2-hero.jpg",
-            "images/Previous Jobs/5. 450 Amsterdam Apartments/exterior-overview-real-hero.jpg"
+            "images/Previous Jobs/5. 450 Amsterdam Apartments/kitchen-view3-hero.png",
+            "images/Previous Jobs/5. 450 Amsterdam Apartments/kitchen-view4-hero.png",
+            "images/Previous Jobs/5. 450 Amsterdam Apartments/bathroom-view2-hero.png",
+            "images/Previous Jobs/5. 450 Amsterdam Apartments/mailroom-view-hero.png"
         ]
     },
     {
@@ -227,8 +237,13 @@ const projectsData = [
         client: "Williams Distributing",
         dates: "Aug 2025 - Dec 2025",
         images: [
-            "images/Previous Jobs/6. Terra Station Apartments/exterior-overview-hero.jpg",
-            "images/Previous Jobs/6. Terra Station Apartments/exterior-overview2-hero.jpg"
+            "images/Previous Jobs/6. Terra Station Apartments/apartments-overview1-hero.webp",
+            "images/Previous Jobs/6. Terra Station Apartments/apartments-overview2-hero.webp",
+            "images/Previous Jobs/6. Terra Station Apartments/kitchen-view1-hero.jpg",
+            "images/Previous Jobs/6. Terra Station Apartments/kitchen-view2-hero.jpg",
+            "images/Previous Jobs/6. Terra Station Apartments/kitchen-view3-hero.jpg",
+            "images/Previous Jobs/6. Terra Station Apartments/bathroom-view1-hero.webp",
+            "images/Previous Jobs/6. Terra Station Apartments/bathroom-view2-hero.webp"
         ]
     },
     {
@@ -242,8 +257,9 @@ const projectsData = [
         client: "Sachse Construction",
         dates: "Jun 2025 - Nov 2025",
         images: [
-            "images/Previous Jobs/21. Baldwin Woods Apartments/exterior-overview-hero.jpg",
-            "images/Previous Jobs/21. Baldwin Woods Apartments/floor-plan-view-hero.jpg"
+            "images/Previous Jobs/21. Baldwin Woods Apartments/exterior-overview1-hero.png",
+            "images/Previous Jobs/21. Baldwin Woods Apartments/kitchen-view1-hero.png",
+            "images/Previous Jobs/21. Baldwin Woods Apartments/bathroom-view1-hero.png"
         ]
     },
     {
@@ -310,6 +326,68 @@ const projectsData = [
             "images/Previous Jobs/16. 25 E. Palmer (Barlum Apartments)/the-barlum-detroit-mi-building-photo-hero.jpg",
             "images/Previous Jobs/16. 25 E. Palmer (Barlum Apartments)/the-barlum-detroit-mi-building-photo (1)-hero.jpg",
             "images/Previous Jobs/16. 25 E. Palmer (Barlum Apartments)/the-barlum-detroit-mi-building-photo (2)-hero.jpg"
+        ]
+    },
+    {
+        id: 24,
+        name: "THE PRESERVE ON ASH - PHASE 2",
+        location: "Detroit, MI",
+        type: "Multifamily Units & Amenities",
+        details: "36 Units, New Construction",
+        scopes: "Quartz Countertops",
+        materials: "Quartz Countertops, Sink Fixtures",
+        client: "Sachse Construction",
+        dates: "May 2026 - In Progress",
+        images: [
+            "images/Previous Jobs/25. The Preserve on Ash - Phase 2/apartments-overview-hero.webp",
+            "images/Previous Jobs/25. The Preserve on Ash - Phase 2/kitchen-view1-hero.webp",
+            "images/Previous Jobs/25. The Preserve on Ash - Phase 2/kitchen-view2-hero.webp",
+            "images/Previous Jobs/25. The Preserve on Ash - Phase 2/kitchen-view3-hero.webp",
+            "images/Previous Jobs/25. The Preserve on Ash - Phase 2/bathroom-view1-hero.webp",
+            "images/Previous Jobs/25. The Preserve on Ash - Phase 2/bathroom-view2-hero.webp"
+        ]
+    },
+    {
+        id: 25,
+        name: "VESTER FLATS",
+        location: "Ferndale, MI",
+        type: "Multifamily Units & Amenities",
+        details: "72 Units, New Construction",
+        scopes: "Quartz Countertops",
+        materials: "Quartz Countertops, Sink Fixtures",
+        client: "Tower Construction",
+        dates: "Sep 2025 - In Progress",
+        images: [
+            "images/Previous Jobs/29. Vester Flats/apartments-overview-hero.png"
+        ]
+    },
+    {
+        id: 26,
+        name: "BRUSH WATSON MIDBLOCK",
+        location: "Detroit, MI",
+        type: "Multifamily Units & Amenities",
+        details: "184 Units, New Construction",
+        scopes: "Quartz Countertops",
+        materials: "Quartz Countertops, Sink Fixtures",
+        client: "St Clair Construction",
+        dates: "Dec 2025 - In Progress",
+        images: [
+            "images/Previous Jobs/36. Brush Watson Midblock/apartments-overview-hero.png",
+            "images/Previous Jobs/36. Brush Watson Midblock/apartments-overview1-hero.png"
+        ]
+    },
+    {
+        id: 27,
+        name: "LINDSEY CENTER REDEVELOPMENT",
+        location: "Troy, MI",
+        type: "Multifamily Units & Amenities",
+        details: "82 Units (Building B), New Construction",
+        scopes: "Quartz Countertops",
+        materials: "Quartz Countertops, Sink Fixtures",
+        client: "Tower Construction",
+        dates: "Dec 2025 - In Progress",
+        images: [
+            "images/under-construction-hero.jpg"
         ]
     }
 ];

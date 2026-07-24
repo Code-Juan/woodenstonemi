@@ -31,16 +31,15 @@
 
     var EXTERIOR_PHOTOS = [
         { src: 'images/Previous Jobs/8. Ironworks Apartments/exterior-overview1-hero.jpg', project: 'Ironworks Apartments' },
-        { src: 'images/Previous Jobs/8. Ironworks Apartments/exterior-overview2-hero.jpg', project: 'Ironworks Apartments' },
         { src: 'images/Previous Jobs/5. 450 Amsterdam Apartments/exterior-overview-real-hero.jpg', project: '450 Amsterdam Apartments' },
         { src: 'images/Previous Jobs/12. Chatham Apartments/exterior-overview-hero.jpg', project: 'Chatham Apartments' },
-        { src: 'images/Previous Jobs/6. Terra Station Apartments/exterior-overview-hero.jpg', project: 'Terra Station Apartments' },
+        { src: 'images/Previous Jobs/6. Terra Station Apartments/apartments-overview1-hero.webp', project: 'Terra Station Apartments' },
         { src: 'images/Previous Jobs/21. Baldwin Woods Apartments/exterior-overview-hero.jpg', project: 'Baldwin Woods Apartments' },
         { src: 'images/Previous Jobs/13. Palms Apartments/exterior-overview-hero.jpg', project: 'Palms Apartments' },
         { src: 'images/Previous Jobs/14. 2135 Hubbard/mavor-apartments-detroit-mi-building-photo-hero.jpg', project: '2135 Hubbard' },
         { src: 'images/Previous Jobs/16. 25 E. Palmer (Barlum Apartments)/the-barlum-detroit-mi-primary-photo-hero.jpg', project: '25 E. Palmer' },
         { src: 'images/Previous Jobs/10. Freewheel Apartments/freewheel-apartments-marquette-mi-primary-photo-hero.jpg', project: 'Freewheel Apartments' },
-        { src: 'images/Previous Jobs/7. Brightdawn Apartments/exterior-overview-hero.jpg', project: 'Brightdawn Apartments' },
+        { src: 'images/Previous Jobs/7. Brightdawn Apartments/apartments-overview-hero.jpg', project: 'Brightdawn Apartments' },
         { src: 'images/Previous Jobs/3. Preserve on Ash - Phase 1/Preserve-on-Ash-Phase-1_medium-hero.jpg', project: 'The Preserve on Ash' }
     ];
 
@@ -54,7 +53,7 @@
         { src: 'images/Previous Jobs/1. Woodview Commons/(Kitchen 4) woodview-commons-ann-arbor-mi-building-photo-hero.jpg', project: 'Woodview Commons Flats' },
         { src: 'images/Previous Jobs/13. Palms Apartments/kitchen-view-hero.jpg', project: 'Palms Apartments' },
         { src: 'images/Previous Jobs/13. Palms Apartments/kitchen-view2-hero.jpg', project: 'Palms Apartments' },
-        { src: 'images/Previous Jobs/7. Brightdawn Apartments/kitchen-view-hero.jpg', project: 'Brightdawn Apartments' },
+        { src: 'images/Previous Jobs/7. Brightdawn Apartments/kitchen-view1-hero.jpg', project: 'Brightdawn Apartments' },
         { src: 'images/Previous Jobs/19. Higgenbotham Garden Apartments/view-of-kitchen-hero.jpg', project: 'Higginbotham Garden Apartments' },
         { src: 'images/Previous Jobs/4. 3740 2nd Ave Apartments/Kitchen1 VIEW_3740 Apartments-hero.jpg', project: '3740 2nd Ave Apartments' }
     ];
