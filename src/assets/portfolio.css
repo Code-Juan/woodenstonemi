@@ -13,6 +13,8 @@ body.portfolio {
     --field: #15140F;
     --field2: #1C1A14;
     --paper: #F4F1E9;
+    --ink: #26231D;
+    --body-dark: #4A463E;
     --grey: #6E6A61;
     --line: rgba(217, 184, 124, .22);
     --line-soft: rgba(217, 184, 124, .10);
@@ -333,16 +335,20 @@ body.portfolio #projects-container {
     background-color: var(--field);
 }
 
-/* All rows share the deep field background; the card panel sits lighter on
-   top so it never blends into its row (no alternating-row background). */
-body.portfolio #projects-container {
-    background-color: var(--field);
-}
-
+/* Alternating rhythm: odd row = dark section + ivory card, even row = ivory
+   section + dark card. Each card is the opposite tone of its row so it can
+   never blend into the row behind it. */
 body.portfolio .project-spotlight {
     padding: 64px var(--pad);
     border-bottom: 1px solid var(--line-soft);
+}
+
+body.portfolio .project-spotlight:nth-child(odd) {
     background-color: var(--field);
+}
+
+body.portfolio .project-spotlight:nth-child(even) {
+    background-color: var(--paper);
 }
 
 body.portfolio .project-spotlight .container {
@@ -354,15 +360,19 @@ body.portfolio .project-spotlight .container {
     align-items: center;
 }
 
-/* Override style.css's light marble box so the theme text reads.
-   The panel sits a clear step lighter than the deep-field row behind it. */
+/* Card panel: dark by default (light text); flipped to ivory on odd rows.
+   Overrides style.css's light marble box. */
 body.portfolio .spotlight-box {
-    background-color: #24211A;
+    background-color: var(--field);
     border: 1px solid var(--bronze-deep);
     border-radius: 0;
     box-shadow: none;
     padding: 34px;
     margin-bottom: 0;
+}
+
+body.portfolio .project-spotlight:nth-child(odd) .spotlight-box {
+    background-color: var(--paper);
 }
 
 body.portfolio .spotlight-box h2 {
@@ -471,6 +481,46 @@ body.portfolio .phase-stat {
     font-family: var(--serif);
     font-size: 14px;
     color: rgba(244, 241, 233, .9);
+}
+
+/* Ivory card (odd rows): flip all text to dark tones so it reads on paper */
+body.portfolio .project-spotlight:nth-child(odd) .spotlight-box h2 {
+    color: var(--ink);
+}
+
+body.portfolio .project-spotlight:nth-child(odd) .project-details p {
+    color: var(--body-dark);
+    border-bottom-color: rgba(126, 94, 51, .18);
+}
+
+body.portfolio .project-spotlight:nth-child(odd) .project-details strong {
+    color: var(--bronze-ink);
+}
+
+body.portfolio .project-spotlight:nth-child(odd) .project-status {
+    border-color: rgba(126, 94, 51, .45);
+}
+
+body.portfolio .project-spotlight:nth-child(odd) .project-status.status-completed {
+    color: var(--bronze-ink);
+    border-color: var(--bronze-deep);
+}
+
+body.portfolio .project-spotlight:nth-child(odd) .project-phases {
+    border-top-color: rgba(126, 94, 51, .25);
+}
+
+body.portfolio .project-spotlight:nth-child(odd) .phase-item {
+    background-color: rgba(126, 94, 51, .08);
+    border-left-color: var(--bronze-deep);
+}
+
+body.portfolio .project-spotlight:nth-child(odd) .phase-label {
+    color: var(--bronze-ink);
+}
+
+body.portfolio .project-spotlight:nth-child(odd) .phase-stat {
+    color: var(--body-dark);
 }
 
 /* Gallery / carousel */
