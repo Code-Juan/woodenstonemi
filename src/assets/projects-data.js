@@ -412,6 +412,7 @@ function generateProjectHTML(project) {
         <div class="container">
             <div class="spotlight-box">
                 <h2>${project.name}</h2>
+                <span class="project-status status-${getProjectStatus(project).toLowerCase().replace(/\s+/g, '-')}">${getProjectStatus(project)}</span>
                 <div class="project-details">
                     <p><strong>Location:</strong> ${project.location}</p>
                     <p><strong>Type:</strong> ${project.type}</p>
@@ -592,13 +593,17 @@ function initializeCarousels() {
 }
 
 // Filter functionality
-let selectedType = '';
+let selectedStatus = '';
 let selectedScopes = [];
 
-// Function to get unique types from projects
-function getUniqueTypes() {
-    const types = projectsData.map(project => project.type);
-    return [...new Set(types)].sort();
+// Derive a project's status from its dates ("... - In Progress" vs completed)
+function getProjectStatus(project) {
+    return /in progress/i.test(project.dates || '') ? 'In Progress' : 'Completed';
+}
+
+// Function to get the statuses present in the data
+function getUniqueStatuses() {
+    return [...new Set(projectsData.map(getProjectStatus))].sort();
 }
 
 // Function to get unique scopes from projects
@@ -612,15 +617,14 @@ function getUniqueScopes() {
 
 // Function to populate filter options
 function populateFilters() {
-    // Populate type filter
-    const typeFilter = document.getElementById('type-filter');
-    if (typeFilter) {
-        const types = getUniqueTypes();
-        types.forEach(type => {
+    // Populate status filter
+    const statusFilter = document.getElementById('status-filter');
+    if (statusFilter) {
+        getUniqueStatuses().forEach(status => {
             const option = document.createElement('option');
-            option.value = type;
-            option.textContent = type;
-            typeFilter.appendChild(option);
+            option.value = status;
+            option.textContent = status;
+            statusFilter.appendChild(option);
         });
     }
 
@@ -644,9 +648,9 @@ function populateFilters() {
 function filterProjects() {
     let filtered = projectsData;
 
-    // Filter by type
-    if (selectedType) {
-        filtered = filtered.filter(project => project.type === selectedType);
+    // Filter by status
+    if (selectedStatus) {
+        filtered = filtered.filter(project => getProjectStatus(project) === selectedStatus);
     }
 
     // Filter by scopes
@@ -679,11 +683,11 @@ function updateScopesDisplay() {
 
 // Function to initialize filter event listeners
 function initializeFilters() {
-    // Type filter
-    const typeFilter = document.getElementById('type-filter');
-    if (typeFilter) {
-        typeFilter.addEventListener('change', (e) => {
-            selectedType = e.target.value;
+    // Status filter
+    const statusFilter = document.getElementById('status-filter');
+    if (statusFilter) {
+        statusFilter.addEventListener('change', (e) => {
+            selectedStatus = e.target.value;
             filterProjects();
         });
     }
@@ -745,12 +749,12 @@ function initializeFilters() {
     const clearFiltersBtn = document.getElementById('clear-filters');
     if (clearFiltersBtn) {
         clearFiltersBtn.addEventListener('click', () => {
-            selectedType = '';
+            selectedStatus = '';
             selectedScopes = [];
 
-            // Reset type filter
-            if (typeFilter) {
-                typeFilter.value = '';
+            // Reset status filter
+            if (statusFilter) {
+                statusFilter.value = '';
             }
 
             // Reset scopes checkboxes

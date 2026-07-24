@@ -38,7 +38,7 @@
     <!-- Resource hints for faster loading -->
     <link rel="preload" href="/assets/style.css" as="style">
     <link rel="preload" href="/assets/script.js" as="script">
-    <link rel="preload" href="/The Wooden Stone Logo (Transparent).svg" as="image">
+    <link rel="preload" href="/The Wooden Stone Logo (Light).svg" as="image">
 
     <!-- DNS prefetch for external resources -->
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
@@ -64,18 +64,19 @@
     <!-- Inline script removed - using single source of truth in script.js -->
 
     <link rel="stylesheet" href="/assets/style.css">
+    <link rel="stylesheet" href="/assets/portfolio.css">
     <script defer src="/assets/script.js"></script>
     <script defer src="/assets/projects-data.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Open+Sans&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Poppins:wght@300;500&display=swap"
         rel="stylesheet">
 </head>
 
-<body>
+<body class="portfolio">
     <!-- Header -->
     <header>
         <div class="logo">
             <a href="/">
-                <img src="/The Wooden Stone Logo (Transparent).svg" alt="The Wooden Stone LLC Logo">
+                <img src="/The Wooden Stone Logo (Light).svg" alt="The Wooden Stone LLC Logo">
             </a>
         </div>
         <button class="mobile-menu-toggle" aria-label="Toggle navigation menu">
@@ -124,9 +125,9 @@
             <h2 class="filters-title">FILTERS</h2>
             <div class="filter-controls">
                 <div class="filter-group">
-                    <label for="type-filter">Type</label>
-                    <select id="type-filter" class="filter-select">
-                        <option value="">SELECT TYPE</option>
+                    <label for="status-filter">Status</label>
+                    <select id="status-filter" class="filter-select">
+                        <option value="">ALL STATUSES</option>
                     </select>
                 </div>
                 <div class="filter-group">
