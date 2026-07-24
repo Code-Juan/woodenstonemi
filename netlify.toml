@@ -8,11 +8,20 @@
   to = "/index.html"
   status = 200
 
-# Remove trailing slashes for consistency
+# what-we-do has been deprecated and consolidated into the home page
+[[redirects]]
+  from = "/what-we-do"
+  to = "/"
+  status = 301
+  force = true
+
 [[redirects]]
   from = "/what-we-do/"
-  to = "/what-we-do"
+  to = "/"
   status = 301
+  force = true
+
+# Remove trailing slashes for consistency
 
 [[redirects]]
   from = "/scopes-materials/"
