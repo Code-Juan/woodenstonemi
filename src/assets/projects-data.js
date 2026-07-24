@@ -125,18 +125,6 @@ const projectsData = [
         ]
     },
     {
-        id: 8,
-        name: "ICON DEVELOPMENT OFFICE RENOVATION",
-        location: "Clinton Twp, MI",
-        type: "Office Renovation",
-        details: "Commercial Office Space",
-        scopes: "Quartz Countertops, Casework & Finish Trim Carpentry Installation",
-        materials: "Quartz Countertops, Sink Fixtures, Cabinetry",
-        client: "Icon Development, Inc",
-        dates: "April 2025 - May 2025",
-        images: ["placeholder", "placeholder", "placeholder"]
-    },
-    {
         id: 9,
         name: "FREEWHEEL APARTMENTS",
         location: "Marquette, MI",
@@ -164,20 +152,6 @@ const projectsData = [
             "images/Previous Jobs/5. 450 Amsterdam Apartments/exterior-overview-hero.jpg",
             "images/Previous Jobs/5. 450 Amsterdam Apartments/exterior-overview2-hero.jpg",
             "images/Previous Jobs/5. 450 Amsterdam Apartments/exterior-overview-real-hero.jpg"
-        ]
-    },
-    {
-        id: 11,
-        name: "STATE & MAIN APARTMENTS",
-        location: "Zeeland, MI",
-        type: "Multifamily Units & Amenities",
-        details: "22 Units, New Construction",
-        scopes: "Quartz Countertops",
-        materials: "Quartz Countertops, Sink Fixtures",
-        client: "Williams Distributing",
-        dates: "April 2025 - May 2025",
-        images: [
-            "images/Previous Jobs/9. State & Main Apartments/exterior-overview-hero.jpg"
         ]
     },
     {
@@ -289,24 +263,6 @@ const projectsData = [
         ]
     },
     {
-        id: 19,
-        name: "TEAM WELLNESS",
-        location: "Detroit, MI",
-        type: "Commercial",
-        details: "Healthcare Facility",
-        scopes: "Quartz Countertops, Casework & Finish Trim Carpentry Installation",
-        materials: "Quartz Countertops, Sink Fixtures",
-        client: "Icon Development, Inc",
-        dates: "Sep 2024 - Jan 2025",
-        images: [
-            "images/Previous Jobs/17. Team Wellness/desk-view-hero.jpg",
-            "images/Previous Jobs/17. Team Wellness/reception-view1-hero.jpg",
-            "images/Previous Jobs/17. Team Wellness/trim-view2-hero.jpg",
-            "images/Previous Jobs/17. Team Wellness/reception-view2-hero.jpg",
-            "images/Previous Jobs/17. Team Wellness/trim-view-hero.jpg"
-        ]
-    },
-    {
         id: 20,
         name: "PALMS APARTMENTS",
         location: "Detroit, MI",
@@ -354,23 +310,6 @@ const projectsData = [
             "images/Previous Jobs/16. 25 E. Palmer (Barlum Apartments)/the-barlum-detroit-mi-building-photo-hero.jpg",
             "images/Previous Jobs/16. 25 E. Palmer (Barlum Apartments)/the-barlum-detroit-mi-building-photo (1)-hero.jpg",
             "images/Previous Jobs/16. 25 E. Palmer (Barlum Apartments)/the-barlum-detroit-mi-building-photo (2)-hero.jpg"
-        ]
-    },
-    {
-        id: 23,
-        name: "ALTA HQ",
-        location: "Livonia, MI",
-        type: "Office Renovation",
-        details: "Commercial Office Space",
-        scopes: "Granite Countertops, Casework & Finish Trim Carpentry Installation",
-        materials: "Granite Countertops, Cabinetry",
-        client: "Wolverine Building Group",
-        dates: "Aug 2025 - Dec 2025",
-        images: [
-            "images/Previous Jobs/24. Alta HQ/Bathroom_Grab_Bars-hero.jpeg",
-            "images/Previous Jobs/24. Alta HQ/Bathroom_Sink-hero.jpeg",
-            "images/Previous Jobs/24. Alta HQ/Hallway_Trim-hero.jpeg",
-            "images/Previous Jobs/24. Alta HQ/Smaller_Hallway_Trim-hero.jpeg"
         ]
     }
 ];

@@ -33,7 +33,6 @@
         { src: 'images/Previous Jobs/8. Ironworks Apartments/exterior-overview1-hero.jpg', project: 'Ironworks Apartments' },
         { src: 'images/Previous Jobs/8. Ironworks Apartments/exterior-overview2-hero.jpg', project: 'Ironworks Apartments' },
         { src: 'images/Previous Jobs/5. 450 Amsterdam Apartments/exterior-overview-real-hero.jpg', project: '450 Amsterdam Apartments' },
-        { src: 'images/Previous Jobs/9. State & Main Apartments/exterior-overview-hero.jpg', project: 'State & Main Apartments' },
         { src: 'images/Previous Jobs/12. Chatham Apartments/exterior-overview-hero.jpg', project: 'Chatham Apartments' },
         { src: 'images/Previous Jobs/6. Terra Station Apartments/exterior-overview-hero.jpg', project: 'Terra Station Apartments' },
         { src: 'images/Previous Jobs/21. Baldwin Woods Apartments/exterior-overview-hero.jpg', project: 'Baldwin Woods Apartments' },
