@@ -333,13 +333,16 @@ body.portfolio #projects-container {
     background-color: var(--field);
 }
 
+/* All rows share the deep field background; the card panel sits lighter on
+   top so it never blends into its row (no alternating-row background). */
+body.portfolio #projects-container {
+    background-color: var(--field);
+}
+
 body.portfolio .project-spotlight {
     padding: 64px var(--pad);
     border-bottom: 1px solid var(--line-soft);
-}
-
-body.portfolio .project-spotlight:nth-child(even) {
-    background-color: var(--field2);
+    background-color: var(--field);
 }
 
 body.portfolio .project-spotlight .container {
@@ -351,9 +354,10 @@ body.portfolio .project-spotlight .container {
     align-items: center;
 }
 
-/* Override style.css's light marble box so the theme text reads */
+/* Override style.css's light marble box so the theme text reads.
+   The panel sits a clear step lighter than the deep-field row behind it. */
 body.portfolio .spotlight-box {
-    background-color: var(--field2);
+    background-color: #24211A;
     border: 1px solid var(--bronze-deep);
     border-radius: 0;
     box-shadow: none;

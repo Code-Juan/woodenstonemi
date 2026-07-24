@@ -75,7 +75,15 @@ const projectsData = [
         materials: "Quartz Countertops, Sink Fixtures, Cabinetry",
         client: "Icon Development, Inc",
         dates: "Mar 2025 - April 2025",
-        images: ["placeholder", "placeholder", "placeholder"]
+        images: [
+            "images/Previous Jobs/18. Waldon Ponds Apartments Phase 1/apartments-overview-hero.jpg",
+            "images/Previous Jobs/18. Waldon Ponds Apartments Phase 1/apartments-overview1-hero.jpg",
+            "images/Previous Jobs/18. Waldon Ponds Apartments Phase 1/kitchen-view1-hero.jpg",
+            "images/Previous Jobs/18. Waldon Ponds Apartments Phase 1/kitchen-view2-hero.jpg",
+            "images/Previous Jobs/18. Waldon Ponds Apartments Phase 1/bathroom-view1-hero.jpg",
+            "images/Previous Jobs/18. Waldon Ponds Apartments Phase 1/bathroom-view2-hero.jpg",
+            "images/Previous Jobs/18. Waldon Ponds Apartments Phase 1/bathroom-view3-hero.png"
+        ]
     },
     {
         id: 5,
