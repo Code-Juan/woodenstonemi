@@ -351,6 +351,16 @@ body.portfolio .project-spotlight .container {
     align-items: center;
 }
 
+/* Override style.css's light marble box so the theme text reads */
+body.portfolio .spotlight-box {
+    background-color: var(--field2);
+    border: 1px solid var(--bronze-deep);
+    border-radius: 0;
+    box-shadow: none;
+    padding: 34px;
+    margin-bottom: 0;
+}
+
 body.portfolio .spotlight-box h2 {
     font-family: var(--serif);
     font-weight: 500;
@@ -358,6 +368,7 @@ body.portfolio .spotlight-box h2 {
     line-height: 1.15;
     color: var(--paper);
     margin: 0;
+    text-align: left;
 }
 
 body.portfolio .project-status {
@@ -393,7 +404,7 @@ body.portfolio .project-details p {
     margin: 0;
     font-size: 14.5px;
     line-height: 1.5;
-    color: rgba(244, 241, 233, .8);
+    color: rgba(244, 241, 233, .92);
     padding-bottom: 9px;
     border-bottom: 1px solid var(--line-soft);
 }
@@ -411,6 +422,51 @@ body.portfolio .project-details strong {
     color: var(--bronze);
     display: block;
     margin-bottom: 2px;
+}
+
+/* Phase breakdown (multi-phase projects like The Preserve on Ash) */
+body.portfolio .project-phases {
+    display: grid;
+    gap: 12px;
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+}
+
+body.portfolio .phase-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px 14px;
+    background-color: rgba(244, 241, 233, .03);
+    border-left: 2px solid var(--bronze-deep);
+}
+
+body.portfolio .phase-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+body.portfolio .phase-label {
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--bronze-hi);
+}
+
+body.portfolio .phase-item .project-status {
+    margin: 0;
+    padding: 3px 9px;
+    font-size: 9px;
+}
+
+body.portfolio .phase-stat {
+    font-family: var(--serif);
+    font-size: 14px;
+    color: rgba(244, 241, 233, .9);
 }
 
 /* Gallery / carousel */

@@ -118,15 +118,25 @@ const projectsData = [
     },
     {
         id: 7,
-        name: "THE PRESERVE ON ASH - PHASE 1",
+        name: "THE PRESERVE ON ASH",
         location: "Detroit, MI",
         type: "Multifamily Units & Amenities",
-        details: "69 Units, New Construction",
+        details: "105 units across two phases, North Corktown",
         scopes: "Quartz Countertops",
-        materials: "Quartz Countertops",
+        materials: "Quartz Countertops, Sink Fixtures",
         client: "Sachse Construction",
-        dates: "Apr 2025 - Aug 2025",
+        dates: "Apr 2025 - In Progress",
+        phases: [
+            { label: "Phase 1", units: "69 Units", status: "Completed", dates: "Apr 2025 - Aug 2025" },
+            { label: "Phase 2", units: "36 Units", status: "In Progress", dates: "May 2026 - In Progress" }
+        ],
         images: [
+            "images/Previous Jobs/25. The Preserve on Ash - Phase 2/apartments-overview-hero.webp",
+            "images/Previous Jobs/25. The Preserve on Ash - Phase 2/kitchen-view1-hero.webp",
+            "images/Previous Jobs/25. The Preserve on Ash - Phase 2/kitchen-view2-hero.webp",
+            "images/Previous Jobs/25. The Preserve on Ash - Phase 2/kitchen-view3-hero.webp",
+            "images/Previous Jobs/25. The Preserve on Ash - Phase 2/bathroom-view1-hero.webp",
+            "images/Previous Jobs/25. The Preserve on Ash - Phase 2/bathroom-view2-hero.webp",
             "images/Previous Jobs/3. Preserve on Ash - Phase 1/Preserve-on-Ash-Phase-1_medium-hero.jpg",
             "images/Previous Jobs/3. Preserve on Ash - Phase 1/Preserve-on-Ash-Phase-1.2_medium-hero.jpg"
         ]
@@ -329,25 +339,6 @@ const projectsData = [
         ]
     },
     {
-        id: 24,
-        name: "THE PRESERVE ON ASH - PHASE 2",
-        location: "Detroit, MI",
-        type: "Multifamily Units & Amenities",
-        details: "36 Units, New Construction",
-        scopes: "Quartz Countertops",
-        materials: "Quartz Countertops, Sink Fixtures",
-        client: "Sachse Construction",
-        dates: "May 2026 - In Progress",
-        images: [
-            "images/Previous Jobs/25. The Preserve on Ash - Phase 2/apartments-overview-hero.webp",
-            "images/Previous Jobs/25. The Preserve on Ash - Phase 2/kitchen-view1-hero.webp",
-            "images/Previous Jobs/25. The Preserve on Ash - Phase 2/kitchen-view2-hero.webp",
-            "images/Previous Jobs/25. The Preserve on Ash - Phase 2/kitchen-view3-hero.webp",
-            "images/Previous Jobs/25. The Preserve on Ash - Phase 2/bathroom-view1-hero.webp",
-            "images/Previous Jobs/25. The Preserve on Ash - Phase 2/bathroom-view2-hero.webp"
-        ]
-    },
-    {
         id: 25,
         name: "VESTER FLATS",
         location: "Ferndale, MI",
@@ -422,6 +413,15 @@ function generateProjectHTML(project) {
                     <p><strong>Client:</strong> ${project.client}</p>
                     <p><strong>Project Start/Finish:</strong> ${project.dates}</p>
                 </div>
+                ${project.phases ? `<div class="project-phases">
+                    ${project.phases.map(ph => `<div class="phase-item">
+                        <div class="phase-head">
+                            <span class="phase-label">${ph.label}</span>
+                            <span class="project-status status-${ph.status.toLowerCase().replace(/\s+/g, '-')}">${ph.status}</span>
+                        </div>
+                        <span class="phase-stat">${ph.units} &middot; ${ph.dates}</span>
+                    </div>`).join('')}
+                </div>` : ''}
             </div>
             <div class="project-gallery">
                 <div class="carousel-container">
