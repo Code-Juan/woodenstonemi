@@ -1,0 +1,530 @@
+/* ==========================================================================
+   The Wooden Stone - Scopes & Materials (2026 rebrand theme)
+   Loaded ONLY by scopes-materials, after style.css. Scoped under body.scopes.
+   Countertop-first: supply + install in Michigan, cut-to-size supply nationwide.
+   ========================================================================== */
+
+body.scopes {
+    --bronze: #B08A4E;
+    --bronze-hi: #D9B87C;
+    --bronze-deep: #8A6A3B;
+    --bronze-ink: #7E5E33;
+    --field: #15140F;
+    --field2: #1C1A14;
+    --paper: #F4F1E9;
+    --ink: #26231D;
+    --body-dark: #4A463E;
+    --grey: #6E6A61;
+    --line: rgba(217, 184, 124, .22);
+    --line-soft: rgba(217, 184, 124, .10);
+    --serif: 'Lora', Georgia, serif;
+    --sans: 'Poppins', 'Segoe UI', Arial, sans-serif;
+    --hdr-h: 84px;
+    --pad: var(--container-padding, 24px);
+
+    background-color: var(--field);
+    color: var(--paper);
+    font-family: var(--serif);
+    padding-top: var(--hdr-h);
+}
+
+/* --------------------------------------------------------------------------
+   Fixed dark header + breadcrumbs (shared markup)
+   -------------------------------------------------------------------------- */
+body.scopes header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1200;
+    background-color: rgba(21, 20, 15, .92);
+    border-bottom: 1px solid var(--line);
+    min-height: var(--hdr-h);
+    box-sizing: border-box;
+}
+
+@supports (backdrop-filter: blur(6px)) {
+    body.scopes header {
+        background-color: rgba(21, 20, 15, .74);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    }
+}
+
+body.scopes nav a {
+    color: var(--paper);
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: .76rem;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+}
+
+body.scopes nav a:hover,
+body.scopes nav a.current-page {
+    color: var(--bronze-hi);
+}
+
+body.scopes .mobile-menu-toggle span {
+    background-color: var(--paper);
+}
+
+@media (max-width: 768px) {
+    body.scopes nav {
+        background-color: var(--field2);
+        border-top: 1px solid var(--line);
+    }
+
+    body.scopes nav a {
+        border-bottom: 1px solid var(--line-soft);
+    }
+}
+
+body.scopes .breadcrumbs {
+    background-color: var(--field);
+    border-bottom: 1px solid var(--line-soft);
+}
+
+body.scopes .breadcrumbs a,
+body.scopes .breadcrumbs span,
+body.scopes .breadcrumbs [aria-current="page"] {
+    color: var(--grey);
+    font-family: var(--sans);
+    font-weight: 300;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    font-size: .72rem;
+}
+
+body.scopes .breadcrumbs a:hover {
+    color: var(--bronze-hi);
+}
+
+/* --------------------------------------------------------------------------
+   Shared type + buttons
+   -------------------------------------------------------------------------- */
+body.scopes .sc-kicker {
+    font-family: var(--sans);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: .3em;
+    font-size: 11px;
+    color: var(--bronze);
+    margin: 0;
+}
+
+body.scopes .sc-kicker .sc-num {
+    color: var(--bronze-hi);
+}
+
+body.scopes .sc-h2 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(26px, 3.2vw, 40px);
+    line-height: 1.18;
+    margin: 16px 0 0;
+}
+
+body.scopes .sc-lead {
+    font-size: clamp(16px, 1.5vw, 18px);
+    line-height: 1.7;
+    max-width: 60ch;
+    margin: 20px 0 0;
+    color: rgba(244, 241, 233, .82);
+}
+
+body.scopes .sc-em {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(18px, 2vw, 22px);
+    line-height: 1.5;
+    color: var(--bronze-hi);
+    margin: 26px 0 0;
+}
+
+body.scopes .sc-btn {
+    display: inline-block;
+    font-family: var(--sans);
+    font-weight: 500;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    font-size: 12px;
+    padding: 17px 30px;
+    text-decoration: none;
+    border-radius: 0;
+    min-width: 0;
+    transition: background-color .25s ease, color .25s ease, transform .25s ease;
+}
+
+body.scopes .sc-btn-solid {
+    background-color: var(--bronze);
+    color: var(--field);
+    border: 1px solid var(--bronze-deep);
+}
+
+body.scopes .sc-btn-solid:hover {
+    background-color: var(--bronze-hi);
+    color: var(--field);
+    transform: translateY(-2px);
+}
+
+body.scopes .sc-btn-ghost {
+    background-color: transparent;
+    color: var(--paper);
+    border: 1px solid var(--line);
+}
+
+body.scopes .sc-btn-ghost:hover {
+    border-color: var(--bronze-hi);
+    color: var(--bronze-hi);
+    transform: translateY(-2px);
+}
+
+/* --------------------------------------------------------------------------
+   Hero
+   -------------------------------------------------------------------------- */
+body.scopes .sc-hero {
+    position: relative;
+    background-color: var(--field);
+    overflow: hidden;
+}
+
+body.scopes .sc-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(217, 184, 124, .05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(217, 184, 124, .05) 1px, transparent 1px);
+    background-size: 110px 110px;
+    pointer-events: none;
+}
+
+body.scopes .sc-hero-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 84px var(--pad);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, .9fr);
+    gap: 48px;
+    align-items: center;
+}
+
+body.scopes .sc-hero h1 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(34px, 5vw, 56px);
+    line-height: 1.08;
+    letter-spacing: -.01em;
+    color: var(--paper);
+    margin: 16px 0 0;
+}
+
+body.scopes .sc-hero-sub {
+    font-size: clamp(16px, 1.6vw, 19px);
+    line-height: 1.7;
+    color: rgba(244, 241, 233, .8);
+    max-width: 54ch;
+    margin: 22px 0 0;
+}
+
+body.scopes .sc-hero-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 32px;
+}
+
+body.scopes .sc-hero-media {
+    border: 1px solid var(--bronze-deep);
+    overflow: hidden;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, .5);
+}
+
+body.scopes .sc-hero-media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-height: 460px;
+    object-fit: cover;
+    filter: saturate(.9);
+}
+
+/* --------------------------------------------------------------------------
+   Sections
+   -------------------------------------------------------------------------- */
+body.scopes .sc-section {
+    padding: 88px var(--pad);
+}
+
+body.scopes .sc-field {
+    background-color: var(--field);
+    color: var(--paper);
+}
+
+body.scopes .sc-field2 {
+    background-color: var(--field2);
+    color: var(--paper);
+}
+
+body.scopes .sc-ivory {
+    background-color: var(--paper);
+    color: var(--ink);
+}
+
+body.scopes .sc-ivory .sc-h2 {
+    color: var(--ink);
+}
+
+body.scopes .sc-ivory .sc-kicker,
+body.scopes .sc-ivory .sc-kicker .sc-num {
+    color: var(--bronze-ink);
+}
+
+body.scopes .sc-ivory .sc-lead {
+    color: var(--body-dark);
+}
+
+body.scopes .sc-ivory .sc-em {
+    color: var(--bronze-ink);
+}
+
+body.scopes .sc-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+body.scopes .sc-mode {
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 10px;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--bronze-hi);
+    display: inline-block;
+    margin: 16px 0 0;
+    padding: 5px 12px;
+    border: 1px solid var(--bronze-deep);
+}
+
+body.scopes .sc-ivory .sc-mode {
+    color: var(--bronze-ink);
+}
+
+/* Materials list */
+body.scopes .sc-materials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 30px 0 0;
+    list-style: none;
+    padding: 0;
+}
+
+body.scopes .sc-materials li {
+    font-family: var(--sans);
+    font-weight: 300;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    font-size: 12px;
+    color: var(--paper);
+    padding: 9px 16px;
+    border: 1px solid var(--line);
+}
+
+body.scopes .sc-ivory .sc-materials li {
+    color: var(--ink);
+    border-color: rgba(126, 94, 51, .3);
+}
+
+/* Two-up section with image */
+body.scopes .sc-split {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+    gap: 48px;
+    align-items: center;
+}
+
+body.scopes .sc-split-media {
+    border: 1px solid var(--bronze-deep);
+    overflow: hidden;
+}
+
+body.scopes .sc-split-media img {
+    display: block;
+    width: 100%;
+    height: 380px;
+    object-fit: cover;
+    filter: saturate(.9);
+}
+
+/* Clarity strip: where we install vs supply */
+body.scopes .sc-where {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+    max-width: 1000px;
+    margin: 40px auto 0;
+    border: 1px solid var(--line);
+}
+
+body.scopes .sc-where > div {
+    padding: 32px 30px;
+}
+
+body.scopes .sc-where > div:first-child {
+    border-right: 1px solid var(--line);
+}
+
+body.scopes .sc-where h3 {
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--bronze-hi);
+    margin: 0 0 12px;
+}
+
+body.scopes .sc-where p {
+    margin: 0;
+    font-size: 15.5px;
+    line-height: 1.6;
+    color: rgba(244, 241, 233, .82);
+}
+
+/* --------------------------------------------------------------------------
+   CTA + footer
+   -------------------------------------------------------------------------- */
+body.scopes .cta-section {
+    position: relative;
+    background-color: var(--field);
+    padding: 96px var(--pad);
+    text-align: center;
+    overflow: hidden;
+}
+
+body.scopes .cta-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(217, 184, 124, .045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(217, 184, 124, .045) 1px, transparent 1px);
+    background-size: 110px 110px;
+    pointer-events: none;
+}
+
+body.scopes .cta-container {
+    position: relative;
+    max-width: 760px;
+    margin: 0 auto;
+}
+
+body.scopes .cta-section h2 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(26px, 3.4vw, 40px);
+    color: var(--paper);
+    margin: 0;
+}
+
+body.scopes .cta-section p {
+    color: rgba(244, 241, 233, .78);
+    font-size: 16px;
+    margin: 14px 0 0;
+}
+
+body.scopes .cta-buttons {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 28px;
+}
+
+body.scopes .cta-button {
+    font-family: var(--sans);
+    font-weight: 500;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    font-size: 12px;
+    padding: 17px 30px;
+    border-radius: 0;
+    min-width: 0;
+    border: 1px solid var(--bronze-deep);
+    transition: background-color .25s ease, color .25s ease, transform .25s ease;
+}
+
+body.scopes .cta-button.cta-primary {
+    background-color: var(--bronze);
+    color: var(--field);
+}
+
+body.scopes .cta-button.cta-primary:hover {
+    background-color: var(--bronze-hi);
+    color: var(--field);
+    transform: translateY(-2px);
+}
+
+body.scopes .cta-button.cta-secondary {
+    background-color: transparent;
+    color: var(--bronze-hi);
+    border-color: var(--line);
+}
+
+body.scopes .cta-button.cta-secondary:hover {
+    border-color: var(--bronze-hi);
+    color: var(--paper);
+    background-color: transparent;
+}
+
+body.scopes .cta-section a[style] {
+    color: var(--bronze-hi) !important;
+}
+
+body.scopes footer {
+    background-color: var(--field2);
+    border-top: 1px solid var(--line);
+    color: rgba(244, 241, 233, .6);
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 12.5px;
+}
+
+/* --------------------------------------------------------------------------
+   Responsive
+   -------------------------------------------------------------------------- */
+@media (max-width: 900px) {
+
+    body.scopes .sc-hero-inner,
+    body.scopes .sc-split {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+
+    body.scopes .sc-hero-media {
+        order: 2;
+    }
+}
+
+@media (max-width: 680px) {
+    body.scopes {
+        --hdr-h: 76px;
+    }
+
+    body.scopes .sc-section {
+        padding: 64px var(--pad);
+    }
+
+    body.scopes .sc-where {
+        grid-template-columns: 1fr;
+    }
+
+    body.scopes .sc-where > div:first-child {
+        border-right: none;
+        border-bottom: 1px solid var(--line);
+    }
+}
