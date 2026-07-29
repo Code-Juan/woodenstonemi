@@ -386,7 +386,39 @@ const projectsData = [
         client: "Tower Construction",
         dates: "Dec 2025 - In Progress",
         images: [
-            "images/under-construction-hero.jpg"
+            "images/Previous Jobs/40. Lindsey Center Redevelopment/apartments-overview-hero.jpg",
+            "images/Previous Jobs/40. Lindsey Center Redevelopment/apartments-overview1-hero.jpg",
+            "images/Previous Jobs/40. Lindsey Center Redevelopment/apartments-overview2-hero.jpg",
+            "images/Previous Jobs/40. Lindsey Center Redevelopment/island-view-hero.jpg",
+            "images/Previous Jobs/40. Lindsey Center Redevelopment/kitchen-view1-hero.jpg",
+            "images/Previous Jobs/40. Lindsey Center Redevelopment/kitchen-view2-hero.jpg",
+            "images/Previous Jobs/40. Lindsey Center Redevelopment/kitchen-view3-hero.jpg",
+            "images/Previous Jobs/40. Lindsey Center Redevelopment/kitchen-view4-hero.jpg",
+            "images/Previous Jobs/40. Lindsey Center Redevelopment/kitchen-view5-hero.jpg",
+            "images/Previous Jobs/40. Lindsey Center Redevelopment/kitchen-view6-hero.jpg",
+            "images/Previous Jobs/40. Lindsey Center Redevelopment/bathroom-view1-hero.jpg",
+            "images/Previous Jobs/40. Lindsey Center Redevelopment/bathroom-view2-hero.jpg",
+            "images/Previous Jobs/40. Lindsey Center Redevelopment/bathroom-view3-hero.jpg"
+        ]
+    },
+    {
+        id: 28,
+        name: "HUDSON VALLEY APARTMENTS",
+        location: "Lake Orion, MI",
+        type: "Multifamily Units & Amenities",
+        details: "24 Units, New Construction",
+        scopes: "Quartz Countertops",
+        materials: "Quartz Countertops, Sink Fixtures",
+        client: "Riverside Supply Company",
+        dates: "Aug 2025 - Feb 2026",
+        images: [
+            "images/Previous Jobs/15. Hudson Valley Apartments/apartments-overview-hero.jpg",
+            "images/Previous Jobs/15. Hudson Valley Apartments/apartments-overview1-hero.jpg",
+            "images/Previous Jobs/15. Hudson Valley Apartments/apartments-overview2-hero.jpg",
+            "images/Previous Jobs/15. Hudson Valley Apartments/kitchen-view1-hero.jpg",
+            "images/Previous Jobs/15. Hudson Valley Apartments/bathroom-view1-hero.jpg",
+            "images/Previous Jobs/15. Hudson Valley Apartments/bathroom-view2-hero.jpg",
+            "images/Previous Jobs/15. Hudson Valley Apartments/bathroom-view3-hero.jpg"
         ]
     }
 ];
