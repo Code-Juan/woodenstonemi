@@ -11,18 +11,10 @@ const projectsData = [
         client: "Williams Distributing/Rohde Construction",
         dates: "Nov 2024 - May 2025",
         images: [
+            "images/Previous Jobs/1. Woodview Commons/(BLDG. Overview) woodview-commons-ann-arbor-hero.jpg",
             "images/Previous Jobs/1. Woodview Commons/(Kitchen 1) woodview-commons-ann-arbor-mi-building-photo-hero.jpg",
             "images/Previous Jobs/1. Woodview Commons/(Kitchen 2) woodview-commons-ann-arbor-mi-building-photo-hero.jpg",
-            "images/Previous Jobs/1. Woodview Commons/(Kitchen 3) woodview-commons-ann-arbor-mi-building-photo-hero.jpg",
-            "images/Previous Jobs/1. Woodview Commons/(Kitchen 4) woodview-commons-ann-arbor-mi-building-photo-hero.jpg",
-            "images/Previous Jobs/1. Woodview Commons/(Bath 1) woodview-commons-ann-arbor-mi-building-photo-hero.jpg",
-            "images/Previous Jobs/1. Woodview Commons/(Bath 2) woodview-commons-ann-arbor-mi-building-photo-hero.jpg",
-            "images/Previous Jobs/1. Woodview Commons/f7a180_58b201d1f2524e57921183cc3bbd7fe2~mv2-hero.jpg",
-            "images/Previous Jobs/1. Woodview Commons/f7a180_c95f71bc1b22468dbebcea6aea1be972~mv2-hero.jpg",
-            "images/Previous Jobs/1. Woodview Commons/f7a180_da4f4164b25d435eadbfc9b81a97ca1d~mv2-hero.jpg",
-            "images/Previous Jobs/1. Woodview Commons/f7a180_0c74b0b201be419b8e7a823bf3dea9c8~mv2-hero.jpg",
-            "images/Previous Jobs/1. Woodview Commons/(Site Overview) woodview-commons-ann-arbor-hero.jpg",
-            "images/Previous Jobs/1. Woodview Commons/(BLDG. Overview) woodview-commons-ann-arbor-hero.jpg"
+            "images/Previous Jobs/1. Woodview Commons/(Site Overview) woodview-commons-ann-arbor-hero.jpg"
         ]
     },
     {
@@ -53,7 +45,6 @@ const projectsData = [
         client: "Williams Distributing",
         dates: "Apr 2025 - Jan 2026",
         images: [
-            "images/Previous Jobs/8. Ironworks Apartments/exterior-overview1-hero.jpg",
             "images/Previous Jobs/8. Ironworks Apartments/kitchen-view1-hero.png",
             "images/Previous Jobs/8. Ironworks Apartments/kitchen-view2-hero.png",
             "images/Previous Jobs/8. Ironworks Apartments/kitchen-view3-hero.png",
@@ -117,7 +108,7 @@ const projectsData = [
         client: "Williams Distributing",
         dates: "Jun 2025 - Jul 2025",
         images: [
-            "images/Previous Jobs/10. Freewheel Apartments/freewheel-apartments-marquette-mi-primary-photo-hero.jpg",
+            "images/Previous Jobs/10. Freewheel Apartments/freewheel-apartments-marquette-mi-primary-photo-hero.png",
             "images/Previous Jobs/10. Freewheel Apartments/kitchen-view1-hero.png"
         ]
     },
@@ -132,7 +123,7 @@ const projectsData = [
         client: "Jonna Construction Company",
         dates: "May 2025 - Jul 2025",
         images: [
-            "images/Previous Jobs/5. 450 Amsterdam Apartments/exterior-overview-hero.jpg",
+            "images/Previous Jobs/5. 450 Amsterdam Apartments/exterior-overview-hero.png",
             "images/Previous Jobs/5. 450 Amsterdam Apartments/kitchen-view3-hero.png",
             "images/Previous Jobs/5. 450 Amsterdam Apartments/kitchen-view4-hero.png",
             "images/Previous Jobs/5. 450 Amsterdam Apartments/bathroom-view2-hero.png",
@@ -150,9 +141,9 @@ const projectsData = [
         client: "Ronnisch Construction Group",
         dates: "Feb 2026 - Sep 2026",
         images: [
-            "images/Previous Jobs/19. Higgenbotham Garden Apartments/view-of-kitchen-hero.jpg",
-            "images/Previous Jobs/19. Higgenbotham Garden Apartments/view-from-north-parking-lot-hero.jpg",
-            "images/Previous Jobs/19. Higgenbotham Garden Apartments/view-from-indiana-hero.jpg"
+            "images/Previous Jobs/19. Higgenbotham Garden Apartments/view-of-kitchen-hero.png",
+            "images/Previous Jobs/19. Higgenbotham Garden Apartments/view-from-north-parking-lot-hero.png",
+            "images/Previous Jobs/19. Higgenbotham Garden Apartments/view-from-indiana-hero.png"
         ]
     },
     {
@@ -166,8 +157,8 @@ const projectsData = [
         client: "Ronnisch Construction Group",
         dates: "Jun 2026 - Sep 2026",
         images: [
-            "images/Previous Jobs/20. Higgenbotham School Apartments/commons-render-hero.jpg",
-            "images/Previous Jobs/20. Higgenbotham School Apartments/commons-render2-hero.jpg",
+            "images/Previous Jobs/20. Higgenbotham School Apartments/commons-render-hero.png",
+            "images/Previous Jobs/20. Higgenbotham School Apartments/commons-render2-hero.png",
             "images/Previous Jobs/20. Higgenbotham School Apartments/1732052558818-hero.webp",
             "images/Previous Jobs/20. Higgenbotham School Apartments/Higginbotham rendering-hero.jpg"
         ]
@@ -197,7 +188,7 @@ const projectsData = [
         client: "The Monahan Company",
         dates: "Apr 2025 - Jan 2026",
         images: [
-            "images/Previous Jobs/12. Chatham Apartments/exterior-overview-hero.jpg"
+            "images/Previous Jobs/12. Chatham Apartments/exterior-overview-hero.png"
         ]
     },
 
@@ -265,8 +256,8 @@ const projectsData = [
         dates: "Dec 2024 - May 2025",
         images: [
             "images/Previous Jobs/13. Palms Apartments/exterior-overview-hero.jpg",
-            "images/Previous Jobs/13. Palms Apartments/kitchen-view-hero.jpg",
-            "images/Previous Jobs/13. Palms Apartments/kitchen-view2-hero.jpg",
+            "images/Previous Jobs/13. Palms Apartments/kitchen-view-hero.webp",
+            "images/Previous Jobs/13. Palms Apartments/kitchen-view2-hero.webp",
             "images/Previous Jobs/13. Palms Apartments/bathroom-view-hero.jpg"
         ]
     },
