@@ -554,11 +554,15 @@ body.portfolio .carousel-slide {
     box-sizing: border-box;
 }
 
+/* Images keep their own aspect ratio inside a uniform dark frame: portrait
+   and odd-ratio shots letterbox in graphite (never white), landscape shots
+   fill naturally. */
 body.portfolio .carousel-slide img {
     display: block;
     width: 100%;
     height: 420px;
-    object-fit: cover;
+    object-fit: contain;
+    background-color: var(--field);
     filter: saturate(.9);
 }
 
@@ -707,6 +711,14 @@ body.portfolio footer {
 
 body.portfolio .image-modal {
     background-color: rgba(10, 9, 6, .92);
+}
+
+/* The lightbox card is white in style.css; on this theme it becomes dark so
+   portrait images never sit against white bars. */
+body.portfolio .modal-content {
+    background-color: var(--field2);
+    border: 1px solid var(--line);
+    border-radius: 0;
 }
 
 body.portfolio .modal-close {

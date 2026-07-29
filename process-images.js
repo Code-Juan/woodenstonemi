@@ -4,15 +4,17 @@ const path = require('path');
 
 /**
  * Image Processing Script using ImageMagick
- * 
- * This script processes images to create multiple versions:
- * - thumb: 400x300px (for mobile)
- * - gallery: 800x600px (for tablets)
- * - hero: 1200x800px (for desktop)
- * 
+ *
+ * This script processes images to create multiple versions. Each version
+ * KEEPS the original aspect ratio (no cropping); the number is the cap on
+ * the longest side, and images smaller than the cap are left at their size:
+ * - thumb: up to 400px (for mobile)
+ * - gallery: up to 800px (for tablets)
+ * - hero: up to 1200px (for desktop)
+ *
  * Usage:
  *   node process-images.js [folder-path]
- * 
+ *
  * Examples:
  *   node process-images.js "images/Previous Jobs/24. New Project"
  *   node process-images.js "images/Previous Jobs/24. New Project/kitchen-view1.jpg"
@@ -21,9 +23,9 @@ const path = require('path');
 // Configuration
 const CONFIG = {
     sizes: {
-        thumb: { width: 400, height: 300, suffix: '-thumb' },
-        gallery: { width: 800, height: 600, suffix: '-gallery' },
-        hero: { width: 1200, height: 800, suffix: '-hero' }
+        thumb: { max: 400, suffix: '-thumb' },
+        gallery: { max: 800, suffix: '-gallery' },
+        hero: { max: 1200, suffix: '-hero' }
     },
     quality: 85, // JPEG quality (0-100)
     supportedFormats: ['.jpg', '.jpeg', '.png', '.webp']
@@ -68,9 +70,9 @@ function processImage(imagePath) {
             // -auto-orient: automatically rotate based on EXIF orientation data
             // -strip: remove metadata (after orientation is applied)
             // -quality: set JPEG quality
-            // -resize: resize maintaining aspect ratio
-            // -gravity center -extent: center and crop to exact dimensions
-            const command = `magick "${imagePath}" -auto-orient -strip -quality ${CONFIG.quality} -resize ${sizeConfig.width}x${sizeConfig.height}^ -gravity center -extent ${sizeConfig.width}x${sizeConfig.height} "${outputPath}"`;
+            // -resize "NxN>": shrink so the longest side fits N, preserving the
+            //   aspect ratio; never upscale. No cropping, no letterboxing.
+            const command = `magick "${imagePath}" -auto-orient -strip -quality ${CONFIG.quality} -resize "${sizeConfig.max}x${sizeConfig.max}>" "${outputPath}"`;
 
             execSync(command, { stdio: 'ignore' });
 
@@ -132,9 +134,9 @@ function main() {
         console.log('  node process-images.js "images/Previous Jobs/24. New Project"');
         console.log('  node process-images.js "images/Previous Jobs/24. New Project/kitchen-view1.jpg"');
         console.log('\nThis will create:');
-        console.log('  - thumb version (400x300px)');
-        console.log('  - gallery version (800x600px)');
-        console.log('  - hero version (1200x800px)');
+        console.log('  - thumb version (up to 400px, aspect kept)');
+        console.log('  - gallery version (up to 800px, aspect kept)');
+        console.log('  - hero version (up to 1200px, aspect kept)');
         process.exit(0);
     }
 
