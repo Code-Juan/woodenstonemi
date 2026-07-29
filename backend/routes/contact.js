@@ -272,7 +272,8 @@ function generateEmailHTML(data) {
 
     // Map scope values to display names
     const scopeDisplayNames = {
-        'stone-countertops': 'Stone Countertops',
+        'stone-countertops': 'Stone Countertops (Supply & Install)',
+        'stone-countertops-cut-to-size': 'Stone Countertops (Cut-To-Size)',
         'casework-supply': 'Casework Supply',
         'casework-installation': 'Casework Installation',
         'casework-finish-trim': 'Finish Trim Installation',
@@ -436,7 +437,8 @@ function generateEmailText(data) {
 
     // Map scope values to display names
     const scopeDisplayNames = {
-        'stone-countertops': 'Stone Countertops',
+        'stone-countertops': 'Stone Countertops (Supply & Install)',
+        'stone-countertops-cut-to-size': 'Stone Countertops (Cut-To-Size)',
         'casework-supply': 'Casework Supply',
         'casework-installation': 'Casework Installation',
         'casework-finish-trim': 'Finish Trim Installation',

@@ -1,0 +1,444 @@
+/* ==========================================================================
+   The Wooden Stone - Contact Us (2026 rebrand theme)
+   Loaded ONLY by contact-us, after style.css. Scoped under body.contact.
+   ========================================================================== */
+
+body.contact {
+    --bronze: #B08A4E;
+    --bronze-hi: #D9B87C;
+    --bronze-deep: #8A6A3B;
+    --bronze-ink: #7E5E33;
+    --field: #15140F;
+    --field2: #1C1A14;
+    --paper: #F4F1E9;
+    --ink: #26231D;
+    --grey: #6E6A61;
+    --line: rgba(217, 184, 124, .22);
+    --line-soft: rgba(217, 184, 124, .10);
+    --serif: 'Lora', Georgia, serif;
+    --sans: 'Poppins', 'Segoe UI', Arial, sans-serif;
+    --hdr-h: 84px;
+    --pad: var(--container-padding, 24px);
+    /* style.css's .spinner uses --primary-color, which is never defined
+       globally; define it here so the spinner renders bronze. */
+    --primary-color: #B08A4E;
+
+    background-color: var(--field);
+    color: var(--paper);
+    font-family: var(--serif);
+    padding-top: var(--hdr-h);
+}
+
+/* --------------------------------------------------------------------------
+   Fixed dark header + breadcrumbs
+   -------------------------------------------------------------------------- */
+body.contact header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1200;
+    background-color: rgba(21, 20, 15, .92);
+    border-bottom: 1px solid var(--line);
+    min-height: var(--hdr-h);
+    box-sizing: border-box;
+}
+
+@supports (backdrop-filter: blur(6px)) {
+    body.contact header {
+        background-color: rgba(21, 20, 15, .74);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    }
+}
+
+body.contact nav a {
+    color: var(--paper);
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: .76rem;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+}
+
+body.contact nav a:hover,
+body.contact nav a.current-page {
+    color: var(--bronze-hi);
+}
+
+body.contact .mobile-menu-toggle span {
+    background-color: var(--paper);
+}
+
+@media (max-width: 768px) {
+    body.contact nav {
+        background-color: var(--field2);
+        border-top: 1px solid var(--line);
+    }
+
+    body.contact nav a {
+        border-bottom: 1px solid var(--line-soft);
+    }
+}
+
+body.contact .breadcrumbs {
+    background-color: var(--field);
+    border-bottom: 1px solid var(--line-soft);
+}
+
+body.contact .breadcrumbs a,
+body.contact .breadcrumbs span,
+body.contact .breadcrumbs [aria-current="page"] {
+    color: var(--grey);
+    font-family: var(--sans);
+    font-weight: 300;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    font-size: .72rem;
+}
+
+body.contact .breadcrumbs a:hover {
+    color: var(--bronze-hi);
+}
+
+/* --------------------------------------------------------------------------
+   Hero: replace the photo hero with the blueprint-grid field
+   -------------------------------------------------------------------------- */
+body.contact .page-hero,
+body.contact .contact-hero {
+    position: relative;
+    background-image: none;
+    background-color: var(--field);
+    min-height: 0;
+    padding: 84px var(--pad);
+    overflow: hidden;
+}
+
+body.contact .page-hero::before {
+    background: none;
+    background-image:
+        linear-gradient(rgba(217, 184, 124, .05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(217, 184, 124, .05) 1px, transparent 1px);
+    background-size: 110px 110px;
+}
+
+body.contact .page-hero .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+body.contact .page-hero h1 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(34px, 5vw, 56px);
+    line-height: 1.08;
+    color: var(--paper);
+    text-shadow: none;
+    margin: 0;
+}
+
+body.contact .contact-hero p {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(16px, 1.8vw, 20px);
+    color: var(--bronze-hi) !important;
+    margin: 14px 0 0;
+    max-width: 60ch;
+}
+
+/* --------------------------------------------------------------------------
+   Contact info cards
+   -------------------------------------------------------------------------- */
+body.contact .contact-info-section {
+    background-color: var(--field2);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+}
+
+body.contact .contact-card {
+    background-color: var(--field);
+    border: 1px solid var(--bronze-deep);
+    border-radius: 0;
+    box-shadow: none;
+}
+
+body.contact .contact-card h3 {
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--bronze);
+}
+
+body.contact .contact-card p,
+body.contact .contact-card p:last-child {
+    color: rgba(244, 241, 233, .85);
+}
+
+body.contact .contact-card strong {
+    color: var(--paper);
+}
+
+body.contact .contact-card a[href^="tel:"],
+body.contact .contact-card a[href^="mailto:"] {
+    color: var(--bronze-hi) !important;
+}
+
+body.contact .contact-card a[href^="tel:"]:hover,
+body.contact .contact-card a[href^="mailto:"]:hover {
+    color: var(--paper) !important;
+}
+
+body.contact .contact-card a[style] {
+    color: var(--bronze-hi) !important;
+}
+
+/* --------------------------------------------------------------------------
+   Map section
+   -------------------------------------------------------------------------- */
+body.contact .map-section {
+    background-color: var(--field);
+}
+
+body.contact .map-section h2 {
+    font-family: var(--serif);
+    font-weight: 500;
+    color: var(--paper);
+}
+
+body.contact .map-container {
+    border: 1px solid var(--bronze-deep);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, .45);
+}
+
+/* --------------------------------------------------------------------------
+   Form section
+   -------------------------------------------------------------------------- */
+body.contact .contact-form-section {
+    background-color: var(--field);
+    border-top: 1px solid var(--line-soft);
+}
+
+body.contact .form-container h2 {
+    font-family: var(--serif);
+    font-weight: 500;
+    color: var(--paper);
+}
+
+body.contact .form-container>p {
+    color: rgba(244, 241, 233, .75);
+}
+
+body.contact .contact-form {
+    background-color: var(--field2);
+    border: 1px solid var(--bronze-deep);
+    border-radius: 0;
+}
+
+body.contact .form-group label {
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--bronze-hi);
+}
+
+body.contact .form-group input,
+body.contact .form-group select,
+body.contact .form-group textarea {
+    background-color: rgba(244, 241, 233, .05);
+    border: 1px solid var(--line);
+    border-radius: 0;
+    color: var(--paper);
+    font-family: var(--sans);
+    font-weight: 300;
+}
+
+body.contact .form-group input::placeholder,
+body.contact .form-group textarea::placeholder {
+    color: rgba(244, 241, 233, .45);
+}
+
+body.contact .form-group input:focus,
+body.contact .form-group select:focus,
+body.contact .form-group textarea:focus {
+    outline: none;
+    border-color: var(--bronze-hi);
+}
+
+body.contact .form-group select option {
+    background-color: var(--field2);
+    color: var(--paper);
+}
+
+body.contact .checkbox-item input[type="checkbox"] {
+    accent-color: var(--bronze);
+}
+
+body.contact .checkbox-item label {
+    color: rgba(244, 241, 233, .88);
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 14px;
+    letter-spacing: .02em;
+    text-transform: none;
+}
+
+body.contact .checkbox-item:hover label {
+    color: var(--bronze-hi);
+}
+
+/* File upload */
+body.contact .file-upload-container {
+    background-color: rgba(244, 241, 233, .03);
+    border: 2px dashed var(--line);
+}
+
+body.contact .file-upload-container:hover {
+    background-color: rgba(176, 138, 78, .08);
+    border-color: var(--bronze);
+}
+
+body.contact .file-input {
+    background-color: transparent;
+    color: rgba(244, 241, 233, .8);
+}
+
+body.contact .file-upload-info p {
+    color: var(--grey);
+}
+
+body.contact .file-summary {
+    background-color: rgba(244, 241, 233, .04);
+    border: 1px solid var(--line-soft);
+}
+
+body.contact .file-summary .file-count {
+    color: var(--bronze-hi);
+}
+
+body.contact .file-summary .total-size {
+    color: rgba(244, 241, 233, .6);
+}
+
+body.contact .file-item {
+    background-color: var(--field);
+    border: 1px solid var(--line-soft);
+}
+
+body.contact .file-item .file-name {
+    color: var(--paper);
+}
+
+body.contact .file-item .file-size {
+    color: var(--grey);
+}
+
+/* Progress + trust indicators */
+body.contact .form-progress {
+    background-color: rgba(244, 241, 233, .04);
+}
+
+body.contact .progress-bar {
+    background-color: rgba(244, 241, 233, .1);
+}
+
+body.contact .progress-fill {
+    background: linear-gradient(90deg, var(--bronze-deep), var(--bronze-hi));
+}
+
+body.contact .progress-text {
+    color: rgba(244, 241, 233, .7);
+}
+
+body.contact .trust-indicators {
+    background-color: transparent;
+    border: 1px solid var(--line-soft);
+}
+
+body.contact .trust-item {
+    color: rgba(244, 241, 233, .75);
+    font-family: var(--sans);
+    font-weight: 300;
+}
+
+body.contact .trust-icon {
+    color: var(--bronze);
+}
+
+/* Submit button */
+body.contact .contact-form .btn,
+body.contact .form-group button {
+    font-family: var(--sans);
+    font-weight: 500;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    font-size: 12px;
+    padding: 17px 30px;
+    border-radius: 0;
+    background-color: var(--bronze);
+    color: var(--field);
+    border: 1px solid var(--bronze-deep);
+    transition: background-color .25s ease, transform .25s ease;
+}
+
+body.contact .contact-form .btn:hover {
+    background-color: var(--bronze-hi);
+    color: var(--field);
+    transform: translateY(-2px);
+}
+
+body.contact .contact-form button[type="submit"]:disabled {
+    background-color: var(--grey);
+    color: var(--field);
+}
+
+/* --------------------------------------------------------------------------
+   Info cards + footer
+   -------------------------------------------------------------------------- */
+body.contact .info-section {
+    background-color: var(--field2);
+    border-top: 1px solid var(--line);
+}
+
+body.contact .info-card {
+    background-color: var(--field);
+    border: 1px solid var(--bronze-deep);
+    border-radius: 0;
+    box-shadow: none;
+}
+
+body.contact .info-card h3 {
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--bronze);
+}
+
+body.contact .info-card p {
+    color: rgba(244, 241, 233, .82);
+}
+
+body.contact footer {
+    background-color: var(--field2);
+    border-top: 1px solid var(--line);
+    color: rgba(244, 241, 233, .6);
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 12.5px;
+}
+
+/* --------------------------------------------------------------------------
+   Responsive
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+    body.contact {
+        --hdr-h: 76px;
+    }
+}
