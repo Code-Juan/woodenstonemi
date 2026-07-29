@@ -44,9 +44,6 @@
     ];
 
     var KITCHEN_PHOTOS = [
-        { src: 'images/Previous Jobs/23. Seaton Place Apartments/kitchen-view1-hero.jpg', project: 'Seaton Place Apartments' },
-        { src: 'images/Previous Jobs/23. Seaton Place Apartments/kitchen-view2-hero.jpg', project: 'Seaton Place Apartments' },
-        { src: 'images/Previous Jobs/23. Seaton Place Apartments/kitchen-dining-view-hero.jpg', project: 'Seaton Place Apartments' },
         { src: 'images/Previous Jobs/1. Woodview Commons/(Kitchen 1) woodview-commons-ann-arbor-mi-building-photo-hero.jpg', project: 'Woodview Commons Flats' },
         { src: 'images/Previous Jobs/1. Woodview Commons/(Kitchen 2) woodview-commons-ann-arbor-mi-building-photo-hero.jpg', project: 'Woodview Commons Flats' },
         { src: 'images/Previous Jobs/1. Woodview Commons/(Kitchen 3) woodview-commons-ann-arbor-mi-building-photo-hero.jpg', project: 'Woodview Commons Flats' },
@@ -59,8 +56,6 @@
     ];
 
     var VANITY_PHOTOS = [
-        { src: 'images/Previous Jobs/23. Seaton Place Apartments/bathroom-view1-hero.jpg', project: 'Seaton Place Apartments' },
-        { src: 'images/Previous Jobs/23. Seaton Place Apartments/bathroom-view2-hero.jpg', project: 'Seaton Place Apartments' },
         { src: 'images/Previous Jobs/1. Woodview Commons/(Bath 1) woodview-commons-ann-arbor-mi-building-photo-hero.jpg', project: 'Woodview Commons Flats' },
         { src: 'images/Previous Jobs/1. Woodview Commons/(Bath 2) woodview-commons-ann-arbor-mi-building-photo-hero.jpg', project: 'Woodview Commons Flats' },
         { src: 'images/Previous Jobs/4. 3740 2nd Ave Apartments/bath1 VIEW_3740 Apartments-hero.jpg', project: '3740 2nd Ave Apartments' },

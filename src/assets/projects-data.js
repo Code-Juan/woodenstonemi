@@ -9,7 +9,7 @@ const projectsData = [
         scopes: "Granite Countertops",
         materials: "Granite Countertops, Sink Fixtures",
         client: "Williams Distributing/Rohde Construction",
-        dates: "Nov 2024 - March 2025",
+        dates: "Nov 2024 - May 2025",
         images: [
             "images/Previous Jobs/1. Woodview Commons/(Kitchen 1) woodview-commons-ann-arbor-mi-building-photo-hero.jpg",
             "images/Previous Jobs/1. Woodview Commons/(Kitchen 2) woodview-commons-ann-arbor-mi-building-photo-hero.jpg",
@@ -26,38 +26,15 @@ const projectsData = [
         ]
     },
     {
-        id: 2,
-        name: "SEATON PLACE APARTMENTS",
-        location: "Chesterfield, MI",
-        type: "Multifamily Units & Amenities",
-        details: "100 Units, New Construction",
-        scopes: "Quartz Countertops, Casework & Finish Trim Carpentry Installation",
-        materials: "Quartz Countertops, Sink Fixtures, Cabinetry",
-        client: "Icon Development, Inc",
-        dates: "Jan 2024 - Dec 2026",
-        images: [
-            "images/Previous Jobs/23. Seaton Place Apartments/apartments-overview-hero.jpg",
-            "images/Previous Jobs/23. Seaton Place Apartments/kitchen-view1-hero.jpg",
-            "images/Previous Jobs/23. Seaton Place Apartments/kitchen-view2-hero.jpg",
-            "images/Previous Jobs/23. Seaton Place Apartments/bedroom-view1-hero.jpg",
-            "images/Previous Jobs/23. Seaton Place Apartments/bedroom-view2-hero.jpg",
-            "images/Previous Jobs/23. Seaton Place Apartments/bathroom-view1-hero.jpg",
-            "images/Previous Jobs/23. Seaton Place Apartments/bathroom-view2-hero.jpg",
-            "images/Previous Jobs/23. Seaton Place Apartments/kitchen-dining-view-hero.jpg",
-            "images/Previous Jobs/23. Seaton Place Apartments/dining-room-view1-hero.jpg",
-            "images/Previous Jobs/23. Seaton Place Apartments/living-room-view1-hero.jpg"
-        ]
-    },
-    {
         id: 3,
         name: "PLYMOUTH WALK APARTMENTS",
         location: "Plymouth Township, MI",
         type: "Multifamily Units & Amenities",
-        details: "268 Units, New Construction",
+        details: "266 Units, New Construction",
         scopes: "Quartz Countertops",
         materials: "Quartz Countertops, Sink Fixtures",
         client: "Sachse Construction",
-        dates: "Jan 2026 - Nov 2026",
+        dates: "Mar 2026 - TBD",
         images: [
             "images/Previous Jobs/22. Plymouth Walk Apartments/optionA-rendering-hero.jpg",
             "images/Previous Jobs/22. Plymouth Walk Apartments/optionB-rendering-hero.jpg",
@@ -66,35 +43,15 @@ const projectsData = [
         ]
     },
     {
-        id: 4,
-        name: "WALDON PONDS APARTMENTS",
-        location: "Marshall, MI",
-        type: "Multifamily Units & Amenities",
-        details: "100 Units, Renovation",
-        scopes: "Quartz Countertops, Casework & Finish Trim Carpentry Installation",
-        materials: "Quartz Countertops, Sink Fixtures, Cabinetry",
-        client: "Icon Development, Inc",
-        dates: "Mar 2025 - April 2025",
-        images: [
-            "images/Previous Jobs/18. Waldon Ponds Apartments Phase 1/apartments-overview-hero.jpg",
-            "images/Previous Jobs/18. Waldon Ponds Apartments Phase 1/apartments-overview1-hero.jpg",
-            "images/Previous Jobs/18. Waldon Ponds Apartments Phase 1/kitchen-view1-hero.jpg",
-            "images/Previous Jobs/18. Waldon Ponds Apartments Phase 1/kitchen-view2-hero.jpg",
-            "images/Previous Jobs/18. Waldon Ponds Apartments Phase 1/bathroom-view1-hero.jpg",
-            "images/Previous Jobs/18. Waldon Ponds Apartments Phase 1/bathroom-view2-hero.jpg",
-            "images/Previous Jobs/18. Waldon Ponds Apartments Phase 1/bathroom-view3-hero.png"
-        ]
-    },
-    {
         id: 5,
         name: "IRONWORKS APARTMENTS",
         location: "Kalamazoo, MI",
         type: "Multifamily Units & Amenities",
-        details: "82 Units, New Construction",
+        details: "82 Units, Renovation",
         scopes: "Granite Countertops",
         materials: "Granite Countertops, Sink Fixtures",
         client: "Williams Distributing",
-        dates: "March 2025 - July 2025",
+        dates: "Apr 2025 - Jan 2026",
         images: [
             "images/Previous Jobs/8. Ironworks Apartments/exterior-overview1-hero.jpg",
             "images/Previous Jobs/8. Ironworks Apartments/kitchen-view1-hero.png",
@@ -110,10 +67,10 @@ const projectsData = [
         location: "Ann Arbor, MI",
         type: "Multifamily Units & Amenities",
         details: "120 Units, New Construction",
-        scopes: "Quartz Countertops",
+        scopes: "Cut-To-Size Quartz Countertops",
         materials: "Quartz Countertops, Sink Fixtures",
         client: "Braun Construction Group",
-        dates: "April 2025 - Sept 2025",
+        dates: "Apr 2025 - Feb 2026",
         images: [
             "images/Previous Jobs/7. Brightdawn Apartments/apartments-overview-hero.jpg",
             "images/Previous Jobs/7. Brightdawn Apartments/kitchen-view1-hero.jpg",
@@ -133,10 +90,10 @@ const projectsData = [
         scopes: "Quartz Countertops",
         materials: "Quartz Countertops, Sink Fixtures",
         client: "Sachse Construction",
-        dates: "Apr 2025 - In Progress",
+        dates: "Apr 2025 - TBD",
         phases: [
-            { label: "Phase 1", units: "69 Units", status: "Completed", dates: "Apr 2025 - Aug 2025" },
-            { label: "Phase 2", units: "36 Units", status: "In Progress", dates: "May 2026 - In Progress" }
+            { label: "Phase 1", units: "69 Units", dates: "Apr 2025 - Dec 2025" },
+            { label: "Phase 2", units: "36 Units", dates: "Nov 2026 - TBD" }
         ],
         images: [
             "images/Previous Jobs/25. The Preserve on Ash - Phase 2/apartments-overview-hero.webp",
@@ -158,7 +115,7 @@ const projectsData = [
         scopes: "Quartz Countertops",
         materials: "Quartz Countertops",
         client: "Williams Distributing",
-        dates: "May 2025 - Aug 2025",
+        dates: "Jun 2025 - Jul 2025",
         images: [
             "images/Previous Jobs/10. Freewheel Apartments/freewheel-apartments-marquette-mi-primary-photo-hero.jpg",
             "images/Previous Jobs/10. Freewheel Apartments/kitchen-view1-hero.png"
@@ -172,8 +129,8 @@ const projectsData = [
         details: "92 Units, New Construction",
         scopes: "Quartz Countertops",
         materials: "Quartz Countertops, Sink Fixtures",
-        client: "Greatwater Opportunity Capital/Jonna Construction Company",
-        dates: "Mar 2025 - May 2025",
+        client: "Jonna Construction Company",
+        dates: "May 2025 - Jul 2025",
         images: [
             "images/Previous Jobs/5. 450 Amsterdam Apartments/exterior-overview-hero.jpg",
             "images/Previous Jobs/5. 450 Amsterdam Apartments/kitchen-view3-hero.png",
@@ -191,7 +148,7 @@ const projectsData = [
         scopes: "Quartz Countertops",
         materials: "Quartz Countertops",
         client: "Ronnisch Construction Group",
-        dates: "Jan 2026 - May 2026",
+        dates: "Feb 2026 - Sep 2026",
         images: [
             "images/Previous Jobs/19. Higgenbotham Garden Apartments/view-of-kitchen-hero.jpg",
             "images/Previous Jobs/19. Higgenbotham Garden Apartments/view-from-north-parking-lot-hero.jpg",
@@ -207,7 +164,7 @@ const projectsData = [
         scopes: "Quartz Countertops",
         materials: "Quartz Countertops",
         client: "Ronnisch Construction Group",
-        dates: "Feb 2026 - June 2026",
+        dates: "Jun 2026 - Sep 2026",
         images: [
             "images/Previous Jobs/20. Higgenbotham School Apartments/commons-render-hero.jpg",
             "images/Previous Jobs/20. Higgenbotham School Apartments/commons-render2-hero.jpg",
@@ -220,11 +177,11 @@ const projectsData = [
         name: "LEE CREST APARTMENTS",
         location: "Detroit, MI",
         type: "Multifamily Units & Amenities",
-        details: "100 Units, New Construction",
+        details: "100 Units, Renovation",
         scopes: "Quartz Countertops",
         materials: "Quartz Countertops, Sink Fixtures",
-        client: "Greatwater Opportunity Capital/The Monahan Company",
-        dates: "Jan 2025 - Feb 2025",
+        client: "The Monahan Company",
+        dates: "Jan 2025 - Sep 2025",
         images: [
             "images/Previous Jobs/11. Lee Crest Apartments/Site View_LeeCrest-hero.jpg"
         ]
@@ -234,11 +191,11 @@ const projectsData = [
         name: "CHATHAM APARTMENTS",
         location: "Detroit, MI",
         type: "Multifamily Units & Amenities",
-        details: "73 Units, New Construction",
+        details: "73 Units, Renovation",
         scopes: "Quartz Countertops",
         materials: "Quartz Countertops, Sink Fixtures",
-        client: "Greatwater Opportunity Capital/The Monahan Company",
-        dates: "Mar 2025 - May 2025",
+        client: "The Monahan Company",
+        dates: "Apr 2025 - Jan 2026",
         images: [
             "images/Previous Jobs/12. Chatham Apartments/exterior-overview-hero.jpg"
         ]
@@ -248,12 +205,12 @@ const projectsData = [
         id: 16,
         name: "TERRA STATION APARTMENTS",
         location: "Hudsonville, MI",
-        type: "Multifamily Units & Amenities",
+        type: "Multifamily Units",
         details: "141 Units, New Construction",
         scopes: "Quartz Countertops",
-        materials: "Quartz Countertops, Sink Fixtures",
+        materials: "Quartz Countertops",
         client: "Williams Distributing",
-        dates: "Aug 2025 - Dec 2025",
+        dates: "Jul 2025 - Sep 2026",
         images: [
             "images/Previous Jobs/6. Terra Station Apartments/apartments-overview1-hero.webp",
             "images/Previous Jobs/6. Terra Station Apartments/apartments-overview2-hero.webp",
@@ -268,12 +225,12 @@ const projectsData = [
         id: 17,
         name: "BALDWIN WOODS APARTMENTS",
         location: "Grand Blanc, MI",
-        type: "Multifamily Units & Amenities",
+        type: "Multifamily Units",
         details: "89 Units, New Construction",
-        scopes: "Quartz Countertops",
+        scopes: "Cut-To-Size Quartz Countertops",
         materials: "Quartz Countertops, Sink Fixtures",
         client: "Sachse Construction",
-        dates: "Jun 2025 - Nov 2025",
+        dates: "Nov 2025 - Dec 2025",
         images: [
             "images/Previous Jobs/21. Baldwin Woods Apartments/exterior-overview1-hero.png",
             "images/Previous Jobs/21. Baldwin Woods Apartments/kitchen-view1-hero.png",
@@ -284,11 +241,11 @@ const projectsData = [
         id: 18,
         name: "3740 2ND AVE APARTMENTS",
         location: "Detroit, MI",
-        type: "Multifamily Units & Amenities",
+        type: "Multifamily Units",
         details: "57 Units, New Construction",
         scopes: "Quartz Countertops",
         materials: "Quartz Countertops, Sink Fixtures",
-        client: "Greatwater Opportuniy Capital/The Monahan Company",
+        client: "The Monahan Company",
         dates: "Jan 2025 - Feb 2025",
         images: [
             "images/Previous Jobs/4. 3740 2nd Ave Apartments/Kitchen1 VIEW_3740 Apartments-hero.jpg",
@@ -300,12 +257,12 @@ const projectsData = [
         id: 20,
         name: "PALMS APARTMENTS",
         location: "Detroit, MI",
-        type: "Multifamily Units & Amenities",
+        type: "Multifamily Units",
         details: "61 Units, New Construction",
         scopes: "Quartz Countertops",
         materials: "Quartz Countertops, Sink Fixtures",
         client: "Greatwater Opportunity Capital",
-        dates: "Dec 2024 - Feb 2025",
+        dates: "Dec 2024 - May 2025",
         images: [
             "images/Previous Jobs/13. Palms Apartments/exterior-overview-hero.jpg",
             "images/Previous Jobs/13. Palms Apartments/kitchen-view-hero.jpg",
@@ -318,11 +275,11 @@ const projectsData = [
         name: "2135 HUBBARD",
         location: "Detroit, MI",
         type: "Multifamily Units & Amenities",
-        details: "31 Units, New Construction",
+        details: "31 Units, Renovation",
         scopes: "Quartz Countertops",
         materials: "Quartz Countertops, Sink Fixtures",
-        client: "Greatwater Opportunity Capital/Artisian Contractors",
-        dates: "Aug 2024 - Oct 2024",
+        client: "Greatwater Opportunity Capital",
+        dates: "Sep 2024 - Sep 2024",
         images: [
             "images/Previous Jobs/14. 2135 Hubbard/mavor-apartments-detroit-mi-building-photo-hero.jpg",
             "images/Previous Jobs/14. 2135 Hubbard/mavor-apartments-detroit-mi-building-photo (1)-hero.jpg",
@@ -334,11 +291,11 @@ const projectsData = [
         name: "25 E. PALMER (BARLUM APARTMENTS)",
         location: "Detroit, MI",
         type: "Multifamily Units & Amenities",
-        details: "30 Units, New Construction",
+        details: "30 Units, Renovation",
         scopes: "Quartz Countertops",
         materials: "Quartz Countertops, Sink Fixtures",
         client: "Greatwater Opportunity Capital",
-        dates: "Sep 2024 - Oct 2024",
+        dates: "Sep 2024 - May 2025",
         images: [
             "images/Previous Jobs/16. 25 E. Palmer (Barlum Apartments)/the-barlum-detroit-mi-primary-photo-hero.jpg",
             "images/Previous Jobs/16. 25 E. Palmer (Barlum Apartments)/the-barlum-detroit-mi-building-photo-hero.jpg",
@@ -350,12 +307,12 @@ const projectsData = [
         id: 25,
         name: "VESTER FLATS",
         location: "Ferndale, MI",
-        type: "Multifamily Units & Amenities",
+        type: "Multifamily Units",
         details: "72 Units, New Construction",
-        scopes: "Quartz Countertops",
+        scopes: "Quartz Countertops, Finish Trim Carpentry Installation",
         materials: "Quartz Countertops, Sink Fixtures",
         client: "Tower Construction",
-        dates: "Sep 2025 - In Progress",
+        dates: "Jul 2026 - Nov 2026",
         images: [
             "images/Previous Jobs/29. Vester Flats/apartments-overview-hero.png"
         ]
@@ -367,9 +324,9 @@ const projectsData = [
         type: "Multifamily Units & Amenities",
         details: "184 Units, New Construction",
         scopes: "Quartz Countertops",
-        materials: "Quartz Countertops, Sink Fixtures",
+        materials: "Quartz Countertops",
         client: "St Clair Construction",
-        dates: "Dec 2025 - In Progress",
+        dates: "Aug 2026 - Jan 2027",
         images: [
             "images/Previous Jobs/36. Brush Watson Midblock/apartments-overview-hero.png",
             "images/Previous Jobs/36. Brush Watson Midblock/apartments-overview1-hero.png"
@@ -382,9 +339,9 @@ const projectsData = [
         type: "Multifamily Units & Amenities",
         details: "82 Units (Building B), New Construction",
         scopes: "Quartz Countertops",
-        materials: "Quartz Countertops, Sink Fixtures",
+        materials: "Quartz Countertops",
         client: "Tower Construction",
-        dates: "Dec 2025 - In Progress",
+        dates: "Apr 2026 - Jul 2026",
         images: [
             "images/Previous Jobs/40. Lindsey Center Redevelopment/apartments-overview-hero.jpg",
             "images/Previous Jobs/40. Lindsey Center Redevelopment/apartments-overview1-hero.jpg",
@@ -405,12 +362,12 @@ const projectsData = [
         id: 28,
         name: "HUDSON VALLEY APARTMENTS",
         location: "Lake Orion, MI",
-        type: "Multifamily Units & Amenities",
+        type: "Multifamily Units",
         details: "24 Units, New Construction",
         scopes: "Quartz Countertops",
         materials: "Quartz Countertops, Sink Fixtures",
         client: "Riverside Supply Company",
-        dates: "Aug 2025 - Feb 2026",
+        dates: "Feb 2026 - Jul 2026",
         images: [
             "images/Previous Jobs/15. Hudson Valley Apartments/apartments-overview-hero.jpg",
             "images/Previous Jobs/15. Hudson Valley Apartments/apartments-overview1-hero.jpg",
@@ -454,13 +411,16 @@ function generateProjectHTML(project) {
                     <p><strong>Project Start/Finish:</strong> ${project.dates}</p>
                 </div>
                 ${project.phases ? `<div class="project-phases">
-                    ${project.phases.map(ph => `<div class="phase-item">
+                    ${project.phases.map(ph => {
+                        const phStatus = getStatusFromDates(ph.dates);
+                        return `<div class="phase-item">
                         <div class="phase-head">
                             <span class="phase-label">${ph.label}</span>
-                            <span class="project-status status-${ph.status.toLowerCase().replace(/\s+/g, '-')}">${ph.status}</span>
+                            <span class="project-status status-${phStatus.toLowerCase().replace(/\s+/g, '-')}">${phStatus}</span>
                         </div>
                         <span class="phase-stat">${ph.units} &middot; ${ph.dates}</span>
-                    </div>`).join('')}
+                    </div>`;
+                    }).join('')}
                 </div>` : ''}
             </div>
             <div class="project-gallery">
@@ -636,9 +596,41 @@ function initializeCarousels() {
 let selectedStatus = '';
 let selectedScopes = [];
 
-// Derive a project's status from its dates ("... - In Progress" vs completed)
+// ---------------------------------------------------------------------
+// Automatic project status, derived from the dates string every page load.
+// Format: "MMM YYYY - MMM YYYY" (the end may be "TBD").
+//   - end month reached or passed          -> Completed
+//   - start month still in the future      -> Scheduled
+//   - otherwise (incl. TBD/unknown end)    -> In Progress
+// Month-level comparison, so nothing needs manual status updates.
+// ---------------------------------------------------------------------
+const STATUS_MONTHS = {
+    jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5,
+    jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11
+};
+
+// Returns year*12+month for strings like "Sept 2024" / "March 2025", else null
+function parseStatusMonth(str) {
+    const m = /([A-Za-z]+)\.?\s+(\d{4})/.exec(String(str || ''));
+    if (!m) return null;
+    const mo = STATUS_MONTHS[m[1].toLowerCase().slice(0, 3)];
+    if (mo === undefined) return null;
+    return parseInt(m[2], 10) * 12 + mo;
+}
+
+function getStatusFromDates(dates) {
+    const parts = String(dates || '').split(' - ');
+    const start = parseStatusMonth(parts[0]);
+    const end = parts.length > 1 ? parseStatusMonth(parts[1]) : null;
+    const now = new Date();
+    const current = now.getFullYear() * 12 + now.getMonth();
+    if (end !== null && end <= current) return 'Completed';
+    if (start !== null && start > current) return 'Scheduled';
+    return 'In Progress';
+}
+
 function getProjectStatus(project) {
-    return /in progress/i.test(project.dates || '') ? 'In Progress' : 'Completed';
+    return getStatusFromDates(project.dates);
 }
 
 // Function to get the statuses present in the data

@@ -408,6 +408,16 @@ body.portfolio .project-status.status-in-progress {
     border-color: var(--bronze-deep);
 }
 
+body.portfolio .project-status.status-scheduled {
+    color: rgba(244, 241, 233, .85);
+    border-color: var(--line);
+}
+
+body.portfolio .project-spotlight:nth-child(odd) .project-status.status-scheduled {
+    color: var(--body-dark);
+    border-color: rgba(126, 94, 51, .45);
+}
+
 body.portfolio .project-details {
     display: flex;
     flex-direction: column;
