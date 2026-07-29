@@ -38,7 +38,16 @@
   to = "/contact-us"
   status = 301
 
+# Resources page is temporarily hidden until it is redone (302 = temporary,
+# keeps search engines from treating it as permanent)
+[[redirects]]
+  from = "/resources"
+  to = "/"
+  status = 302
+  force = true
+
 [[redirects]]
   from = "/resources/"
-  to = "/resources"
-  status = 301
+  to = "/"
+  status = 302
+  force = true
