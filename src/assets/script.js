@@ -1511,7 +1511,13 @@ function initTawkToAPI() {
     // Set up Tawk.to event handlers
     Tawk_API.onLoad = function() {
         console.log('Tawk.to widget loaded');
-        
+
+        // Widget is hidden from visitors site-wide; the Tawk session keeps
+        // running so visitor analytics still record. Remove this call to
+        // bring the chat bubble back. (This handler overrides the inline
+        // page-level onLoad, so the hide must live here.)
+        Tawk_API.hideWidget();
+
         // Set default visitor attributes if available from localStorage
         const savedVisitorData = getSavedVisitorData();
         if (savedVisitorData && Object.keys(savedVisitorData).length > 0) {
