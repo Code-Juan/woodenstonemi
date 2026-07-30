@@ -1784,10 +1784,14 @@ function clearSavedVisitorData() {
     }
 }
 
-// Initialize Tawk.to API when DOM is ready
-document.addEventListener('DOMContentLoaded', function() {
-    initTawkToAPI();
-});
+// Tawk.to chat is removed from the site (embed scripts deleted from all
+// pages). initTawkToAPI() is not called so its retry loop never runs; the
+// integration code below is kept intact for easy re-enablement later.
+// To restore chat: re-add the Tawk embed snippet to the pages and
+// re-enable this initializer.
+// document.addEventListener('DOMContentLoaded', function() {
+//     initTawkToAPI();
+// });
 
 // Make functions available globally for use in other scripts
 window.TawkToAPI = {
