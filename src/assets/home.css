@@ -677,16 +677,82 @@ body.home .ws-marquee-group li {
     flex: none;
 }
 
-body.home .ws-marquee-group img {
+/* Each logo: ivory mono mark at rest; on hover a white chip fades in with
+   the full-color logo, and a name tooltip appears below. Tooltip space is
+   reserved in the row so nothing clips or shifts. */
+body.home .ws-logo {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+body.home .ws-logo-chip {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 9px 14px;
+    border-radius: 4px;
+    transition: background-color .25s ease, box-shadow .25s ease;
+}
+
+body.home .ws-logo-mono {
     display: block;
     height: 40px;
     width: auto;
     opacity: .62;
-    transition: opacity .3s ease;
+    transition: opacity .25s ease;
 }
 
-body.home .ws-marquee-group img:hover {
+body.home .ws-logo-color {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-height: 40px;
+    max-width: calc(100% - 20px);
+    width: auto;
+    height: auto;
+    opacity: 0;
+    transition: opacity .25s ease;
+}
+
+body.home .ws-logo:hover .ws-logo-chip {
+    background-color: #FFFFFF;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, .35);
+}
+
+body.home .ws-logo:hover .ws-logo-mono {
+    opacity: 0;
+}
+
+body.home .ws-logo:hover .ws-logo-color {
     opacity: 1;
+}
+
+body.home .ws-logo-tip {
+    margin-top: 8px;
+    font-family: var(--ws-sans);
+    font-weight: 500;
+    font-size: 10px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--ws-bronze-hi);
+    background-color: var(--ws-field2);
+    border: 1px solid var(--ws-line);
+    padding: 4px 10px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-4px);
+    transition: opacity .25s ease, transform .25s ease;
+}
+
+body.home .ws-logo:hover .ws-logo-tip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
 }
 
 @keyframes ws-marquee {
@@ -715,12 +781,16 @@ body.home .ws-marquee-group img:hover {
 
 @media (max-width: 768px) {
     body.home .ws-marquee-group {
-        gap: 48px;
-        padding: 0 24px;
+        gap: 40px;
+        padding: 0 20px;
     }
 
-    body.home .ws-marquee-group img {
+    body.home .ws-logo-mono {
         height: 30px;
+    }
+
+    body.home .ws-logo-color {
+        max-height: 30px;
     }
 }
 
