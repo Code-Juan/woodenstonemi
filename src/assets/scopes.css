@@ -388,6 +388,35 @@ body.scopes .sc-where h3 {
     margin: 0 0 12px;
 }
 
+body.scopes .sc-where-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+body.scopes .sc-where-list li {
+    position: relative;
+    padding-left: 26px;
+    font-size: 15.5px;
+    line-height: 1.55;
+    color: rgba(244, 241, 233, .85);
+}
+
+body.scopes .sc-where-list li::before {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: .55em;
+    width: 8px;
+    height: 8px;
+    transform: rotate(45deg);
+    border: 1px solid var(--bronze);
+    background-color: rgba(176, 138, 78, .25);
+}
+
 body.scopes .sc-where p {
     margin: 0;
     font-size: 15.5px;

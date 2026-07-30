@@ -26,7 +26,7 @@ const projectsData = [
         scopes: "Quartz Countertops",
         materials: "Quartz Countertops, Sink Fixtures",
         client: "Sachse Construction",
-        dates: "Mar 2026 - TBD",
+        dates: "Mar 2026 - Dec 2026",
         images: [
             "images/Previous Jobs/22. Plymouth Walk Apartments/optionA-rendering-hero.jpg",
             "images/Previous Jobs/22. Plymouth Walk Apartments/optionB-rendering-hero.jpg",
