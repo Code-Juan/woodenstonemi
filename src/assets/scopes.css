@@ -360,6 +360,197 @@ body.scopes .sc-split-media img {
     filter: saturate(.9);
 }
 
+/* --------------------------------------------------------------------------
+   Vendor logo conveyor (same component as the homepage client marquee):
+   pure-CSS infinite loop, pause on hover, white chip + color logo + name
+   tooltip on hover, static scrollable row under reduced motion.
+   -------------------------------------------------------------------------- */
+body.scopes .ws-logos {
+    background-color: var(--field2);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 36px 0 40px;
+    overflow: hidden;
+}
+
+body.scopes .ws-logos-label {
+    margin: 0 var(--pad) 28px;
+    text-align: center;
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 10.5px;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    color: rgba(244, 241, 233, .5);
+}
+
+body.scopes .ws-marquee {
+    position: relative;
+    overflow: hidden;
+}
+
+body.scopes .ws-marquee::before,
+body.scopes .ws-marquee::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 90px;
+    z-index: 2;
+    pointer-events: none;
+}
+
+body.scopes .ws-marquee::before {
+    left: 0;
+    background: linear-gradient(90deg, var(--field2), transparent);
+}
+
+body.scopes .ws-marquee::after {
+    right: 0;
+    background: linear-gradient(270deg, var(--field2), transparent);
+}
+
+body.scopes .ws-marquee-track {
+    display: flex;
+    width: max-content;
+    animation: ws-marquee 45s linear infinite;
+}
+
+body.scopes .ws-marquee:hover .ws-marquee-track {
+    animation-play-state: paused;
+}
+
+body.scopes .ws-marquee-group {
+    display: flex;
+    align-items: flex-start;
+    gap: 44px;
+    padding: 0 22px;
+    margin: 0;
+    list-style: none;
+}
+
+body.scopes .ws-marquee-group li {
+    flex: none;
+}
+
+body.scopes .ws-logo {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 36px;
+}
+
+body.scopes .ws-logo-chip {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 9px 14px;
+    border-radius: 4px;
+    transition: background-color .25s ease, box-shadow .25s ease;
+}
+
+body.scopes .ws-logo-mono {
+    display: block;
+    height: 40px;
+    width: auto;
+    opacity: .62;
+    transition: opacity .25s ease;
+}
+
+body.scopes .ws-logo-color {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-height: 40px;
+    max-width: calc(100% - 20px);
+    width: auto;
+    height: auto;
+    opacity: 0;
+    transition: opacity .25s ease;
+}
+
+body.scopes .ws-logo:hover .ws-logo-chip {
+    background-color: #FFFFFF;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, .35);
+}
+
+body.scopes .ws-logo:hover .ws-logo-mono {
+    opacity: 0;
+}
+
+body.scopes .ws-logo:hover .ws-logo-color {
+    opacity: 1;
+}
+
+body.scopes .ws-logo-tip {
+    position: absolute;
+    top: calc(100% - 30px);
+    left: 50%;
+    z-index: 3;
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 10px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--bronze-hi);
+    background-color: var(--field);
+    border: 1px solid var(--line);
+    padding: 4px 10px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-50%) translateY(-4px);
+    transition: opacity .25s ease, transform .25s ease;
+}
+
+body.scopes .ws-logo:hover .ws-logo-tip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+@keyframes ws-marquee {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body.scopes .ws-marquee-track {
+        animation: none;
+    }
+
+    body.scopes .ws-marquee {
+        overflow-x: auto;
+    }
+
+    body.scopes .ws-marquee-group[aria-hidden="true"] {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    body.scopes .ws-marquee-group {
+        gap: 28px;
+        padding: 0 14px;
+    }
+
+    body.scopes .ws-logo-mono {
+        height: 30px;
+    }
+
+    body.scopes .ws-logo-color {
+        max-height: 30px;
+    }
+}
+
 /* Clarity strip: where we install vs supply */
 body.scopes .sc-where {
     display: grid;
