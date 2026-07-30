@@ -666,9 +666,9 @@ body.home .ws-marquee:hover .ws-marquee-track {
 
 body.home .ws-marquee-group {
     display: flex;
-    align-items: center;
-    gap: 76px;
-    padding: 0 38px;
+    align-items: flex-start;
+    gap: 44px;
+    padding: 0 22px;
     margin: 0;
     list-style: none;
 }
@@ -680,11 +680,15 @@ body.home .ws-marquee-group li {
 /* Each logo: ivory mono mark at rest; on hover a white chip fades in with
    the full-color logo, and a name tooltip appears below. Tooltip space is
    reserved in the row so nothing clips or shifts. */
+/* The tooltip is absolutely positioned so it never widens the logo's slot
+   (a wide name would otherwise pad the row apart); vertical room for it is
+   reserved with padding so the band never clips or jumps. */
 body.home .ws-logo {
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-bottom: 36px;
 }
 
 body.home .ws-logo-chip {
@@ -732,7 +736,10 @@ body.home .ws-logo:hover .ws-logo-color {
 }
 
 body.home .ws-logo-tip {
-    margin-top: 8px;
+    position: absolute;
+    top: calc(100% - 30px);
+    left: 50%;
+    z-index: 3;
     font-family: var(--ws-sans);
     font-weight: 500;
     font-size: 10px;
@@ -745,14 +752,14 @@ body.home .ws-logo-tip {
     padding: 4px 10px;
     opacity: 0;
     visibility: hidden;
-    transform: translateY(-4px);
+    transform: translateX(-50%) translateY(-4px);
     transition: opacity .25s ease, transform .25s ease;
 }
 
 body.home .ws-logo:hover .ws-logo-tip {
     opacity: 1;
     visibility: visible;
-    transform: translateY(0);
+    transform: translateX(-50%) translateY(0);
 }
 
 @keyframes ws-marquee {
@@ -781,8 +788,8 @@ body.home .ws-logo:hover .ws-logo-tip {
 
 @media (max-width: 768px) {
     body.home .ws-marquee-group {
-        gap: 40px;
-        padding: 0 20px;
+        gap: 28px;
+        padding: 0 14px;
     }
 
     body.home .ws-logo-mono {
