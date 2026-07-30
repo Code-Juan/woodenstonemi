@@ -1,0 +1,5 @@
+Drop your SUPPLIER / VENDOR logos here (one file per company).
+
+Best formats: SVG (ideal) or transparent PNG. Name each file after the
+company. Light/white versions look best on the dark theme; dark logos can
+be recolored.

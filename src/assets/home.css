@@ -605,6 +605,126 @@ body.home .ws-strip span {
 }
 
 /* --------------------------------------------------------------------------
+   Client logo conveyor: pure-CSS infinite marquee. The track holds two
+   identical groups and slides -50%, so the loop is seamless. Pauses on
+   hover; under reduced motion it becomes a static, scrollable row.
+   -------------------------------------------------------------------------- */
+
+body.home .ws-logos {
+    background-color: var(--ws-field);
+    border-bottom: 1px solid var(--ws-line-soft);
+    padding: 36px 0 40px;
+    overflow: hidden;
+}
+
+body.home .ws-logos-label {
+    margin: 0 var(--ws-pad) 28px;
+    text-align: center;
+    font-family: var(--ws-sans);
+    font-weight: 500;
+    font-size: 10.5px;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    color: rgba(244, 241, 233, .5);
+}
+
+body.home .ws-marquee {
+    position: relative;
+    overflow: hidden;
+}
+
+body.home .ws-marquee::before,
+body.home .ws-marquee::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 90px;
+    z-index: 2;
+    pointer-events: none;
+}
+
+body.home .ws-marquee::before {
+    left: 0;
+    background: linear-gradient(90deg, var(--ws-field), transparent);
+}
+
+body.home .ws-marquee::after {
+    right: 0;
+    background: linear-gradient(270deg, var(--ws-field), transparent);
+}
+
+body.home .ws-marquee-track {
+    display: flex;
+    width: max-content;
+    animation: ws-marquee 45s linear infinite;
+}
+
+body.home .ws-marquee:hover .ws-marquee-track {
+    animation-play-state: paused;
+}
+
+body.home .ws-marquee-group {
+    display: flex;
+    align-items: center;
+    gap: 76px;
+    padding: 0 38px;
+    margin: 0;
+    list-style: none;
+}
+
+body.home .ws-marquee-group li {
+    flex: none;
+}
+
+body.home .ws-marquee-group img {
+    display: block;
+    height: 40px;
+    width: auto;
+    opacity: .62;
+    transition: opacity .3s ease;
+}
+
+body.home .ws-marquee-group img:hover {
+    opacity: 1;
+}
+
+@keyframes ws-marquee {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body.home .ws-marquee-track {
+        animation: none;
+    }
+
+    body.home .ws-marquee {
+        overflow-x: auto;
+    }
+
+    body.home .ws-marquee-group[aria-hidden="true"] {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    body.home .ws-marquee-group {
+        gap: 48px;
+        padding: 0 24px;
+    }
+
+    body.home .ws-marquee-group img {
+        height: 30px;
+    }
+}
+
+/* --------------------------------------------------------------------------
    01 The Friday Problem
    -------------------------------------------------------------------------- */
 

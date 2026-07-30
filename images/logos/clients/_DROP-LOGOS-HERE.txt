@@ -1,0 +1,7 @@
+Drop the LOGOS OF GCs / COMPANIES YOU WORK WITH here (one file per company).
+
+Best formats: SVG (ideal) or transparent PNG, roughly square or wide.
+Name each file after the company (e.g. sachse-construction.svg) so the
+marquee can use readable alt text. Light/white versions look best on the
+dark site theme; if you only have dark logos, drop them anyway and they
+will be recolored.
